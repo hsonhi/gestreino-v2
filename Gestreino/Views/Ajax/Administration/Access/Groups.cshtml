@@ -1,0 +1,109 @@
+﻿@model UTILIZADORES_ACESSO_GRUPOS
+@{
+    Layout = null;
+}
+<div class="card-header card-reader-radius bg-primary-pickled-bluewood">
+    <h3 class="text-white mb-0">@ViewBag.Action grupo</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="handle-error alert alert-accent"
+                 role="alert" style="display:none;">
+                <div class="d-flex flex-wrap align-items-start">
+                    <div class="mr-8pt">
+                        <i class="fa-solid fa-shield-halved"></i>&nbsp;
+                    </div>
+                    <div class="flex"
+                         style="min-width: 180px">
+                        <span class="text-black-100">
+                            <strong>Atenção!</strong> <span class="handle-error-message"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (ViewBag.Action == "Adicionar")
+    {
+        using (Ajax.BeginForm("newgroup", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }))
+        {
+            @Html.AntiForgeryToken()
+            <p>  <span><i class="fa fa-info-circle"></i> Os campos a vermelho são de caráter obrigatório!</span></p>
+
+            <div class="row">
+                <label class="col-md-2 col-form-label required">Sigla</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.SIGLA, new { @class = "form-control form-control-sm", required = "" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-md-2 col-form-label required">Nome</label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.NOME, new { @class = "form-control form-control-sm", required = "" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-md-2 col-form-label required">Descrição</label>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.DESCRICAO, new { @class = "form-control form-control-sm", required = "" })
+                </div>
+            </div>
+            <div class="mt-1">
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
+            </div>
+        }
+    }
+    @if (ViewBag.Action == "Editar")
+    {
+        using (Ajax.BeginForm("updategroup", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ID)
+            <p>  <span><i class="fa fa-info-circle"></i> Os campos a vermelho são de caráter obrigatório!</span></p>
+
+            <div class="row">
+                <label class="col-md-2 col-form-label required">Sigla</label>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.SIGLA, new { @class = "form-control form-control-sm", required = "" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-md-2 col-form-label required">Nome</label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.NOME, new { @class = "form-control form-control-sm", required = "" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-md-2 col-form-label required">Descrição</label>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.DESCRICAO, new { @class = "form-control form-control-sm", required = "" })
+                </div>
+            </div>
+            <div class="mt-1">
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
+            </div>
+        }
+    }
+    @if (ViewBag.Action == "Remover")
+    {
+        using (Ajax.BeginForm("deletegroup", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ID)
+
+            foreach (var i in ViewBag.bulkids)
+            {
+                <input type="hidden" value="@i" name="ids[]" />
+            }
+            <p>Deseja remover este(s) item(s)? Esta operação não é reversível</p>
+
+            <div class="mt-1">
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,51 @@
+﻿@using Gestreino.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Iniciar sessão";
+}
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h1><img src="~/Assets/images/icon.jpg" width="40" class="navImg" /> Gestreino</h1>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.ValidationSummary(true, "", new { @class = "ValidationSummary text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <input type="submit" class="btn btn-secondary submit" value="Iniciar sessão">
+                        </div>
+                    </div>
+                    <div class="row mb-4 mt-3">
+                        <label class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            @Html.ActionLink("Recuperar senha de acesso", "passwordrecovery", new { }, new { @class = "" })
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

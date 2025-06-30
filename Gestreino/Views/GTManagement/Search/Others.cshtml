@@ -1,0 +1,252 @@
+﻿@model Gestreino.Models.Others
+@using Gestreino.Classes
+@{
+    ViewBag.Title = "Outras Avaliações";
+}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+@*<script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>*@
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Ansiedade e Depressão</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.AnsiedadeDepressaototalAtletas (@Model.AnsiedadeDepressaoPercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.AnsiedadeDepressaoTotalHomens (@Model.AnsiedadeDepressaoPercHomens%)</b> Mulheres: <b>@Model.AnsiedadeDepressaoTotalMulheres (@Model.AnsiedadeDepressaoPercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.AnsiedadeDepressaoTotalAvaliacoes</b></label>
+            </div>
+            <div id="container1"></div>
+        </div>
+        <div class="col-md-6">
+            <h5>Auto Conceito</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.RespAutoConceitototalAtletas (@Model.RespAutoConceitoPercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.RespAutoConceitoTotalHomens (@Model.RespAutoConceitoPercHomens%)</b> Mulheres: <b>@Model.RespAutoConceitoTotalMulheres (@Model.RespAutoConceitoPercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.RespAutoConceitoTotalAvaliacoes</b></label>
+            </div>
+            <div id="container2"></div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h5>Risco Coronário</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.RespRiscototalAtletas (@Model.RespRiscoPercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.RespAutoConceitoTotalHomens (@Model.RespRiscoPercHomens%)</b> Mulheres: <b>@Model.RespRiscoTotalMulheres (@Model.RespRiscoPercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.RespRiscoTotalAvaliacoes</b></label>
+            </div>
+            <div id="container3"></div>
+        </div>
+    </div>
+    @ViewBag.jsonObject
+    <h2>&nbsp;</h2>
+    <h2>&nbsp;</h2>
+</div>
+<!-- /page content -->
+<script>
+    var colors = ['#FF0000'];
+    document.addEventListener("DOMContentLoaded", function (event) {
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetOthersAnsiedadeDepressao",
+            data: {},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container1', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Ansiedade e Depressão'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Ansiedade e Depressão'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        },
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetOthersAutoConceito",
+            data: {},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container2', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Auto Conceito'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Auto Conceito'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetOthersRisco",
+            data: {},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container3', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Risco Coronário'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Risco Coronário'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+    });
+</script>

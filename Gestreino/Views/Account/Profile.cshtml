@@ -1,0 +1,149 @@
+﻿@model Gestreino.Models.ProfileViewModel
+@{
+    ViewBag.Title = "Perfil";
+}
+<div class="right_col" role="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="handle-error alert alert-accent"
+                     role="alert" style="display:none;">
+                    <div class="d-flex flex-wrap align-items-start">
+                        <div class="mr-8pt">
+                            <i class="fa-solid fa-shield-halved"></i>&nbsp;
+                        </div>
+                        <div class="flex"
+                             style="min-width: 180px">
+                            <span class="text-black-100">
+                                <strong>Atenção!</strong> <span class="handle-error-message"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3   widget widget_tally_box">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div class="flex">
+                            <ul class="list-inline widget_profile_box">
+                                <li>
+                                    <a>
+
+                                    </a>
+                                </li>
+                                <li>
+                                    <img class="img-circle profile_img" src="@ViewBag.imgSrc" alt="@Model.Nome" title="@Model.Nome">
+                                </li>
+                                <li>
+                                    <a>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <h3 class="name">@Model.Nome</h3>
+                        <center>
+                            @Model.Login
+                        </center>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_content">
+                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Dados gerais</a>
+                                    </li>
+                                    <li role="presentation" class="">
+                                        <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Alterar senha</a>
+                                    </li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
+                                        <ul class="list-unstyled user_data mt-2">
+                                            <li>
+                                                <i class="fa fa-user fa-fw user-profile-icon"></i> @Model.Nome
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-key fa-fw user-profile-icon"></i> @Model.Login
+                                            </li>
+                                            <li class="m-top-xs">
+                                                <i class="fa fa-envelope fa-fw user-profile-icon"></i>
+                                                <a href="@Model.Email" target="_blank">@Model.Email</a>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-phone fa-fw user-profile-icon"></i> @Model.Telefone &nbsp; @Model.TelefoneAlternativo
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-info fa-fw user-profile-icon"></i> @ViewBag.Apresentacao
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-lock fa-fw user-profile-icon"></i> @ViewBag.Grupos
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                                        @using (Ajax.BeginForm("resetpassword", "account", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.HiddenFor(x => x.UserID)
+                                            @Html.HiddenFor(x => x.Login)
+                                            @Html.HiddenFor(x => x.Email)
+                                            <div class="row mt-2">
+                                                @Html.LabelFor(m => m.OldPassword, new { @class = "col-md-2 col-form-label" })
+                                                <div class="col-md-6">
+                                                    @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control form-control-sm", required = "" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-sm-2 col-form-label text-right"></label>
+                                                <div class="col-md-10">
+                                                    <div class="custom-controls-stacked">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input id="isAutomaticPasswordEmail" type="checkbox" class="custom-control-input">
+                                                            <label for="isAutomaticPasswordEmail" class="custom-control-label">
+                                                                Gerar senha
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row GenPasswordRow" style="display:none">
+                                                <label class="col-sm-2 col-form-label text-right"></label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control form-control-sm" placeholder="Senha gerada" id="GenPassword" readonly="">
+                                                </div>
+                                                <div class="col-sm-3 btn-group">
+                                                    <button type="button" class="btn btn-sm btn-light" onclick="ShufflePassword()" title="Shuffle"><i class="fa fa-random"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-light" onclick="copyPassword()" title="Copiar senha"><i class="fa fa-copy"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-1">
+                                                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
+                                                <div class="col-md-6">
+                                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-sm", required = "" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
+                                                <div class="col-md-6">
+                                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control form-control-sm", required = "" })
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="offset-md-2 col-md-10">
+                                                    <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    <h2>&nbsp;</h2>
+</div>

@@ -1,0 +1,900 @@
+﻿@model Gestreino.Models.Athlete
+@using Gestreino.Classes
+@{
+    ViewBag.Title = ViewBag.data[0].NOME;
+}
+<!-- page content -->
+<div class="right_col" role="main">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("athletes","gtmanagement")">Atletas</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.data[0].NOME</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-md-4 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_content">
+                    <div class="profile_img">
+                        <div class="crop-avatar">
+                            <img class="img-responsive avatar-view navImg" src="@ViewBag.imgSrc" width="200" alt="@ViewBag.data[0].NOME" title="@ViewBag.data[0].NOME">
+                        </div>
+                    </div>
+                    <center>
+                        <h3><i class="fa fa-tag"></i>&nbsp;@ViewBag.data[0].PES_NUMERO</h3>
+                        <h3>@ViewBag.data[0].NOME_PROPIO @ViewBag.data[0].APELIDO</h3>
+                    </center>
+                    <div class="btn-group-vertical btn-toolbar">
+                         @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_NEW)) {<a title="Atualizar informação" href="@Url.Action("updateathlete", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm btn-block btn-secondary w-100"><i class="fa fa-pencil user-profile-icon"></i> Atualizar informação</a>}
+                         @if (AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH))
+                         {<a title="Perfil do utilizador" href="@Url.Action("viewusers", "administration", new { Id = ViewBag.data[0].UTILIZADORES_ID })" class="btn  btn-block btn-sm btn-secondary w-100"><i class="fa fa-user user-profile-icon"></i> Utilizador</a>}
+                         @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_ALTER_IMG))
+                         { <a title="Carregar foto" href="@Url.Action("profilephoto", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm  btn-block btn-secondary w-100"><i class="fa fa-camera user-profile-icon"></i> Carregar foto</a>}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_content">
+                    <h6 class="mt-1"><span><i class="fa fa-medkit"></i> Características</span></h6>
+                    <div class="card p-1 bg-light mb-2">
+                        <table style="width:45% !important">
+                            <tr>
+                                <td>Altura (cm):</td>
+                                <td>@ViewBag.dataCaract[0].ALTURA.ToString("G29")</td>
+                            </tr>
+                            <tr>
+                                <td>Peso (kg):</td>
+                                <td>@ViewBag.dataCaract[0].PESO.ToString("G29")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>IMC:</td>
+                                <td>@ViewBag.dataCaract[0].IMC</td>
+                            </tr>
+                            <tr>
+                                <td>FC Repouso:</td>
+                                <td>@ViewBag.dataCaract[0].FCREPOUSO</td>
+                            </tr>
+                            <tr>
+                                <td>FC M&#225;ximo:</td>
+                                <td>@ViewBag.dataCaract[0].FCMAXIMO</td>
+                            </tr>
+                            <tr>
+                                <td>TA Sist&#243;lica:</td>
+                                <td>@ViewBag.dataCaract[0].TASISTOLICA</td>
+                            </tr>
+                            <tr>
+                                <td>TA Dist&#243;lica:</td>
+                                <td>@ViewBag.dataCaract[0].TADISTOLICA</td>
+                            </tr>
+                            <tr>
+                                <td>VO2:</td>
+                                <td>@ViewBag.dataCaract[0].VO2</td>
+                            </tr>
+                            <tr>
+                                <td>Massa Gorda (%):</td>
+                                <td>@ViewBag.dataCaract[0].MASSAGORDA</td>
+                            </tr>
+                            <tr>
+                                <td>Dura&#231;&#227;o do plano:</td>
+                                <td>@ViewBag.dataCaract[0].GT_DuracaoPlano_ID</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#tab_content1" id="" role="tab" data-toggle="tab" aria-expanded="true">Frequência Cardíaca</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#tab_content2" role="tab" id="" data-toggle="tab" aria-expanded="false">Factores de risco</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#tab_content3" role="tab" id="" data-toggle="tab" aria-expanded="false">Objectivos</a>
+                            </li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="tab_content1" aria-labelledby="">
+                                <div class="p-2">
+                                    <div class="d-flex flex-wrap align-items-start">
+                                        <div class="mr-8pt">
+                                            <strong>  <i class="fa fa-code-fork"></i>&nbsp;</strong>
+                                        </div>
+                                        <div class="flex"
+                                             style="min-width: 180px">
+                                            <strong class="text-black-100">
+                                                Fórmula Karvonen e Skinner
+                                            </strong>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive mt-1">
+                                        <table class="lres-table">
+                                            <tr>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>40%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO1</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>45%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO2</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>50%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO3</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>55%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO4</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>60%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO5</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>65%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO6</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>70%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO7</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>75%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO8</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>80%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO9</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="lres-table">
+                                                        <tr>
+                                                            <td>85%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@ViewBag.dataCaract[0].FCTREINO10</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="">
+                                <div class="p-3 ">
+                                    <div class="row">
+                                        @if (ViewBag.dataCaract[0].FR_HT)
+                                        {
+                                            <div class="col-md-2">
+                                                <label class=" col-form-label" for="FR_Hipertensao">Hipertens&#227;o</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].FR_TB)
+                                        {
+                                            <div class="col-md-2">
+                                                <label class=" col-form-label" for="FR_Tabaco">Tabaco</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].FR_HL)
+                                        {
+                                            <div class="col-md-3">
+                                                <label class=" col-form-label" for="FR_Hiperlipidemia">Hiperlipidemia</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].FR_OB)
+                                        {
+                                            <div class="col-md-2">
+                                                <label class=" col-form-label" for="FR_Obesidade">Obesidade</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].FR_DB)
+                                        {
+                                            <div class="col-md-2">
+                                                <label class=" col-form-label" for="FR_Diabetes">Diabetes</label>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="row">
+                                        @if (ViewBag.dataCaract[0].FR_IN)
+                                        {
+                                            <div class="col-md-2">
+                                                <label class=" col-form-label" for="FR_Inactividade">Inactividade</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].FR_HE)
+                                        {
+                                            <div class="col-md-3">
+                                                <label class=" col-form-label" for="FR_Heriditariedade">Heriditariedade</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].FR_EC)
+                                        {
+                                            <div class="col-md-4">
+                                                <label class=" col-form-label" for="FR_Examescomplementares">Exames complementares</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].FR_OT)
+                                        {
+                                            <div class="col-md-2">
+                                                <label class=" col-form-label" for="FR_Outros">Outros</label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="">
+                                <div class="p-3 ">
+                                    <div class="row">
+                                        @if (ViewBag.dataCaract[0].OB_AC)
+                                        {
+                                            <div class="col-md-2">
+                                                <label class=" col-form-label" for="OB_Actividade">Actividade</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].OB_CP)
+                                        {
+                                            <div class="col-md-3">
+                                                <label class=" col-form-label" for="OB_Controlopeso">Controlo de peso</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].OB_PI)
+                                        {
+                                            <div class="col-md-3">
+                                                <label class=" col-form-label" for="OB_PrevenirIdade">Predevenir a &quot;Idade&quot;</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].OB_TP)
+                                        {
+                                            <div class="col-md-3">
+                                                <label class=" col-form-label" for="OB_TreinoDesporto">Treino desportivo</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].OB_AM)
+                                        {
+                                            <div class="col-md-4">
+                                                <label class=" col-form-label" for="OB_AumentarMassa">Aumentar a massa muscular</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].OB_BE)
+                                        {
+                                            <div class="col-md-3">
+                                                <label class=" col-form-label" for="OB_BemEstar">Bem estar / Sa&#250;de</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].OB_TO)
+                                        {
+                                            <div class="col-md-2">
+                                                <label class=" col-form-label" for="OB_Tonificar">Tonificar</label>
+                                            </div>
+                                        }
+                                        @if (ViewBag.dataCaract[0].OB_OT)
+                                        {
+                                            <div class="col-md-2">
+                                                <label class=" col-form-label" for="OB_Outros">Outros</label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#tab_contentd1" id="" role="tab" data-toggle="tab" aria-expanded="true">Dados gerais</a>
+                    </li>
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_IDENTIFICATION_LIST_VIEW_SEARCH))
+                    {
+                        <li role="presentation" class="">
+                            <a href="#tab_contentd2" role="tab" id="" data-toggle="tab" aria-expanded="false">Identificação pessoal</a>
+                        </li>
+                    }
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_FAM_LIST_VIEW_SEARCH))
+                    {
+                        <li role="presentation" class="">
+                            <a href="#tab_contentd3" role="tab" id="" data-toggle="tab" aria-expanded="false">Agregados</a>
+                        </li>
+                    }
+                        @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_PROFESSIONAL_LIST_VIEW_SEARCH))
+                        {
+                            <li role="presentation" class="">
+                                <a href="#tab_contentd4" role="tab" id="" data-toggle="tab" aria-expanded="false">Dados profissionais</a>
+                            </li>
+                        }
+                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_DEFICIENCY_LIST_VIEW_SEARCH))
+                            {
+                                <li role="presentation" class="">
+                                    <a href="#tab_contentd5" role="tab" id="" data-toggle="tab" aria-expanded="false">Deficiências</a>
+                                </li>
+                            }
+                                @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_FILEMGR))
+                                {
+                                    <li role="presentation" class="">
+                                        <a href="#tab_contentd6" role="tab" id="" data-toggle="tab" aria-expanded="false">Documentos</a>
+                                    </li>
+                                }
+                                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div role="tabpanel" class="tab-pane active " id="tab_contentd1" aria-labelledby="">
+                        <div class="">
+                            <table style="width:40% !important">
+                                <tr>
+                                    <td>N° Sócio:</td>
+                                    <td>@ViewBag.data[0].PES_NUMERO</td>
+                                </tr>
+                                <tr>
+                                    <td>Nome:</td>
+                                    <td>@ViewBag.data[0].NOME</td>
+                                </tr>
+                                <tr>
+                                    <td>Sexo:</td>
+                                    <td>@ViewBag.data[0].SEXO</td>
+                                </tr>
+                                <tr>
+                                    <td>Data Nascimento:</td>
+                                    <td>@ViewBag.data[0].DATA_NASCIMENTO &nbsp;&nbsp;&nbsp;<i class="fa fa-calendar"></i> @Model.Age anos</td>
+                                </tr>
+                                <tr>
+                                    <td>Estado Civil:</td>
+                                    <td>@ViewBag.data[0].ESTADO_CIVIL</td>
+                                </tr>
+                                <tr>
+                                    <td>Nacionalidade:</td>
+                                    <td>@ViewBag.data[0].NACIONALIDADE</td>
+                                </tr>
+                                <tr>
+                                    <td>Naturalidade:</td>
+                                    <td>@ViewBag.data[0].NATURALIDADE_MUN @ViewBag.data[0].NATURALIDADE_CIDADE @ViewBag.data[0].NATURALIDADE_PAIS</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Telefone:</td>
+                                    <td>@ViewBag.data[0].TELEFONE</td>
+                                </tr>
+                                <tr>
+                                    <td>Telefone alternativo:</td>
+                                    <td>@ViewBag.data[0].TELEFONE_ALTERNATIVO</td>
+                                </tr>
+                                <tr>
+                                    <td>Email:</td>
+                                    <td>@ViewBag.data[0].EMAIL</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Endereço:</td>
+                                    <td>@ViewBag.dataEnd[0].NUMERO  @ViewBag.dataEnd[0].RUA  @ViewBag.dataEnd[0].MORADA  @ViewBag.dataEnd[0].MUN_NOME @ViewBag.dataEnd[0].CIDADE_NOME @ViewBag.dataEnd[0].PAIS_NOME</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_IDENTIFICATION_LIST_VIEW_SEARCH))
+                    {
+                        <div role="tabpanel" class="tab-pane" id="tab_contentd2" aria-labelledby="">
+                            <!--  DATATABLE START -->
+                            <div class="card mb-32pt">
+                                <div class="card-header">
+                                    <div class="form-inline">
+                                        <label class="" for="length_change">Mostrar</label>
+                                        <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="UserIdentTable">
+                                            <option value='10'>10</option>
+                                            <option value='25'>25</option>
+                                            <option value='50'>50</option>
+                                            <option value='100'>100</option>
+                                            <option value='500'>500</option>
+                                            <option value='1000'>1000</option>
+                                            <option value='2000'>2000</option>
+                                            <option value='5000'>5000</option>
+                                            <option value='10000'>10000</option>
+                                        </select>
+                                        <label class="" for="length_change">registos</label>
+                                        <div class="btn-group">
+                                            <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="UserIdentTable"><i class="fa fa-check-square"></i></button>
+                                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_IDENTIFICATION_DELETE))
+                                            {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="pesident" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                                            }  <button title="Pesquisar" class="btnSearch btn btn-default" data-id="UserIdentTable"><i class="fa fa-search"></i></button>
+                                                <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="UserIdentTable"><i class="fa fa-eraser"></i></button>
+                                                @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_IDENTIFICATION_NEW))
+                                                {<a title="Adicionar identificação pessoal" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="pesident" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                                                } <!--Separator-->
+                                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersIdentification", applyFilter = "true" })" target="_blank" data-id="UserIdentTable"><i class="fa fa-filter"></i></a>
+                                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersIdentification", applyFilter = "false" })" target="_blank" data-id="UserIdentTable"><i class="fa fa-file-excel"></i></a>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="UserIdentTable" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>@*@Html.DropDownListFor(x => Model.UserID, Model.PES_TIPO_IDENTIFICACAO_LIST, "Sem filtro", new { @class = "form-control", Id = "UserIdent" })*@</td>
+                                                <td><input type="text" id="UserIdentNumero" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserIdentDataEmissao" class="form-control datepicker form-control-sm" /></td>
+                                                <td><input type="text" id="UserIdentDataValidade" class="form-control datepicker form-control-sm" /></td>
+                                                <td><input type="text" id="UserIdentLocalEmissao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserIdentOrgaoEmissor" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserIdentObservacao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserIdentInsercao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserIdentDataInsercao" class="form-control datepicker form-control-sm" /></td>
+                                                <td><input type="text" id="UserIdentActualizacao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserIdentDataActualizacao" class="form-control datepicker form-control-sm" /></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th data-name="UserIdent">Identificação</th>
+                                                <th data-name="UserIdentNumero">Número</th>
+                                                <th data-name="UserIdentDataEmissao">Data Emissão</th>
+                                                <th data-name="UserIdentDataValidade">Data Validade</th>
+                                                <th data-name="UserIdentLocalEmissao">Local de Emissão</th>
+                                                <th data-name="UserIdentOrgaoEmissor">Órgão Emissor</th>
+                                                <th data-name="UserIdentObservacao">Observações</th>
+                                                <th data-name="UserIdentInsercao">Inserção</th>
+                                                <th data-name="UserIdentDataInsercao">Data Inserção</th>
+                                                <th data-name="UserIdentActualizacao">Actualização</th>
+                                                <th data-name="UserIdentDataActualizacao">Data Actualização</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="card-footer p-8pt">
+                                    <span class="paginateInfoUserIdent paginateInfo mr-12pt" style="float:right"></span>
+                                    <div id="paginateUserIdent" class="pagination justify-content-start pagination-xsm m-0"></div>
+                                </div>
+                            </div>
+                            <!--  DATATABLE START -->
+                        </div>
+                    }
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_FAM_LIST_VIEW_SEARCH))
+                    {
+                        <div role="tabpanel" class="tab-pane" id="tab_contentd3" aria-labelledby="">
+                            <!--  DATATABLE START -->
+                            <div class="card mb-32pt">
+                                <div class="card-header">
+                                    <div class="form-inline">
+                                        <label class="" for="length_change">Mostrar</label>
+                                        <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="UserFamilyTable">
+                                            <option value='10'>10</option>
+                                            <option value='25'>25</option>
+                                            <option value='50'>50</option>
+                                            <option value='100'>100</option>
+                                            <option value='500'>500</option>
+                                            <option value='1000'>1000</option>
+                                            <option value='2000'>2000</option>
+                                            <option value='5000'>5000</option>
+                                            <option value='10000'>10000</option>
+                                        </select>
+                                        <label class="" for="length_change">registos</label>
+                                        <div class="btn-group">
+                                            <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="UserFamilyTable"><i class="fa fa-check-square"></i></button>
+                                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_FAM_DELETE))
+                                            {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="pesfamily" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                                            } <button title="Pesquisar" class="btnSearch btn btn-default" data-id="UserFamilyTable"><i class="fa fa-search"></i></button>
+                                            <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="UserFamilyTable"><i class="fa fa-eraser"></i></button>
+                                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_FAM_NEW))
+                                            {<a title="Adicionar agregado familiar" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="pesfamily" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                                            }<!--Separator-->
+                                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersFamily", applyFilter = "true" })" target="_blank" data-id="UserFamilyTable"><i class="fa fa-filter"></i></a>
+                                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersFamily", applyFilter = "false" })" target="_blank" data-id="UserFamilyTable"><i class="fa fa-file-excel"></i></a>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="UserFamilyTable" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>@Html.DropDownListFor(x => Model.UserID, Model.PES_FAMILIARES_GRUPOS_LIST, "Sem filtro", new { @class = "form-control form-control-sm", Id = "UserFamilyAgregado" })</td>
+                                                <td><input type="text" id="UserFamilyNome" class="form-control form-control-sm" /></td>
+                                                <td> @Html.DropDownListFor(x => Model.UserID, Model.PES_PROFISSAO_LIST, "Sem filtro", new { @class = "form-control form-control-sm", Id = "UserFamilyProfissao" })</td>
+                                                <td><input type="text" id="UserFamilyTelefone" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyTelefoneAlternativo" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyFax" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyEmail" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyURL" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyEndereco" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyMorada" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyRua" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyNumero" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyInsercao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyDataInsercao" class="form-control datepicker form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyActualizacao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserFamilyDataActualizacao" class="form-control datepicker form-control-sm" /></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th data-name="UserFamilyAgregado">Agregado</th>
+                                                <th data-name="UserFamilyNome">Nome</th>
+                                                <th data-name="UserFamilyProfissao">Profissão</th>
+                                                <th data-name="UserFamilyTelefone">Telefone</th>
+                                                <th data-name="UserFamilyTelefoneAlternativo">Telefone Alternativo</th>
+                                                <th data-name="UserFamilyFax">Fax</th>
+                                                <th data-name="UserFamilyEmail">Email</th>
+                                                <th data-name="UserFamilyURL">URL</th>
+                                                <th data-name="UserFamilyEndereco">Endereço</th>
+                                                <th data-name="UserFamilyMorada">Morada</th>
+                                                <th data-name="UserFamilyRua">Rua</th>
+                                                <th data-name="UserFamilyNumero">Número</th>
+                                                <th data-name="UserFamilyInsercao">Inserção</th>
+                                                <th data-name="UserFamilyDataInsercao">Data Inserção</th>
+                                                <th data-name="UserFamilyActualizacao">Actualização</th>
+                                                <th data-name="UserFamilyDataActualizacao">Data Actualização</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="card-footer p-8pt">
+                                    <span class="paginateInfoUserFamilyTable paginateInfo mr-12pt" style="float:right"></span>
+                                    <div id="paginateUserFamilyTable" class="pagination justify-content-start pagination-xsm m-0"></div>
+                                </div>
+                            </div>
+                            <!--  DATATABLE START -->
+                        </div>
+                    }
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_PROFESSIONAL_LIST_VIEW_SEARCH))
+                    {
+                        <div role="tabpanel" class="tab-pane" id="tab_contentd4" aria-labelledby="">
+                            <!--  DATATABLE START -->
+                            <div class="card mb-32pt">
+                                <div class="card-header">
+                                    <div class="form-inline">
+                                        <label class="" for="length_change">Mostrar</label>
+                                        <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="UserProfissaoTable">
+                                            <option value='10'>10</option>
+                                            <option value='25'>25</option>
+                                            <option value='50'>50</option>
+                                            <option value='100'>100</option>
+                                            <option value='500'>500</option>
+                                            <option value='1000'>1000</option>
+                                            <option value='2000'>2000</option>
+                                            <option value='5000'>5000</option>
+                                            <option value='10000'>10000</option>
+                                        </select>
+                                        <label class="" for="length_change">registos</label>
+                                        <div class="btn-group">
+                                            <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="UserProfissaoTable"><i class="fa fa-check-square"></i></button>
+                                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_PROFESSIONAL_DELETE))
+                                            {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="pesprofessional" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                                            }  <button title="Pesquisar" class="btnSearch btn btn-default" data-id="UserProfissaoTable"><i class="fa fa-search"></i></button>
+                                            <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="UserProfissaoTable"><i class="fa fa-eraser"></i></button>
+                                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_PROFESSIONAL_NEW))
+                                            {<a title="Adicionar dados profissionais" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="pesprofessional" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                                            } <!--Separator-->
+                                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersProfessional", applyFilter = "true" })" target="_blank" data-id="UserProfissaoTable"><i class="fa fa-filter"></i></a>
+                                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersProfessional", applyFilter = "false" })" target="_blank" data-id="UserProfissaoTable"><i class="fa fa-file-excel"></i></a>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="UserProfissaoTable" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" id="UserProfissaoEmpresa" class="form-control form-control-sm" /></td>
+                                                <td>@Html.DropDownListFor(x => Model.UserID, Model.PES_PROFISSAO_LIST, "Sem filtro", new { @class = "form-control form-control-sm", Id = "UserProfissaoFuncao" })</td>
+                                                <td>@Html.DropDownListFor(x => Model.UserID, Model.PES_Contracto_LIST, "Sem filtro", new { @class = "form-control form-control-sm", Id = "UserProfissaoContracto" })
+                                                <td>@Html.DropDownListFor(x => Model.UserID, Model.PES_Regime_LIST, "Sem filtro", new { @class = "form-control form-control-sm", Id = "UserProfissaoRegime" })
+                                                <td><input type="text" id="UserProfissaoDataInicial" class="form-control datepicker form-control-sm" /></td>
+                                                <td><input type="text" id="UserProfissaoDataFim" class="form-control datepicker form-control-sm" /></td>
+                                                <td><input type="text" id="UserProfissaoDescricao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserProfissaoInsercao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserProfissaoDataInsercao" class="form-control datepicker form-control-sm" /></td>
+                                                <td><input type="text" id="UserProfissaoActualizacao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserProfissaoDataActualizacao" class="form-control datepicker form-control-sm" /></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th data-name="UserProfissaoEmpresa">Empresa</th>
+                                                <th data-name="UserProfissaoFuncao">Profissão</th>
+                                                <th data-name="UserProfissaoContracto">Contracto</th>
+                                                <th data-name="UserProfissaoRegime">Regime</th>
+                                                <th data-name="UserProfissaoDataInicial">Data Inicial</th>
+                                                <th data-name="UserProfissaoDataFim">Data Fim</th>
+                                                <th data-name="UserProfissaoDescricao">Descrição</th>
+                                                <th data-name="UserProfissaoInsercao">Inserção</th>
+                                                <th data-name="UserProfissaoDataInsercao">Data Inserção</th>
+                                                <th data-name="UserProfissaoActualizacao">Actualização</th>
+                                                <th data-name="UserProfissaoDataActualizacao">Data Actualização</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="card-footer p-8pt">
+                                    <span class="paginateInfoUserProfissaoTable paginateInfo mr-12pt" style="float:right"></span>
+                                    <div id="paginateUserProfissaoTable" class="pagination justify-content-start pagination-xsm m-0"></div>
+                                </div>
+                            </div>
+                            <!--  DATATABLE START -->
+                        </div>
+                    }
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_DEFICIENCY_LIST_VIEW_SEARCH))
+                    {
+                        <div role="tabpanel" class="tab-pane" id="tab_contentd5" aria-labelledby="">
+                            <!--  DATATABLE START -->
+                            <div class="card mb-32pt">
+                                <div class="card-header">
+                                    <div class="form-inline">
+                                        <label class="" for="length_change">Mostrar</label>
+                                        <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="UserDisabilityTable">
+                                            <option value='10'>10</option>
+                                            <option value='25'>25</option>
+                                            <option value='50'>50</option>
+                                            <option value='100'>100</option>
+                                            <option value='500'>500</option>
+                                            <option value='1000'>1000</option>
+                                            <option value='2000'>2000</option>
+                                            <option value='5000'>5000</option>
+                                            <option value='10000'>10000</option>
+                                        </select>
+                                        <label class="" for="length_change">registos</label>
+                                        <div class="btn-group">
+                                            <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="UserDisabilityTable"><i class="fa fa-check-square"></i></button>
+                                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_DEFICIENCY_DELETE))
+                                            {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="pesdisability" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                                            } <button title="Pesquisar" class="btnSearch btn btn-default" data-id="UserDisabilityTable"><i class="fa fa-search"></i></button>
+                                            <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="UserDisabilityTable"><i class="fa fa-eraser"></i></button>
+                                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_DEFICIENCY_NEW))
+                                            {<a title="Adicionar registo de deficiência" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="pesdisability" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                                            } <!--Separator-->
+                                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersDisability", applyFilter = "true" })" target="_blank" data-id="UserDisabilityTable"><i class="fa fa-filter"></i></a>
+                                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersDisability", applyFilter = "false" })" target="_blank" data-id="UserDisabilityTable"><i class="fa fa-file-excel"></i></a>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="UserDisabilityTable" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>@Html.DropDownListFor(x => Model.UserID, Model.PES_DEFICIENCIA_LIST, "Sem filtro", new { @class = "form-control form-control-sm", Id = "UserDisability" })</td>
+                                                <td>@Html.DropDownListFor(m => Model.UserID, Enum.GetValues(typeof(SelectValues.GrauDef)).Cast<int>().Select(e => new SelectListItem() { Text = Enum.GetName(typeof(SelectValues.GrauDef), e), Value = e.ToString() }), "Sem filtro", new { Id = "UserDisabilityGrau", @class = "form-control form-control-sm" })</td>
+                                                <td><input type="text" id="UserDisabilityDescricao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserDisabilityInsercao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserDisabilityDataInsercao" class="form-control datepicker form-control-sm" /></td>
+                                                <td><input type="text" id="UserDisabilityActualizacao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="UserDisabilityDataActualizacao" class="form-control datepicker form-control-sm" /></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th data-name="UserDisability">Deficiência</th>
+                                                <th data-name="UserDisabilityGrau">Grau</th>
+                                                <th data-name="UserDisabilityDescricao">Descrição</th>
+                                                <th data-name="UserDisabilityInsercao">Inserção</th>
+                                                <th data-name="UserDisabilityDataInsercao">Data Inserção</th>
+                                                <th data-name="UserDisabilityActualizacao">Actualização</th>
+                                                <th data-name="UserDisabilityDataActualizacao">Data Actualização</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="card-footer p-8pt">
+                                    <span class="paginateInfoUserDisabilityTable paginateInfo mr-12pt" style="float:right"></span>
+                                    <div id="paginateUserDisabilityTable" class="pagination justify-content-start pagination-xsm m-0"></div>
+                                </div>
+                            </div>
+                            <!--  DATATABLE START -->
+                        </div>
+                    }
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_FILEMGR))
+                    {
+                        <div role="tabpanel" class="tab-pane" id="tab_contentd6" aria-labelledby="">
+                            <!--  DATATABLE START -->
+                            <div class="card mb-32pt">
+                                <div class="card-header">
+                                    <div id="doctablebuttons">
+                                        <div class="form-inline">
+                                            <label class="" for="length_change">Mostrar</label>
+                                            <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="tblInstituicoesArquivos">
+                                                <option value='10'>10</option>
+                                                <option value='25'>25</option>
+                                                <option value='50'>50</option>
+                                                <option value='100'>100</option>
+                                                <option value='500'>500</option>
+                                                <option value='1000'>1000</option>
+                                                <option value='2000'>2000</option>
+                                                <option value='5000'>5000</option>
+                                                <option value='10000'>10000</option>
+                                            </select>
+                                            <label class="" for="length_change">registos</label>
+                                            <div class="btn-group">
+                                                <button title="Selecionar" class="btnSelect btn btn-default" data-id="tblInstituicoesArquivos"><i class="fa fa-check-square"></i></button>
+                                                <button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="fileupload" data-upload="pespessoas" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                                                <button title="Descarregar documento(s) selecionado(s)" class="btn btn-default DescarregarMultiplos" disabled=""><i class="fa fa-cloud-download"></i></button>
+                                                <button title="Pesquisar" class="btnSearch btn btn-default" data-id="tblInstituicoesArquivos"><i class="fa fa-search"></i></button>
+                                                <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="tblInstituicoesArquivos"><i class="fa fa-eraser"></i></button>
+                                                <a title="Adicionar documento" href="javascript:" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="fileupload" data-upload="pespessoas" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i>&nbsp;</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="doclistbuttons" hidden>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="radiogroups">
+                                                    <label class="btn btn-outline-primary active">
+                                                        <input type="radio" name="options" id="radiofdate" autocomplete="off" checked><i class="fa fa-calendar"></i>&nbsp;Ordenar data
+                                                    </label>
+                                                    <label class="btn btn-outline-primary">
+                                                        <input type="radio" name="options" id="radiofgroup" autocomplete="off"><i class="fa fa-file"></i>&nbsp;Ordenar documento
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 ">
+                                                <div class="mb-12pt d-flex align-items-center mt-8 pull-right">
+                                                    <div class="float-right">
+                                                        <div class="btn-group">
+                                                            <a title="Adicionar documento" href="javascript:" class="open-modal-crud btn btn-primary" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="fileupload" data-upload="pespessoas" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i>&nbsp;</a>
+                                                            <a href="javascript:" title="Visualizar documento selecionado" class="btn btn-primary link-disabled" disabled id="btnViewFile" target="_blank"><i class="fa fa-eye"></i></a>
+                                                            <button title="Descarregar documento(s) selecionado(s)" class="btn btn-primary" id="btnDownloadFile" disabled><i class="fa fa-cloud-download"></i></button>
+                                                            <button title="Editar arquivo selecionado" class="open-modal-crud btn btn-primary" data-id="0" data-action="Editar" data-entity="fileupload" data-upload="" data-toggle="modal" data-target="#crudControlModal" id="btnEditFile" disabled><i class="fa fa-pencil"></i></button>
+                                                            <button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-primary" data-id="0" data-action="RemoverMultiplos" data-entity="fileupload" data-upload="pespessoas" data-toggle="modal" data-target="#crudControlModal" disabled="" id="btnDeleteFile"><i class="fa fa-trash"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive" id="doctablebody">
+                                    <table id="tblInstituicoesArquivos" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" id="InstArquivoNome" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoDescricao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoDocumento" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoTipo" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoTamanho" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoEstado" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoDataActivacao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoDataDesactivacao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoInsercao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoDataInsercao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoActualizacao" class="form-control form-control-sm" /></td>
+                                                <td><input type="text" id="InstArquivoDataActualizacao" class="form-control form-control-sm" /></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th data-name="InstArquivoNome">Nome</th>
+                                                <th data-name="InstArquivoDescricao">Descrição</th>
+                                                <th data-name="InstArquivoDocumento">Documento</th>
+                                                <th data-name="InstArquivoTipo">Tipo</th>
+                                                <th data-name="InstArquivoTamanho">Tamanho</th>
+                                                <th data-name="InstArquivoEstado">Estado</th>
+                                                <th data-name="InstArquivoDataActivacao">Data Activação</th>
+                                                <th data-name="InstArquivoDataDesactivacao">Data Desactivação</th>
+                                                <th data-name="InstArquivoInsercao">Inserção</th>
+                                                <th data-name="InstArquivoDataInsercao">Data Inserção</th>
+                                                <th data-name="InstArquivoActualizacao">Actualização</th>
+                                                <th data-name="InstArquivoDataActualizacao">Data Actualização</th>
+                                                <th data-name="InstArquivoDataActulinkalizacao">Link</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div id="tablefooter">
+                                    <div class="card-footer p-8pt">
+                                        <span class="paginateInfoInstArquivo paginateInfo mr-12pt" style="float:right"></span>
+                                        <div id="paginateInstArquivo" class="pagination justify-content-start pagination-xsm m-0"></div>
+                                        @using (Html.BeginForm("downloadfiles", "ajax", FormMethod.Post, new { id = "tabledownloadform" }))
+                                        {
+                                            <div id="tabledownloaddiv" hidden></div>
+                                        }
+                                    </div>
+                                </div>
+
+
+                                <div id="doclistbody" hidden class="mb-2 p-2">
+                                    <!--  FANCYTREE START -->
+                                    <div id="tree"></div>
+                                    <!--  FANCYTREE START -->
+                                    @using (Html.BeginForm("downloadfiles", "ajax", FormMethod.Post, new { id = "downloadform" }))
+                                    {
+                                        <div id="downloaddiv" hidden> </div>
+                                    }
+                                </div>
+                            </div>
+                            <!--  DATATABLE START -->
+                            <input type="hidden" id="EntityId" value="@ViewBag.data[0].ID" />
+                            <input type="hidden" id="upload" value="pespessoas" />
+                        </div>
+                    }
+                    </div>
+                </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.ID, new { Id = "PesId" })
+    <h2>&nbsp;</h2>
+    <h2>&nbsp;</h2>
+</div>
+<!-- /page content -->
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        handleDataGPUsersIdent();
+        handleDataGPUsersProfissao();
+        handleDataGPUsersFamily();
+        handleDataGPUsersDisability();
+        handleDataFileUploaderView();
+    });
+</script>

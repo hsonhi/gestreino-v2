@@ -1,0 +1,166 @@
+﻿@using Gestreino.Models
+@using Gestreino.Classes
+@{
+    Layout = null;
+    string title = string.Empty;
+
+    if(ViewBag.Action == "anxiety")
+    {
+        title = "Estado Psicológico - Ansiedade e Depressão";
+    }
+    else if (ViewBag.Action == "selfconcept")
+    {
+        title = "Estado Psicológico - Auto conceito";
+    }
+    else if (ViewBag.Action == "risk")
+    {
+        title = "Resultado - Risco Coronário";
+    }
+    else if (ViewBag.Action == "Remover")
+    {
+        title = "Remover avaliação";
+    }
+}
+<style>
+    .form-control-sm {
+        font-size: .700rem !important
+    }
+</style>
+<div class="card-header card-reader-radius bg-primary-pickled-bluewood">
+    <h3 class="text-white mb-0">@title</h3>
+</div>
+<div class="modal-body">
+    @if (ViewBag.Action == "anxiety" || ViewBag.Action == "selfconcept")
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="handle-error alert alert-accent"
+                     role="alert" style="display:none;">
+                    <div class="d-flex flex-wrap align-items-start">
+                        <div class="mr-8pt">
+                            <i class="fa-solid fa-shield-halved"></i>&nbsp;
+                        </div>
+                        <div class="flex"
+                             style="min-width: 180px">
+                            <span class="text-black-100">
+                                <strong>Atenção!</strong> <span class="handle-error-message"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <p class="handle-success-message"></p>
+            </div>
+        </div>
+        <div id="anxientFormClone" hidden></div>
+        <div>
+            @if (ViewBag.Action == "anxiety" && AcessControl.Authorized(AcessControl.GT_QUEST_ANXIETY_UPDATE))
+            {
+                <button class="btn btn-success btn-sm" id="submitanxientForm" onclick="submitanxientForm()"><i class="fa fa-floppy-disk"></i> Guardar</button>
+            }
+            @if (ViewBag.Action == "selfconcept" && AcessControl.Authorized(AcessControl.GT_QUEST_SELFCONCEPT_UPDATE))
+            {
+                <button class="btn btn-success btn-sm" id="submitanxientForm" onclick="submitanxientForm()"><i class="fa fa-floppy-disk"></i> Guardar</button>
+            }
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">OK</button>
+        </div>
+    }
+    @if (ViewBag.Action == "risk")
+    {
+        <div class="row">
+            <div class="col-md-12">
+              <div class="handle-error alert alert-accent"
+                   role="alert" style="display:none;">
+                  <div class="d-flex flex-wrap align-items-start">
+                      <div class="mr-8pt">
+                          <i class="fa-solid fa-shield-halved"></i>&nbsp;
+                      </div>
+                      <div class="flex"
+                           style="min-width: 180px">
+                          <span class="text-black-100">
+                              <strong>Atenção!</strong> <span class="handle-error-message"></span>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div>
+            <p class="mb-0"><b>(A) Teste médicos antes do início do programa de activiade física.</b></p>
+            <p class="mt-1"><b>(B) Presença médica na aplicação dos testes/avaliação.</b></p>
+           <div class="row">
+               <div class="col-md-12">
+                   <table>
+                       <tr>
+                           <td><p><b>A.</b></p></td>
+                           <td><p><b>Risco Baixo</b></p></td>
+                           <td><p><b>Risco Moderado</b></p></td>
+                           <td><p><b>Risco Elevado</b></p></td>
+                       </tr>
+                       <tr>
+                           <td><p>Exercício Moderado</p></td>
+                           <td><input type="text" id="riskRB1" value="Não é necessário" readonly class="form-control form-control-sm"/></td>
+                           <td><input type="text" id="riskRM1" value="Não é necessário" readonly class="form-control form-control-sm"/></td>
+                           <td><input type="text" id="riskRE1" value="Recomenda-se" readonly class="form-control form-control-sm"/></td>
+                       </tr>
+                       <tr>
+                           <td><p>Exercício Vigoroso</p></td>
+                           <td><input type="text" id="riskRB2" value="Não é necessário" readonly class="form-control form-control-sm"/></td>
+                           <td><input type="text" id="riskRM2" value="Não é necessário" readonly class="form-control form-control-sm"/></td>
+                           <td><input type="text" id="riskRE2" value="Recomenda-se" readonly class="form-control form-control-sm"/></td>
+                       </tr>
+                       <tr>
+                           <td><p><b>B.</b></p></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                       </tr>
+                       <tr>
+                           <td><p>Teste SubMáximo</p></td>
+                           <td><input type="text" id="riskRB3" value="Não é necessário" readonly class="form-control form-control-sm"/></td>
+                           <td><input type="text" id="riskRM3" value="Não é necessário" readonly class="form-control form-control-sm"/></td>
+                           <td><input type="text" id="riskRE3" value="Recomenda-se" readonly class="form-control form-control-sm"/></td>
+                       </tr>
+                       <tr>
+                           <td><p>Teste Máximo</p></td>
+                           <td><input type="text" id="riskRB4" value="Não é necessário" readonly class="form-control form-control-sm"/></td>
+                           <td><input type="text" id="riskRM4" value="Recomenda-se" readonly class="form-control form-control-sm"/></td>
+                           <td><input type="text" id="riskRE4" value="Recomenda-se" readonly class="form-control form-control-sm"/></td>
+                       </tr>
+                   </table>
+               </div>
+           </div>
+        </div>
+
+
+        <div id="anxientFormClone" hidden></div>
+        <div>
+            @if (AcessControl.Authorized(AcessControl.GT_QUEST_CORONARYRISK_UPDATE))
+            {
+                <button class="btn btn-success btn-sm" id="submitanxientForm" onclick="submitanxientForm()"><i class="fa fa-floppy-disk"></i> Guardar</button>
+            }   
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">OK</button>
+            </div>
+    }
+    @if (ViewBag.Action == "Remover")
+    {
+        using (Ajax.BeginForm("../gtmanagement/DeleteGTQuest", null, new AjaxOptions { HttpMethod = "POST", LoadingElementId = "", LoadingElementDuration = 2000, OnBegin = "loadIn", OnComplete = "loadOut", OnSuccess = "handleSuccess", OnFailure = "handleFailure", UpdateTargetId = "" }, new { id = "" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row col-lg-12">
+                @{ foreach (var id in ViewBag.bulkids)
+                    {
+                        <input type="hidden" name="Ids[]" value="@id" />
+                        <input type="hidden" name="upload" value="@ViewBag.upload" />
+
+                    }
+                }
+                <p>Deseja remover este(s) item(s)?</p>
+
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
+            </div>
+        }
+    }
+</div>

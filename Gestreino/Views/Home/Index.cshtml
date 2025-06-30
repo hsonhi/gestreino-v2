@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Início";
+}
+@if (Request.IsAuthenticated)
+{
+    <div class="right_col" role="main" style="background: url('../../Assets/images/home.jpg'); background-size: cover; background-blend-mode: difference; "></div>
+}
+else
+{
+    <div class="h-100 d-flex align-items-center justify-content-center bg-white"></div>
+}

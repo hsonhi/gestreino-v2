@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9aa43f17c81e4469928e2ff64960e43f" Name="Diagram1" ZoomLevel="58">
+        <EntityTypeShape EntityType="GESTREINO_ORM.GRL_ANO_LECTIVO" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GRL_ARQUIVOS" Width="1.5" PointX="6" PointY="47.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GRL_ARQUIVOS_TIPO_DOCS" Width="1.5" PointX="3.75" PointY="47.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GRL_ENDERECO_CIDADE" Width="1.5" PointX="8.25" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GRL_ENDERECO_MUN_DISTR" Width="1.5" PointX="8.25" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GRL_ENDERECO_PAIS" Width="1.5" PointX="8.25" PointY="46.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GRL_TOKENS" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GRL_TOKENS_TIPOS" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.INST_APLICACAO_CONTACTOS" Width="1.5" PointX="16.5" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Width="1.5" PointX="16.5" PointY="27.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_ENDERECOS" Width="1.5" PointX="11.25" PointY="36.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_ESTADO_CIVIL" Width="1.5" PointX="0.75" PointY="32.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_FAMILIARES_GRUPOS" Width="1.5" PointX="3" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_IDENTIFICACAO" Width="1.5" PointX="8.25" PointY="32.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_NACIONALIDADE" Width="1.5" PointX="8.25" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_NATURALIDADE" Width="1.5" PointX="11.25" PointY="31.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PESSOAS_CARACT_DEFICIENCIA" Width="1.5" PointX="11.25" PointY="43.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PESSOAS_CARACT_TIPO_DEF" Width="1.5" PointX="9" PointY="60.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PESSOAS_CARACT_TIPO_SANG" Width="1.5" PointX="12" PointY="52.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PESSOAS_FAM" Width="1.5" PointX="5.25" PointY="28.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PESSOAS_FAM_CONTACTOS" Width="1.5" PointX="7.5" PointY="28" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PESSOAS_PROFISSOES" Width="1.5" PointX="14.25" PointY="28" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PROFISSOES" Width="1.5" PointX="12" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PROFISSOES_REGIME_TRABALHO" Width="1.5" PointX="12" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PROFISSOES_TIPO_CONTRACTO" Width="1.5" PointX="12" PointY="48.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_TIPO_ENDERECOS" Width="1.5" PointX="9" PointY="52.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_TIPO_IDENTIFICACAO" Width="1.5" PointX="6" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES_ACESSO_ATOMOS_GRUPOS" Width="1.5" PointX="6" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES_ACESSO_GRUPOS" Width="1.875" PointX="3.75" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES_ACESSO_PERFIS" Width="1.5" PointX="3.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES_ACESSO_PERFIS_ATOMOS" Width="1.5" PointX="6" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES_ACESSO_UTIL_GRUPOS" Width="1.5" PointX="6" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES_ACESSO_UTIL_PERFIS" Width="1.5" PointX="6" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES_LOGIN_LOGS" Width="1.5" PointX="3" PointY="53" IsExpanded="true" />
+        <AssociationConnector Association="GESTREINO_ORM.FKGRL_ARQUIV868408" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC331316" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_ENDERE742543" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_NATURA422334" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC69096" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_ENDERE72444" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_NATURA92434" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC939798" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_ENDERE879575" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_NACION768793" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_NATURA927136" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKGRL_TOKENS134751" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_ENDERE404884" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA888362" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_IDENTI220268" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA215063" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA365702" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA747112" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA848229" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA920927" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR350451" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR524177" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR285471" ManuallyRouted="false" />
+        <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR296978" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES_LOGIN_PASSWORD_TENT" Width="1.5" PointX="3" PointY="43.875" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.INST_APLICACAO" Width="1.5" PointX="14.25" PointY="22.75" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC348700" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC72783" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES_ACESSO_ATOMOS" Width="1.5" PointX="3.75" PointY="15.75" />
+        <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR744434" />
+        <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR816609" />
+        <AssociationConnector Association="GESTREINO_ORM.GRL_ENDERECO_CIDADE_ENDERECO_PAIS_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GRL_ENDERECO_MUN_DISTR_ENDERECO_CIDADE_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_CONTACTOS" Width="1.5" PointX="5.25" PointY="42.5" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_DuracaoPlano" Width="1.5" PointX="0.75" PointY="5.75" />
+        <AssociationConnector Association="GESTREINO_ORM.PES_PESSOAS_FAM_PES_PROFISSOES_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Carga" Width="1.5" PointX="3.375" PointY="5.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_FaseTreino" Width="1.5" PointX="5.375" PointY="4.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Repeticoes" Width="1.5" PointX="7.375" PointY="4.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Series" Width="1.5" PointX="7.375" PointY="7.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TempoDescanso" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Exercicio" Width="1.5" PointX="9.25" PointY="69.5" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Exercicio_ARQUIVOS" Width="1.5" PointX="11.5" PointY="61.125" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_SOCIOS" Width="1.5" PointX="5.25" PointY="52.375" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TipoTreino" Width="1.5" PointX="7" PointY="64.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Treino" Width="1.5" PointX="9.25" PointY="64.375" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TreinosPessoa" Width="1.5" PointX="11.5" PointY="56.5" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PESSOAS" Width="1.5" PointX="3" PointY="34" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_ARQUIVOS_ARQUIVOS_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_FaseTreino_GT_Carga_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_ARQUIVOS_GT_Exercicio_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_GT_TipoTreino_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_FaseTreino_GT_Repeticoes_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_FaseTreino_GT_Series_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_FaseTreino_GT_TempoDescanso_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Treino_GT_GT_FaseTreino_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_SOCIOS_PES_PESSOAS_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_TreinosPessoa_GT_SOCIOS_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Treino_GT_TipoTreino_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_TreinosPessoa_GT_Treino_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_CONTAC756418" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_ENDERE793688" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA207036" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_IDENTI437016" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_NACION904470" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_NATURA600401" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA28870" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA54742" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA801637" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.INST_APLICACAO_ARQUIVOS" Width="1.5" PointX="16.5" PointY="37.125" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_ARQUIVOS" Width="1.5" PointX="8.25" PointY="37.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.UTILIZADORES" Width="1.5" PointX="0.75" PointY="42.625" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC12018" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_ARQUIV364588" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC342516" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_ARQUIV36075" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA577877" />
+        <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR212112" />
+        <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR331508" />
+        <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR769774" />
+        <AssociationConnector Association="GESTREINO_ORM.UTILIZADORES_LOGIN_PASSWORD_TENT_UTILIZADORES_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_IDENTIFICACAO_LOCAL_EM" Width="1.5" PointX="16.5" PointY="33.375" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_IDENTI565101" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_IDENTI736389" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_IDENTI215630" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_IDENTI377525" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_DuracaoTreinoCardio" Width="1.5" PointX="9.25" PointY="74.625" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespAnsiedadeDepressao" Width="1.5" PointX="7.5" PointY="77.5" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespAnsiedadeDepressao_GT_SOCIOS_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespAutoConceito" Width="1.5" PointX="7.5" PointY="85.125" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespAutoConceito_GT_SOCIOS_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespRisco" Width="1.5" PointX="7.5" PointY="93.5" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespRisco_GT_SOCIOS_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespProblemasSaude" Width="1.5" PointX="7.5" PointY="106.875" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespProblemasSaude_GT_SOCIOS_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TipoTesteFlexibilidade" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespFlexiTeste" Width="1.5" PointX="19.5" PointY="38.5" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespFlexiTeste_GT_SOCIOS_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespFlexiTeste_GT_TipoTesteFlexibilidade_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TipoMetodoComposicao" Width="1.5" PointX="10" PointY="77.375" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TipoNivelActividade" Width="1.5" PointX="12.25" PointY="66.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TipoTesteComposicao" Width="1.5" PointX="12.25" PointY="77.125" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_TipoTesteComposicao_GT_TipoMetodoComposicao_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespComposicao" Width="1.5" PointX="14.5" PointY="61.75" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespComposicao_GT_SOCIOS_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespComposicao_GT_TipoNivelActividade_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespComposicao_GT_TipoTesteComposicao_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TipoMetodoCardio" Width="1.5" PointX="9.375" PointY="7" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TipoTesteCardio" Width="1.5" PointX="11.625" PointY="6.75" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_TipoTesteCardio_GT_TipoMetodoCardio_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespAptidaoCardioYMCA" Width="1.5" PointX="24.125" PointY="28.5" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespAptidaoCardio" Width="1.5" PointX="21.875" PointY="27.625" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespAptidaoCardio_GT_SOCIOS_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespAptidaoCardio_GT_TipoTesteCardio_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespAptidaoCardioYMCA_GT_RespAptidaoCardio_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespPessoaIdosa" Width="1.5" PointX="14.5" PointY="52" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TipoTestePessoaIdosa" Width="1.5" PointX="12.25" PointY="80.375" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespPessoaIdosa_GT_SOCIOS_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespPessoaIdosa_GT_TipoTestePessoaIdosa_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_TipoTesteForca" Width="1.5" PointX="12.25" PointY="14.375" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespForca" Width="1.5" PointX="22.5" PointY="35.75" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespForca_GT_SOCIOS_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespForca_GT_TipoTesteForca_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PESSOAS_CARACT" Width="1.5" PointX="19.25" PointY="26.375" />
+        <AssociationConnector Association="GESTREINO_ORM.PES_PESSOAS_CARACT_GT_DuracaoPlano_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA802772" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA872225" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_RespFuncional" Width="1.5" PointX="7.5" PointY="125.5" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_RespFuncional_GT_SOCIOS_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PES_PESSOAS_FAM_ENDERECOS" Width="1.5" PointX="13.5" PointY="40.5" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA932046" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA261947" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA281518" />
+        <AssociationConnector Association="GESTREINO_ORM.FKPES_PESSOA815594" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GRL_DEFINICOES" Width="1.5" PointX="16.5" PointY="15.75" />
+        <AssociationConnector Association="GESTREINO_ORM.GRL_DEFINICOES_INST_APLICACAO_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.PesoMedio" Width="1.5" PointX="9.375" PointY="3.75" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_CoeficienteRepeticao" Width="1.5" PointX="14.25" PointY="46.25" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_ExercicioTreino" Width="1.5" PointX="16.5" PointY="42.25" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreino_GT_Carga_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreino_GT_CoeficienteRepeticao_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreino_GT_Exercicio_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreino_GT_Repeticoes_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreino_GT_Series_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreino_GT_TempoDescanso_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreino_GT_Treino_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_ExercicioTreinoCardio" Width="1.5" PointX="11.5" PointY="69.125" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreinoCardio_GT_DuracaoTreinoCardio_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreinoCardio_GT_Exercicio_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreinoCardio_GT_Treino_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_SOCIOS_EVOLUCAO" Width="1.5" PointX="7.5" PointY="57" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_SOCIOS_EVOLUCAO_GT_SOCIOS_ID" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

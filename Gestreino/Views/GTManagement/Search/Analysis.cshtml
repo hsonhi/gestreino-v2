@@ -1,0 +1,563 @@
+﻿@model Gestreino.Models.Analysis
+@using Gestreino.Classes
+@{
+    ViewBag.Title = "Análise Descritiva";
+}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+@*<script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>*@
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Composição Corporal</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.ComptotalAtletas (@Model.CompPercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.CompTotalHomens (@Model.CompPercHomens%)</b> Mulheres: <b>@Model.CompTotalMulheres (@Model.CompPercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.CompTotalAvaliacoes</b></label>
+            </div>
+            <div id="container1"></div>
+        </div>
+        <div class="col-md-6">
+            <h5>Aptidão Cardiorespiratória</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.CardiototalAtletas (@Model.CardioPercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.CardioTotalHomens (@Model.CardioPercHomens%)</b> Mulheres: <b>@Model.CompTotalMulheres (@Model.CardioPercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.CardioTotalAvaliacoes</b></label>
+            </div>
+            <div id="container2"></div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h5>Flexibilidade</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.FlexitotalAtletas (@Model.FlexiPercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.FlexiTotalHomens (@Model.FlexiPercHomens%)</b> Mulheres: <b>@Model.FlexiTotalMulheres (@Model.FlexiPercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.FlexiTotalAvaliacoes</b></label>
+            </div>
+            <div id="container3"></div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h5>Força - 1 RM Braços</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.Force1totalAtletas (@Model.Force1PercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.Force1TotalHomens (@Model.Force1PercHomens%)</b> Mulheres: <b>@Model.Force1TotalMulheres (@Model.Force1PercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.Force1TotalAvaliacoes</b></label>
+            </div>
+            <div id="container4"></div>
+        </div>
+        <div class="col-md-6">
+            <h5>Força - 1 RM Pernas</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.Force2totalAtletas (@Model.Force2PercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.Force2TotalHomens (@Model.Force2PercHomens%)</b> Mulheres: <b>@Model.Force2TotalMulheres (@Model.Force2PercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.Force2TotalAvaliacoes</b></label>
+            </div>
+            <div id="container5"></div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h5>Força Resistente Superior  - Flexões</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.Force3totalAtletas (@Model.Force3PercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.Force3TotalHomens (@Model.Force3PercHomens%)</b> Mulheres: <b>@Model.Force3TotalMulheres (@Model.Force3PercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.Force3TotalAvaliacoes</b></label>
+            </div>
+            <div id="container6"></div>
+        </div>
+        <div class="col-md-6">
+            <h5>Força Resistente  Média - Abdominais</h5>
+            <div class="row">
+                <label class="col-md-12 mb-0">N° de atletas: <b>@Model.Force4totalAtletas (@Model.Force4PercAtletas%)</b></label>
+                <label class="col-md-12 mb-0">Homens: <b>@Model.Force4TotalHomens (@Model.Force4PercHomens%)</b> Mulheres: <b>@Model.Force4TotalMulheres (@Model.Force4PercMulheres%)</b></label>
+                <label class="col-md-12 ">N° de avaliações: <b>@Model.Force4TotalAvaliacoes</b></label>
+            </div>
+            <div id="container7"></div>
+        </div>
+    </div>
+    <h2>&nbsp;</h2>
+    <h2>&nbsp;</h2>
+</div>
+<!-- /page content -->
+<script>
+    var colors = ['#FF0000', '#E82C0C', '#FF0000', '#E80C7A', '#E80C7A'];
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetAnaliseBodyComposition",
+            data: {},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container1', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Composição Corporal'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Composição Corporal'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        },
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetAnaliseCardio",
+            data: {},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container2', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Aptidão Cardiorespiratória'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Aptidão Cardiorespiratória'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        },
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetAnaliseFlexibility",
+            data: {},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container3', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Flexibilidade'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Flexibilidade'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        },
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetAnaliseForce",
+            data: {"Id":1},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container4', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Força - 1 RM Braços'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Força - 1 RM Braços'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        },
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetAnaliseForce",
+            data: { "Id": 2},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container5', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Força - 1 RM Pernas'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Força - 1 RM Pernas'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        },
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetAnaliseForce",
+            data: {"Id":4},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container6', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Força Resistente Superior - Flexões'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Força Resistente Superior - Flexões'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        },
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/gtmanagement/GetAnaliseForce",
+            data: {"Id":3},
+            cache: false,
+            beforeSend: function () {
+            },
+            complete: function () {
+            },
+            success: function (data) {
+                Highcharts.chart('container7', {
+
+                    chart: {
+                        backgroundColor: 'rgba(0,0,0,.03)',
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0,0,0,.03)',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'column',
+                        // height: 250
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: 'Força Resistente  Média - Abdominais'
+                    },
+                    subtitle: {
+                        text:
+                            ''
+                    },
+                    xAxis: {
+                        categories: ['Força Resistente  Média - Abdominais'],
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+
+                        title: {
+                            text: ''
+                        },
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 500,
+                                }
+                            }
+                        }
+                    },
+                    colors: colors,
+                    series: data
+                });
+            }
+        });
+
+
+    });
+</script>

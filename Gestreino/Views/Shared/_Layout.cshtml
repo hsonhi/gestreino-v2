@@ -1,0 +1,149 @@
+﻿@using Microsoft.AspNet.Identity
+@using Gestreino.Classes
+@using System.Security.Claims
+@{ int init = string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_SIDEBAR_MENU_COLLAPSE)) ? 0 : int.Parse(Cookies.ReadCookie(Cookies.COOKIES_SIDEBAR_MENU_COLLAPSE)); }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="~/Assets/images/icon.jpg">
+    <title>@ViewBag.Title - Gestreino</title>
+    <style>
+        :root {
+            --INST_PER_TEMA_1: @Gestreino.Classes.Configs.INST_PER_TEMA_1;
+            --INST_PER_TEMA_1_SIDEBAR:  @Gestreino.Classes.Configs.INST_PER_TEMA_1_SIDEBAR;
+            --INST_PER_TEMA_2: @Gestreino.Classes.Configs.INST_PER_TEMA_2;
+        }
+    </style>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!-- Font Awesome -->
+    <link href="~/Assets/fonts/style/fontawesome.min.css" rel="stylesheet">
+    <link href="~/Assets/fonts/style/brands.css" rel="stylesheet" />
+    <link href="~/Assets/fonts/style/solid.css" rel="stylesheet" />
+
+</head>
+<body class="nav-@(init==1?"md":"sm") footer_fixed @(Request.IsAuthenticated?"":"startup-img")">
+    <div class="container body">
+        <div class="main_container">
+            @if (Request.IsAuthenticated)
+            {
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="@Url.Action("", "")" class="site_title"><img src="~/Assets/images/icon.jpg" class="navImg" width="40" /> Gestreino</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <br />
+                        <!-- sidebar menu -->
+                        @Html.Partial("_SideBarMenu")
+                        <!-- sidebar menu -->
+                        <!-- /menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <a href="javascript:" id="selecionaravaliado" data-placement="top" title="Selecionar Avaliado" class="open-modal-crud bg-blue-sky" data-id="0" data-action="Adicionar" data-entity="gtavaliado" data-toggle="modal" data-target="#crudControlModal">
+                            <span class="fa fa-random" aria-hidden="true"></span>
+                        </a>
+                        @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_FILEMGR) || AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_SETINGS_EDIT))
+                        {
+                            <a data-toggle="tooltip" href="@Url.Action("settings", "administration")" data-placement="top" title="Configurações">
+                                <span class="fa fa-cog" aria-hidden="true"></span>
+                            </a>
+                        }
+                        <a data-toggle="tooltip" href="@Url.Action("help", "home")" data-placement="top" title="Ajuda">
+                            <span class="fa fa-video" aria-hidden="true"></span>
+                        </a>
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a data-toggle="tooltip" data-placement="top" title="Terminar sessão" href="javascript:document.getElementById('logoutForm').submit()">
+                                <span class="fa fa-sign-out" aria-hidden="true"></span>
+                            </a>
+                        }
+                    </div>
+                        <!-- /menu footer buttons -->
+                    </div>
+                </div>
+
+                <!-- top navigation -->
+                if (Request.IsAuthenticated)
+                {
+                    var claimsIdentity = User.Identity as ClaimsIdentity;
+                    var existingClaim = claimsIdentity.FindFirst(ClaimTypes.UserData);
+
+                    <div class="top_nav">
+                        <div class="nav_menu">
+                            <div class="nav toggle">
+                                @using (Ajax.BeginForm("../ajax/SetCookies", null, new AjaxOptions { HttpMethod = "POST", LoadingElementId = "", LoadingElementDuration = 2000, OnBegin = "", OnComplete = "", OnSuccess = "", OnFailure = "", UpdateTargetId = "" }, new { @class = "p-12" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" value="@Cookies.COOKIES_SIDEBAR_MENU_COLLAPSE" name="entity" />
+                                    <button type="submit" id="BtnSubmit" style="display:none"></button>
+                                    <input type="hidden" value="@(init==0?"1":"0")" name="value" />
+                                    <a id="menu_toggle" class="mt-3" onclick="$('#BtnSubmit').click();"><i class="fa fa-bars"></i></a>
+                                }
+                            </div>
+                            <nav class="nav navbar-nav">
+                                <ul class=" navbar-right">
+                                    <li class="nav-item dropdown open" style="padding-left: 15px;">
+                                        <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                            <img src="@(existingClaim != null && !string.IsNullOrEmpty(claimsIdentity.FindFirst(ClaimTypes.UserData).Value) ? "/" + claimsIdentity.FindFirst(ClaimTypes.UserData).Value :  "/Assets/images/user-avatar.jpg")" alt="@User.Identity.GetUserName()">@User.Identity.GetUserName()
+                                        </a>
+                                        <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="@Url.Action("profile","account")"> Perfil</a>
+                                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out pull-right"></i> Terminar sessão</a>
+                                            }
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                }
+                <!-- /top navigation -->
+            }
+            @RenderBody()
+            @if (Request.IsAuthenticated)
+            {
+                string Athlete = "Atleta: Nenhum selecionado";
+                if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                {
+                    Athlete = "Atleta: " + Configs.GESTREINO_AVALIDO_NOME + ",  Idade: " + Configs.GESTREINO_AVALIDO_IDADE + ",   Peso: " + Configs.GESTREINO_AVALIDO_PESO + " kg,    Altura: " + Configs.GESTREINO_AVALIDO_ALTURA + " cm";
+                }
+                <!-- footer content -->
+                <footer>
+                    <div class="pull-right">
+                        <i class="fa fa-user"></i> @User.Identity.GetUserName() &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="bg-blue-sky p-1 br-1">@Athlete</span>
+                    </div>
+                    <div class="clearfix"></div>
+                </footer>
+                <!-- /footer content -->
+            }
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="crudControlModal" tabindex="-1" role="dialog" aria-labelledby="crudControlLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-crud-content">
+                    <div class="p-2"><center><img src="/Assets/images/loading.gif" /></center></div>
+                    <!-- // AJAXMODAL CRUDCONTROL CONTENT -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/javascript")
+    @RenderSection("scripts", required: false)
+    <script>SetUpDatepicker();</script>
+    <script>setupSelect2();</script>
+    <script src="@Url.Content("~/Assets/lib/cropper/cropper.min.js")"></script>
+ </body>
+</html>
