@@ -16,6 +16,11 @@
             --INST_PER_TEMA_2: @Gestreino.Classes.Configs.INST_PER_TEMA_2;
         }
     </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <!-- Font Awesome -->
@@ -31,13 +36,13 @@
             {
                 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
-                        <div class="navbar nav_title" style="border: 0;">
-                            <a href="@Url.Action("", "")" class="site_title"><img src="~/Assets/images/icon.jpg" class="navImg" width="40" /> Gestreino</a>
+                        <div class="navbar nav_title" style="border: 0; background: url('/Assets/images/gt.png') !important">
+                            <a href="@Url.Action("", "")" class="site_title">Gestreino</a>
                         </div>
 
                         <div class="clearfix"></div>
 
-                        <br />
+                       
                         <!-- sidebar menu -->
                         @Html.Partial("_SideBarMenu")
                         <!-- sidebar menu -->
@@ -110,15 +115,15 @@
             @RenderBody()
             @if (Request.IsAuthenticated)
             {
-                string Athlete = "Atleta: Nenhum selecionado";
-                if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
-                {
-                    Athlete = "Atleta: " + Configs.GESTREINO_AVALIDO_NOME + ",  Idade: " + Configs.GESTREINO_AVALIDO_IDADE + ",   Peso: " + Configs.GESTREINO_AVALIDO_PESO + " kg,    Altura: " + Configs.GESTREINO_AVALIDO_ALTURA + " cm";
-                }
                 <!-- footer content -->
                 <footer>
                     <div class="pull-right">
-                        <i class="fa fa-user"></i> @User.Identity.GetUserName() &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="bg-blue-sky p-1 br-1">@Athlete</span>
+                        <i class="fa fa-user"></i> @User.Identity.GetUserName() &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        @if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                        {
+                            <a target="_blank" href="@Url.Action("viewathletes", "gtmanagement", new {Id=int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO))})" class="blue-gradient-angled text-white p-1 br-1"><img src="~/Assets/images/athlete.png" width="18" /> Atleta: @Configs.GESTREINO_AVALIDO_NOME,  Idade: @Configs.GESTREINO_AVALIDO_IDADE,   Peso: @Configs.GESTREINO_AVALIDO_PESO,    Altura: @Configs.GESTREINO_AVALIDO_ALTURA cm</a>
+                        }
+                        else { <span class="blue-gradient-angled text-white p-1 br-1">Atleta: Nenhum selecionado</span> }
                     </div>
                     <div class="clearfix"></div>
                 </footer>

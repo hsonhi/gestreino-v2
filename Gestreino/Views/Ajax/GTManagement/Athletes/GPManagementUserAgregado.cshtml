@@ -126,27 +126,17 @@
                             @Html.DropDownListFor(x => Model.PaisId, Model.PaisList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm SelectCountry", required = "" })
                         </div>
                     </div>
-                    <div class="AddressHelper" style="">
-                        <div class="form-group row">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-2 btn-group">
-                                <button type="button" class="btn btn-sm btn-accent-pickled-bluewood" onclick="updateCityList('',this)"><i class="fa fa-refresh"></i></button>
-                                <button type="button" disabled="" class="newCity btn btn-sm btn-accent-pickled-bluewood" onclick="addressHelperPopUpNewCity(this)"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
                         <div class="form-group row mt-2">
                             @Html.LabelFor(m => m.CidadeId, new { @class = "col-sm-2 col-form-label text-right required" })
                             <div class="col-sm-10 ">
-                                @Html.DropDownListFor(x => Model.CidadeId, Model.CidadeList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm", required = "required" })
+                                @Html.DropDownListFor(x => Model.CidadeId, Model.CidadeList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm SelectCity", required = "required" })
                             </div>
                         </div>
                         <div class="form-group row ">
                             @Html.LabelFor(m => m.DistrictoId, new { @class = "col-sm-2 col-form-label text-right" })
                             <div class="col-sm-10">
-                                @Html.DropDownListFor(x => Model.DistrictoId, Model.DistrictoList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm" })
-                                <p class="form-text text-muted text-left">Informe a cidade ou província para selecionar o município</p>
-                            </div>
-                        </div>
+                                @Html.DropDownListFor(x => Model.DistrictoId, Model.DistrictoList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm SelectDistrict" })
+                             </div>
                     </div>
                 </div>
                 <!-- ADDRESS HELPER END -->
@@ -282,27 +272,17 @@
                             @Html.DropDownListFor(x => Model.PaisId, Model.PaisList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm SelectCountry", required = "" })
                         </div>
                     </div>
-                    <div class="AddressHelper" style="">
-                        <div class="form-group row">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-2 btn-group">
-                                <button type="button" class="btn btn-sm btn-accent-pickled-bluewood" onclick="updateCityList('',this)"><i class="fa fa-refresh"></i></button>
-                                <button type="button" disabled="" class="newCity btn btn-sm btn-accent-pickled-bluewood" onclick="addressHelperPopUpNewCity(this)"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
                         <div class="form-group row mt-2">
                             @Html.LabelFor(m => m.CidadeId, new { @class = "col-sm-2 col-form-label text-right required" })
                             <div class="col-sm-10">
-                                @Html.DropDownListFor(x => Model.CidadeId, Model.CidadeList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm", required = "required" })
+                                @Html.DropDownListFor(x => Model.CidadeId, Model.CidadeList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm SelectCity", required = "required" })
                             </div>
                         </div>
                         <div class="form-group row">
                             @Html.LabelFor(m => m.DistrictoId, new { @class = "col-sm-2 col-form-label text-right" })
                             <div class="col-sm-10">
-                                @Html.DropDownListFor(x => Model.DistrictoId, Model.DistrictoList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm" })
-                                <p class="form-text text-muted text-left">Informe a cidade ou província para selecionar o município</p>
+                                @Html.DropDownListFor(x => Model.DistrictoId, Model.DistrictoList, "Selecionar uma opção", new { @class = "select-control form-control form-control-sm SelectDistrict" })
                             </div>
-                        </div>
                     </div>
                 </div>
                 <!-- ADDRESS HELPER END -->

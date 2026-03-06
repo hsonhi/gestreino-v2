@@ -188,7 +188,7 @@ namespace Gestreino.Models
         [Display(Name = "Número máximo de tentativas de sessão")]
         public int? SEC_SENHA_TENT_BLOQUEIO { get; set; }
 
-        [Display(Name = "Tempo de espera para o desbloqueo de sessão (Minutos)")]
+        [Display(Name = "Tempo de espera para o desbloqueio de sessão (Minutos)")]
         public int? SEC_SENHA_TENT_BLOQUEIO_TEMPO { get; set; }
 
         [Display(Name = "Tempo limite de token de email (Minutos)")]
@@ -241,6 +241,7 @@ namespace Gestreino.Models
 
         [Display(Name = "Nacionalidade")]
         public int[] NacionalidadeId { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> NacionalidadeList { get; set; }
 
         //[Required(ErrorMessage = "{0} é um campo obrigatório!")]
         [EmailAddress(ErrorMessage = "{0} não é válido!")]
@@ -290,10 +291,12 @@ namespace Gestreino.Models
         [Display(Name = "Cidade")]
         public int? ENDERECO_CIDADE_ID { get; set; }
         public IEnumerable<System.Web.Mvc.SelectListItem> CIDADE_LIST { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> EndCIDADE_LIST { get; set; }
 
         [Display(Name = "Município")]
         public int? ENDERECO_MUN_ID { get; set; }
         public IEnumerable<System.Web.Mvc.SelectListItem> MUN_LIST { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> EndMUN_LIST { get; set; }
 
         [Display(Name = "Tipo")]
         public int? ENDERECO_TIPO { get; set; }
@@ -1099,7 +1102,7 @@ namespace Gestreino.Models
 
         [Display(Name = "Metabolismo de Repouso:")]
         public decimal? MetabolismoRepouso { get; set; }
-        [Display(Name = "Estimação:")]
+        [Display(Name = "Estimativa:")]
         public decimal? Estimacao { get; set; }
         [Display(Name = "% MG Desejável:")]
         public string PercMGDesejavel { get; set; }

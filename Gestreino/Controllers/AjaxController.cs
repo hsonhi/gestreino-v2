@@ -1,8 +1,11 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Gestreino.Classes;
 using Gestreino.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -483,13 +486,7 @@ namespace Gestreino.Controllers
         public ActionResult PESFamily(PES_Dados_Pessoais_Agregado MODEL, string action, int? id, int?[] bulkids)
         {
             MODEL.ID = id;
-            MODEL.PES_FAMILIARES_GRUPOS_LIST = databaseManager.PES_FAMILIARES_GRUPOS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.PES_PROFISSAO_LIST = databaseManager.PES_PROFISSOES.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.PaisList = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.CidadeList = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.DistrictoList = databaseManager.GRL_ENDERECO_MUN_DISTR.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-
-
+           
             if (action == "Editar")
             {
                 var data = databaseManager.PES_PESSOAS_FAM.Where(x => x.ID == id).ToList();
@@ -513,6 +510,13 @@ namespace Gestreino.Controllers
                 MODEL.Rua = dataEnd.First().RUA;
                 MODEL.Morada = dataEnd.First().MORADA;
             }
+
+            MODEL.PES_FAMILIARES_GRUPOS_LIST = databaseManager.PES_FAMILIARES_GRUPOS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.PES_PROFISSAO_LIST = databaseManager.PES_PROFISSOES.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.PaisList = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.CidadeList = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null && x.ENDERECO_PAIS_ID==MODEL.PaisId).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.DistrictoList = databaseManager.GRL_ENDERECO_MUN_DISTR.Where(x => x.DATA_REMOCAO == null && x.ENDERECO_CIDADE_ID == MODEL.CidadeId).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            
             int?[] ids = new int?[] { id.Value };
             if (action.Contains("Multiplos")) ids = bulkids;
             if (action.Contains("Multiplos")) action = "Remover";
@@ -597,7 +601,7 @@ namespace Gestreino.Controllers
 
             MODEL.PES_TIPO_IDENTIFICACAO_LIST = databaseManager.PES_TIPO_IDENTIFICACAO.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.PaisList = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.CidadeList = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.CidadeList = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null && x.ENDERECO_PAIS_ID==MODEL.PaisId).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
 
             int?[] ids = new int?[] { id.Value };
             if (action.Contains("Multiplos")) ids = bulkids;
@@ -1082,5 +1086,31 @@ namespace Gestreino.Controllers
             return Json(new { result = true, error = string.Empty, table = "tblInstituicoesArquivos", showToastr = true, toastrMessage = "Submetido com sucesso!" });
         }
 
+
+        //AddressHelper
+        [HttpGet]
+        public JsonResult GetCityByCountry(int? Id)
+        {
+            var data = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.ENDERECO_PAIS_ID == Id).Select(p => new
+            {
+                ID = p.ID,
+                NOME = p.NOME,
+            }).OrderBy(x=>x.NOME).ToList();
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetDistrictByCity(int? Id)
+        {
+            var data = databaseManager.GRL_ENDERECO_MUN_DISTR.Where(x => x.ENDERECO_CIDADE_ID == Id).Select(p => new
+            {
+                ID = p.ID,
+                NOME = p.NOME,
+            }).OrderBy(x => x.NOME).ToList();
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+
+        }
     }
 }
