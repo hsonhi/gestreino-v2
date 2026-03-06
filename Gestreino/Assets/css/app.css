@@ -306,7 +306,7 @@
 .nav_menu {
     float: left;
     background: var(--INST_PER_TEMA_1);
-    border-bottom: 1px solid #D9DEE4;
+    border-bottom: 1px solid #ddd;
     margin-bottom: 10px;
     width: 100%;
     position: relative;
@@ -362,7 +362,7 @@ body .container.body .right_col {
     float: left;
     background: var(--INST_PER_TEMA_2);
     border-radius: 0;
-    height: 52px;
+    height:inherit;
     padding: 0px;
 }
 
