@@ -2969,6 +2969,7 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
         </Function>
         <Function Name="SP_PES_ENT_PESSOAS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="AplicationId" Type="int" Mode="In" />
           <Parameter Name="Nome" Type="varchar" Mode="In" />
           <Parameter Name="Sexo" Type="varchar" Mode="In" />
           <Parameter Name="DataNascimento" Type="date" Mode="In" />
@@ -5376,27 +5377,6 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
             <End Role="GT_SOCIOS" EntitySet="GT_SOCIOS" />
             <End Role="GT_SOCIOS_EVOLUCAO" EntitySet="GT_SOCIOS_EVOLUCAO" />
           </AssociationSet>
-          <FunctionImport Name="SP_PES_ENT_PESSOAS" ReturnType="Collection(GESTREINO_ORM.SP_PES_ENT_PESSOAS_Result)">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
-            <Parameter Name="Nome" Mode="In" Type="String" />
-            <Parameter Name="Sexo" Mode="In" Type="String" />
-            <Parameter Name="DataNascimento" Mode="In" Type="DateTime" />
-            <Parameter Name="EstadoCivilId" Mode="In" Type="Int32" />
-            <Parameter Name="NIF" Mode="In" Type="String" />
-            <Parameter Name="ApresentacaoPessoal" Mode="In" Type="String" />
-            <Parameter Name="PaisId" Mode="In" Type="Int32" />
-            <Parameter Name="CidadeId" Mode="In" Type="Int32" />
-            <Parameter Name="MunicipioId" Mode="In" Type="Int32" />
-            <Parameter Name="Telefone" Mode="In" Type="Decimal" />
-            <Parameter Name="TelefoneAlternativo" Mode="In" Type="Decimal" />
-            <Parameter Name="Fax" Mode="In" Type="Decimal" />
-            <Parameter Name="Email" Mode="In" Type="String" />
-            <Parameter Name="CodigoPostal" Mode="In" Type="String" />
-            <Parameter Name="Url" Mode="In" Type="String" />
-            <Parameter Name="Numero" Mode="In" Type="Int32" />
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
-            <Parameter Name="Action" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="SP_GRL_ENT_TOKENS" ReturnType="Collection(GESTREINO_ORM.SP_GRL_ENT_TOKENS_Result)">
             <Parameter Name="Id" Mode="In" Type="Int32" />
             <Parameter Name="Action" Mode="In" Type="String" />
@@ -5550,6 +5530,28 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
             <End Role="INST_APLICACAO" EntitySet="INST_APLICACAO" />
             <End Role="INST_APLICACAO_ENDERECOS" EntitySet="INST_APLICACAO_ENDERECOS" />
           </AssociationSet>
+          <FunctionImport Name="SP_PES_ENT_PESSOAS" ReturnType="Collection(GESTREINO_ORM.SP_PES_ENT_PESSOAS_Result)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="AplicationId" Mode="In" Type="Int32" />
+            <Parameter Name="Nome" Mode="In" Type="String" />
+            <Parameter Name="Sexo" Mode="In" Type="String" />
+            <Parameter Name="DataNascimento" Mode="In" Type="DateTime" />
+            <Parameter Name="EstadoCivilId" Mode="In" Type="Int32" />
+            <Parameter Name="NIF" Mode="In" Type="String" />
+            <Parameter Name="ApresentacaoPessoal" Mode="In" Type="String" />
+            <Parameter Name="PaisId" Mode="In" Type="Int32" />
+            <Parameter Name="CidadeId" Mode="In" Type="Int32" />
+            <Parameter Name="MunicipioId" Mode="In" Type="Int32" />
+            <Parameter Name="Telefone" Mode="In" Type="Decimal" />
+            <Parameter Name="TelefoneAlternativo" Mode="In" Type="Decimal" />
+            <Parameter Name="Fax" Mode="In" Type="Decimal" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="CodigoPostal" Mode="In" Type="String" />
+            <Parameter Name="Url" Mode="In" Type="String" />
+            <Parameter Name="Numero" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="Action" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="SP_UTILIZADORES_LOGIN_LOGS_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -7824,38 +7826,6 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="SP_PES_ENT_PESSOAS_Result">
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="Int32" Name="UTILIZADORES_ID" Nullable="false" />
-          <Property Type="String" Name="LOGIN" Nullable="false" MaxLength="32" />
-          <Property Type="String" Name="NOME" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="NOME_PROPIO" Nullable="false" MaxLength="48" />
-          <Property Type="String" Name="APELIDO" Nullable="false" MaxLength="48" />
-          <Property Type="String" Name="SEXO" Nullable="true" MaxLength="9" />
-          <Property Type="String" Name="ESTADO_CIVIL" Nullable="true" MaxLength="64" />
-          <Property Type="Int32" Name="PES_ESTADO_CIVIL_ID" Nullable="false" />
-          <Property Type="String" Name="DATA_NASCIMENTO" Nullable="true" MaxLength="30" />
-          <Property Type="String" Name="NATURALIDADE_PAIS" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="NATURALIDADE_CIDADE" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="NATURALIDADE_MUN" Nullable="true" MaxLength="255" />
-          <Property Type="Decimal" Name="TELEFONE" Nullable="false" Precision="13" Scale="0" />
-          <Property Type="Decimal" Name="TELEFONE_ALTERNATIVO" Nullable="true" Precision="13" Scale="0" />
-          <Property Type="Decimal" Name="FAX" Nullable="true" Precision="13" Scale="0" />
-          <Property Type="String" Name="EMAIL" Nullable="true" MaxLength="64" />
-          <Property Type="String" Name="CODIGO_POSTAL" Nullable="true" MaxLength="48" />
-          <Property Type="String" Name="URL" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="APRESENTACAO_PESSOAL" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="NIF" Nullable="true" MaxLength="15" />
-          <Property Type="String" Name="GRUPO_UTILIZADORES" Nullable="true" />
-          <Property Type="String" Name="NACIONALIDADE" Nullable="true" />
-          <Property Type="String" Name="FOTOGRAFIA" Nullable="true" MaxLength="4000" />
-          <Property Type="Int32" Name="GT_SOCIO_ID" Nullable="false" />
-          <Property Type="Int32" Name="PES_NUMERO" Nullable="false" />
-          <Property Type="String" Name="INSERCAO" Nullable="true" MaxLength="32" />
-          <Property Type="String" Name="ACTUALIZACAO" Nullable="true" MaxLength="32" />
-          <Property Type="String" Name="DATA_INSERCAO" Nullable="true" MaxLength="19" />
-          <Property Type="String" Name="DATA_ACTUALIZACAO" Nullable="true" MaxLength="19" />
-        </ComplexType>
         <ComplexType Name="SP_GRL_ENT_TOKENS_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="Int32" Name="TOKEN_TIPO_ID" Nullable="false" />
@@ -8292,6 +8262,39 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SP_PES_ENT_PESSOAS_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="UTILIZADORES_ID" Nullable="false" />
+          <Property Type="String" Name="LOGIN" Nullable="false" MaxLength="32" />
+          <Property Type="Int32" Name="INST_APLICACAO_ID" Nullable="false" />
+          <Property Type="String" Name="NOME" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="NOME_PROPIO" Nullable="false" MaxLength="48" />
+          <Property Type="String" Name="APELIDO" Nullable="false" MaxLength="48" />
+          <Property Type="String" Name="SEXO" Nullable="true" MaxLength="9" />
+          <Property Type="String" Name="ESTADO_CIVIL" Nullable="true" MaxLength="64" />
+          <Property Type="Int32" Name="PES_ESTADO_CIVIL_ID" Nullable="false" />
+          <Property Type="String" Name="DATA_NASCIMENTO" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="NATURALIDADE_PAIS" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="NATURALIDADE_CIDADE" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="NATURALIDADE_MUN" Nullable="true" MaxLength="255" />
+          <Property Type="Decimal" Name="TELEFONE" Nullable="false" Precision="13" Scale="0" />
+          <Property Type="Decimal" Name="TELEFONE_ALTERNATIVO" Nullable="true" Precision="13" Scale="0" />
+          <Property Type="Decimal" Name="FAX" Nullable="true" Precision="13" Scale="0" />
+          <Property Type="String" Name="EMAIL" Nullable="true" MaxLength="64" />
+          <Property Type="String" Name="CODIGO_POSTAL" Nullable="true" MaxLength="48" />
+          <Property Type="String" Name="URL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="APRESENTACAO_PESSOAL" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="NIF" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="GRUPO_UTILIZADORES" Nullable="true" />
+          <Property Type="String" Name="NACIONALIDADE" Nullable="true" />
+          <Property Type="String" Name="FOTOGRAFIA" Nullable="true" MaxLength="4000" />
+          <Property Type="Int32" Name="GT_SOCIO_ID" Nullable="false" />
+          <Property Type="Int32" Name="PES_NUMERO" Nullable="false" />
+          <Property Type="String" Name="INSERCAO" Nullable="true" MaxLength="32" />
+          <Property Type="String" Name="ACTUALIZACAO" Nullable="true" MaxLength="32" />
+          <Property Type="String" Name="DATA_INSERCAO" Nullable="true" MaxLength="19" />
+          <Property Type="String" Name="DATA_ACTUALIZACAO" Nullable="true" MaxLength="19" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10377,42 +10380,6 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SP_PES_ENT_PESSOAS" FunctionName="GESTREINO_ORM.Store.SP_PES_ENT_PESSOAS">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="GESTREINO_ORM.SP_PES_ENT_PESSOAS_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UTILIZADORES_ID" ColumnName="UTILIZADORES_ID" />
-                <ScalarProperty Name="LOGIN" ColumnName="LOGIN" />
-                <ScalarProperty Name="NOME" ColumnName="NOME" />
-                <ScalarProperty Name="NOME_PROPIO" ColumnName="NOME_PROPIO" />
-                <ScalarProperty Name="APELIDO" ColumnName="APELIDO" />
-                <ScalarProperty Name="SEXO" ColumnName="SEXO" />
-                <ScalarProperty Name="ESTADO_CIVIL" ColumnName="ESTADO_CIVIL" />
-                <ScalarProperty Name="PES_ESTADO_CIVIL_ID" ColumnName="PES_ESTADO_CIVIL_ID" />
-                <ScalarProperty Name="DATA_NASCIMENTO" ColumnName="DATA_NASCIMENTO" />
-                <ScalarProperty Name="NATURALIDADE_PAIS" ColumnName="NATURALIDADE_PAIS" />
-                <ScalarProperty Name="NATURALIDADE_CIDADE" ColumnName="NATURALIDADE_CIDADE" />
-                <ScalarProperty Name="NATURALIDADE_MUN" ColumnName="NATURALIDADE_MUN" />
-                <ScalarProperty Name="TELEFONE" ColumnName="TELEFONE" />
-                <ScalarProperty Name="TELEFONE_ALTERNATIVO" ColumnName="TELEFONE_ALTERNATIVO" />
-                <ScalarProperty Name="FAX" ColumnName="FAX" />
-                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
-                <ScalarProperty Name="CODIGO_POSTAL" ColumnName="CODIGO_POSTAL" />
-                <ScalarProperty Name="URL" ColumnName="URL" />
-                <ScalarProperty Name="APRESENTACAO_PESSOAL" ColumnName="APRESENTACAO_PESSOAL" />
-                <ScalarProperty Name="NIF" ColumnName="NIF" />
-                <ScalarProperty Name="GRUPO_UTILIZADORES" ColumnName="GRUPO_UTILIZADORES" />
-                <ScalarProperty Name="NACIONALIDADE" ColumnName="NACIONALIDADE" />
-                <ScalarProperty Name="FOTOGRAFIA" ColumnName="FOTOGRAFIA" />
-                <ScalarProperty Name="GT_SOCIO_ID" ColumnName="GT_SOCIO_ID" />
-                <ScalarProperty Name="PES_NUMERO" ColumnName="PES_NUMERO" />
-                <ScalarProperty Name="INSERCAO" ColumnName="INSERCAO" />
-                <ScalarProperty Name="ACTUALIZACAO" ColumnName="ACTUALIZACAO" />
-                <ScalarProperty Name="DATA_INSERCAO" ColumnName="DATA_INSERCAO" />
-                <ScalarProperty Name="DATA_ACTUALIZACAO" ColumnName="DATA_ACTUALIZACAO" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_GRL_ENT_TOKENS" FunctionName="GESTREINO_ORM.Store.SP_GRL_ENT_TOKENS">
             <ResultMapping>
               <ComplexTypeMapping TypeName="GESTREINO_ORM.SP_GRL_ENT_TOKENS_Result">
@@ -10685,6 +10652,43 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_PES_ENT_PESSOAS" FunctionName="GESTREINO_ORM.Store.SP_PES_ENT_PESSOAS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GESTREINO_ORM.SP_PES_ENT_PESSOAS_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UTILIZADORES_ID" ColumnName="UTILIZADORES_ID" />
+                <ScalarProperty Name="LOGIN" ColumnName="LOGIN" />
+                <ScalarProperty Name="INST_APLICACAO_ID" ColumnName="INST_APLICACAO_ID" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="NOME_PROPIO" ColumnName="NOME_PROPIO" />
+                <ScalarProperty Name="APELIDO" ColumnName="APELIDO" />
+                <ScalarProperty Name="SEXO" ColumnName="SEXO" />
+                <ScalarProperty Name="ESTADO_CIVIL" ColumnName="ESTADO_CIVIL" />
+                <ScalarProperty Name="PES_ESTADO_CIVIL_ID" ColumnName="PES_ESTADO_CIVIL_ID" />
+                <ScalarProperty Name="DATA_NASCIMENTO" ColumnName="DATA_NASCIMENTO" />
+                <ScalarProperty Name="NATURALIDADE_PAIS" ColumnName="NATURALIDADE_PAIS" />
+                <ScalarProperty Name="NATURALIDADE_CIDADE" ColumnName="NATURALIDADE_CIDADE" />
+                <ScalarProperty Name="NATURALIDADE_MUN" ColumnName="NATURALIDADE_MUN" />
+                <ScalarProperty Name="TELEFONE" ColumnName="TELEFONE" />
+                <ScalarProperty Name="TELEFONE_ALTERNATIVO" ColumnName="TELEFONE_ALTERNATIVO" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="CODIGO_POSTAL" ColumnName="CODIGO_POSTAL" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="APRESENTACAO_PESSOAL" ColumnName="APRESENTACAO_PESSOAL" />
+                <ScalarProperty Name="NIF" ColumnName="NIF" />
+                <ScalarProperty Name="GRUPO_UTILIZADORES" ColumnName="GRUPO_UTILIZADORES" />
+                <ScalarProperty Name="NACIONALIDADE" ColumnName="NACIONALIDADE" />
+                <ScalarProperty Name="FOTOGRAFIA" ColumnName="FOTOGRAFIA" />
+                <ScalarProperty Name="GT_SOCIO_ID" ColumnName="GT_SOCIO_ID" />
+                <ScalarProperty Name="PES_NUMERO" ColumnName="PES_NUMERO" />
+                <ScalarProperty Name="INSERCAO" ColumnName="INSERCAO" />
+                <ScalarProperty Name="ACTUALIZACAO" ColumnName="ACTUALIZACAO" />
+                <ScalarProperty Name="DATA_INSERCAO" ColumnName="DATA_INSERCAO" />
+                <ScalarProperty Name="DATA_ACTUALIZACAO" ColumnName="DATA_ACTUALIZACAO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

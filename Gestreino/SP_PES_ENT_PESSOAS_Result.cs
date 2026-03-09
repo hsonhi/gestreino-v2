@@ -16,6 +16,7 @@ namespace Gestreino
         public int ID { get; set; }
         public int UTILIZADORES_ID { get; set; }
         public string LOGIN { get; set; }
+        public int INST_APLICACAO_ID { get; set; }
         public string NOME { get; set; }
         public string NOME_PROPIO { get; set; }
         public string APELIDO { get; set; }

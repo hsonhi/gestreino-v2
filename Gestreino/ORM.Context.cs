@@ -1488,87 +1488,6 @@ namespace Gestreino
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GT_ENT_TREINO_Result>("SP_GT_ENT_TREINO", idParameter, pesIDParameter, gT_TipoTreino_IDParameter, nomeParameter, gT_FaseTreino_IDParameter, pERIODIZACAOParameter, dataIniParameter, dateEndParameter, observacoesParameter, gT_Exercicio_IDParameter, gT_Series_IDParameter, gT_Repeticoes_IDParameter, gT_TempoDescanso_IDParameter, gT_Carga_IDParameter, rEPETICOES_COMPLETADASParameter, cARGA_USADAParameter, oNERMParameter, gT_DuracaoTreinoCardio_IDParameter, fCParameter, nIVELParameter, dISTANCIAParameter, ordemParameter, userInsercaoIdParameter, actionParameter);
         }
     
-        public virtual ObjectResult<SP_PES_ENT_PESSOAS_Result> SP_PES_ENT_PESSOAS(Nullable<int> iD, string nome, string sexo, Nullable<System.DateTime> dataNascimento, Nullable<int> estadoCivilId, string nIF, string apresentacaoPessoal, Nullable<int> paisId, Nullable<int> cidadeId, Nullable<int> municipioId, Nullable<decimal> telefone, Nullable<decimal> telefoneAlternativo, Nullable<decimal> fax, string email, string codigoPostal, string url, Nullable<int> numero, Nullable<int> userId, string action)
-        {
-            var iDParameter = iD.HasValue ?
-                new ObjectParameter("ID", iD) :
-                new ObjectParameter("ID", typeof(int));
-    
-            var nomeParameter = nome != null ?
-                new ObjectParameter("Nome", nome) :
-                new ObjectParameter("Nome", typeof(string));
-    
-            var sexoParameter = sexo != null ?
-                new ObjectParameter("Sexo", sexo) :
-                new ObjectParameter("Sexo", typeof(string));
-    
-            var dataNascimentoParameter = dataNascimento.HasValue ?
-                new ObjectParameter("DataNascimento", dataNascimento) :
-                new ObjectParameter("DataNascimento", typeof(System.DateTime));
-    
-            var estadoCivilIdParameter = estadoCivilId.HasValue ?
-                new ObjectParameter("EstadoCivilId", estadoCivilId) :
-                new ObjectParameter("EstadoCivilId", typeof(int));
-    
-            var nIFParameter = nIF != null ?
-                new ObjectParameter("NIF", nIF) :
-                new ObjectParameter("NIF", typeof(string));
-    
-            var apresentacaoPessoalParameter = apresentacaoPessoal != null ?
-                new ObjectParameter("ApresentacaoPessoal", apresentacaoPessoal) :
-                new ObjectParameter("ApresentacaoPessoal", typeof(string));
-    
-            var paisIdParameter = paisId.HasValue ?
-                new ObjectParameter("PaisId", paisId) :
-                new ObjectParameter("PaisId", typeof(int));
-    
-            var cidadeIdParameter = cidadeId.HasValue ?
-                new ObjectParameter("CidadeId", cidadeId) :
-                new ObjectParameter("CidadeId", typeof(int));
-    
-            var municipioIdParameter = municipioId.HasValue ?
-                new ObjectParameter("MunicipioId", municipioId) :
-                new ObjectParameter("MunicipioId", typeof(int));
-    
-            var telefoneParameter = telefone.HasValue ?
-                new ObjectParameter("Telefone", telefone) :
-                new ObjectParameter("Telefone", typeof(decimal));
-    
-            var telefoneAlternativoParameter = telefoneAlternativo.HasValue ?
-                new ObjectParameter("TelefoneAlternativo", telefoneAlternativo) :
-                new ObjectParameter("TelefoneAlternativo", typeof(decimal));
-    
-            var faxParameter = fax.HasValue ?
-                new ObjectParameter("Fax", fax) :
-                new ObjectParameter("Fax", typeof(decimal));
-    
-            var emailParameter = email != null ?
-                new ObjectParameter("Email", email) :
-                new ObjectParameter("Email", typeof(string));
-    
-            var codigoPostalParameter = codigoPostal != null ?
-                new ObjectParameter("CodigoPostal", codigoPostal) :
-                new ObjectParameter("CodigoPostal", typeof(string));
-    
-            var urlParameter = url != null ?
-                new ObjectParameter("Url", url) :
-                new ObjectParameter("Url", typeof(string));
-    
-            var numeroParameter = numero.HasValue ?
-                new ObjectParameter("Numero", numero) :
-                new ObjectParameter("Numero", typeof(int));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_PES_ENT_PESSOAS_Result>("SP_PES_ENT_PESSOAS", iDParameter, nomeParameter, sexoParameter, dataNascimentoParameter, estadoCivilIdParameter, nIFParameter, apresentacaoPessoalParameter, paisIdParameter, cidadeIdParameter, municipioIdParameter, telefoneParameter, telefoneAlternativoParameter, faxParameter, emailParameter, codigoPostalParameter, urlParameter, numeroParameter, userIdParameter, actionParameter);
-        }
-    
         public virtual ObjectResult<SP_GRL_ENT_TOKENS_Result> SP_GRL_ENT_TOKENS(Nullable<int> id, string action)
         {
             var idParameter = id.HasValue ?
@@ -1877,6 +1796,91 @@ namespace Gestreino
                 new ObjectParameter("Action", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_INST_APLICACAO_Result>("SP_INST_APLICACAO", idParameter, siglaParameter, nomeParameter, nIFParameter, telefoneParameter, telefoneAlternativoParameter, faxParameter, emailParameter, codigoPostalParameter, uRLParameter, numeroParameter, ruaParameter, moradaParameter, paisIdParameter, cidadeIdParameter, munIdParameter, userInsercaoIdParameter, actionParameter);
+        }
+    
+        public virtual ObjectResult<SP_PES_ENT_PESSOAS_Result> SP_PES_ENT_PESSOAS(Nullable<int> iD, Nullable<int> aplicationId, string nome, string sexo, Nullable<System.DateTime> dataNascimento, Nullable<int> estadoCivilId, string nIF, string apresentacaoPessoal, Nullable<int> paisId, Nullable<int> cidadeId, Nullable<int> municipioId, Nullable<decimal> telefone, Nullable<decimal> telefoneAlternativo, Nullable<decimal> fax, string email, string codigoPostal, string url, Nullable<int> numero, Nullable<int> userId, string action)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            var aplicationIdParameter = aplicationId.HasValue ?
+                new ObjectParameter("AplicationId", aplicationId) :
+                new ObjectParameter("AplicationId", typeof(int));
+    
+            var nomeParameter = nome != null ?
+                new ObjectParameter("Nome", nome) :
+                new ObjectParameter("Nome", typeof(string));
+    
+            var sexoParameter = sexo != null ?
+                new ObjectParameter("Sexo", sexo) :
+                new ObjectParameter("Sexo", typeof(string));
+    
+            var dataNascimentoParameter = dataNascimento.HasValue ?
+                new ObjectParameter("DataNascimento", dataNascimento) :
+                new ObjectParameter("DataNascimento", typeof(System.DateTime));
+    
+            var estadoCivilIdParameter = estadoCivilId.HasValue ?
+                new ObjectParameter("EstadoCivilId", estadoCivilId) :
+                new ObjectParameter("EstadoCivilId", typeof(int));
+    
+            var nIFParameter = nIF != null ?
+                new ObjectParameter("NIF", nIF) :
+                new ObjectParameter("NIF", typeof(string));
+    
+            var apresentacaoPessoalParameter = apresentacaoPessoal != null ?
+                new ObjectParameter("ApresentacaoPessoal", apresentacaoPessoal) :
+                new ObjectParameter("ApresentacaoPessoal", typeof(string));
+    
+            var paisIdParameter = paisId.HasValue ?
+                new ObjectParameter("PaisId", paisId) :
+                new ObjectParameter("PaisId", typeof(int));
+    
+            var cidadeIdParameter = cidadeId.HasValue ?
+                new ObjectParameter("CidadeId", cidadeId) :
+                new ObjectParameter("CidadeId", typeof(int));
+    
+            var municipioIdParameter = municipioId.HasValue ?
+                new ObjectParameter("MunicipioId", municipioId) :
+                new ObjectParameter("MunicipioId", typeof(int));
+    
+            var telefoneParameter = telefone.HasValue ?
+                new ObjectParameter("Telefone", telefone) :
+                new ObjectParameter("Telefone", typeof(decimal));
+    
+            var telefoneAlternativoParameter = telefoneAlternativo.HasValue ?
+                new ObjectParameter("TelefoneAlternativo", telefoneAlternativo) :
+                new ObjectParameter("TelefoneAlternativo", typeof(decimal));
+    
+            var faxParameter = fax.HasValue ?
+                new ObjectParameter("Fax", fax) :
+                new ObjectParameter("Fax", typeof(decimal));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var codigoPostalParameter = codigoPostal != null ?
+                new ObjectParameter("CodigoPostal", codigoPostal) :
+                new ObjectParameter("CodigoPostal", typeof(string));
+    
+            var urlParameter = url != null ?
+                new ObjectParameter("Url", url) :
+                new ObjectParameter("Url", typeof(string));
+    
+            var numeroParameter = numero.HasValue ?
+                new ObjectParameter("Numero", numero) :
+                new ObjectParameter("Numero", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_PES_ENT_PESSOAS_Result>("SP_PES_ENT_PESSOAS", iDParameter, aplicationIdParameter, nomeParameter, sexoParameter, dataNascimentoParameter, estadoCivilIdParameter, nIFParameter, apresentacaoPessoalParameter, paisIdParameter, cidadeIdParameter, municipioIdParameter, telefoneParameter, telefoneAlternativoParameter, faxParameter, emailParameter, codigoPostalParameter, urlParameter, numeroParameter, userIdParameter, actionParameter);
         }
     }
 }

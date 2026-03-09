@@ -5304,13 +5304,13 @@ namespace Gestreino.Controllers
         public ActionResult Settings(SettingsDef MODEL)
         {
             if (!AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) return View("Lockout");
-
-            var data = databaseManager.SP_INST_APLICACAO(Configs.INST_INSTITUICAO_ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+            var InstAplicacaoId = int.Parse(AcessControl.getLoginInfo("Sid"));
+            var data = databaseManager.SP_INST_APLICACAO(InstAplicacaoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
             
             var path = (from j1 in databaseManager.INST_APLICACAO
                                              join j2 in databaseManager.INST_APLICACAO_ARQUIVOS on j1.ID equals j2.INST_APLICACAO_ID
                                              join j3 in databaseManager.GRL_ARQUIVOS on j2.ARQUIVOS_ID equals j3.ID
-                                             where j1.ID == Configs.INST_INSTITUICAO_ID && j3.GRL_ARQUIVOS_TIPO_DOCS_ID == Configs.INST_MDL_ADM_VLRID_ARQUIVO_LOGOTIPO
+                                             where j1.ID == InstAplicacaoId && j3.GRL_ARQUIVOS_TIPO_DOCS_ID == Configs.INST_MDL_ADM_VLRID_ARQUIVO_LOGOTIPO
                                              && j2.ACTIVO==true orderby j2.ID descending
                                              select new { j3.CAMINHO_URL });
 
@@ -5328,7 +5328,7 @@ namespace Gestreino.Controllers
         {
             if (!AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) return View("Lockout");
 
-            var data = databaseManager.SP_INST_APLICACAO(Configs.INST_INSTITUICAO_ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+            var data = databaseManager.SP_INST_APLICACAO(int.Parse(AcessControl.getLoginInfo("Sid")), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
 
             MODEL.ID = data.First().ID;
             MODEL.Sigla = data.First().SIGLA;

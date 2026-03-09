@@ -719,7 +719,7 @@ namespace Gestreino.Controllers
         {
             MODEL.AthleteId = string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) 
                 ? 0 : int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO));
-            MODEL.AthleteList = databaseManager.SP_PES_ENT_PESSOAS(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.AthleteList = databaseManager.SP_PES_ENT_PESSOAS(null, int.Parse(AcessControl.getLoginInfo("Sid")), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
 
             int?[] ids = new int?[] { id.Value };
             if (action.Contains("Multiplos")) ids = bulkids;
@@ -734,7 +734,9 @@ namespace Gestreino.Controllers
             if (PesId > 0)
             {
                 var Age = 0;
-                var av1 = databaseManager.SP_PES_ENT_PESSOAS(PesId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).Select(x => new { x.NOME_PROPIO, x.APELIDO, x.DATA_NASCIMENTO,x.SEXO }).ToList();
+                var av1 = databaseManager.SP_PES_ENT_PESSOAS(PesId, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).Select(x => new { x.NOME_PROPIO, x.APELIDO, x.DATA_NASCIMENTO,x.SEXO,x.INST_APLICACAO_ID }).ToList();
+                if (av1.First().INST_APLICACAO_ID != int.Parse(AcessControl.getLoginInfo("Sid"))) return;
+
                 var av2 = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == PesId).Select(x => new { x.ALTURA, x.PESO }).ToList();
 
                 if (av1.Any())

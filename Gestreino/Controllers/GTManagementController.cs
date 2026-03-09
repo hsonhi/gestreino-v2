@@ -79,8 +79,10 @@ namespace Gestreino.Controllers
 
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
             
-            var data = databaseManager.SP_PES_ENT_PESSOAS(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
+            var data = databaseManager.SP_PES_ENT_PESSOAS(Id, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
             if (!data.Any()) return RedirectToAction("", "home");
+            if(data.First().INST_APLICACAO_ID!=int.Parse(AcessControl.getLoginInfo("Sid"))) return RedirectToAction("", "home");
+
             var dataCaract = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == Id).ToList();
             var nacionalidade = databaseManager.PES_NACIONALIDADE.Where(x => x.PES_PESSOAS_ID == Id).Select(x => x.GRL_ENDERECO_PAIS_ID).ToArray();
             var endereco = databaseManager.PES_ENDERECOS.Where(x => x.PES_PESSOAS_ID == Id).ToList();
@@ -185,8 +187,10 @@ namespace Gestreino.Controllers
             if (!AcessControl.Authorized(AcessControl.GT_ATHLETES_LIST_VIEW_SEARCH)) return View("Lockout");
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
 
-            var data = databaseManager.SP_PES_ENT_PESSOAS(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
+            var data = databaseManager.SP_PES_ENT_PESSOAS(Id, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
             if (!data.Any()) return RedirectToAction("", "home");
+            if (data.First().INST_APLICACAO_ID != int.Parse(AcessControl.getLoginInfo("Sid"))) return RedirectToAction("", "home");
+
             var dataCaract = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == Id).ToList();
             var dataEnd = databaseManager.SP_PES_ENT_PESSOAS_ENDERECO(Id, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "R").ToList();
             MODEL.ID = Id;
@@ -239,7 +243,7 @@ namespace Gestreino.Controllers
 
             // GET TABLE CONTENT
 
-            var v = (from a in databaseManager.SP_PES_ENT_PESSOAS(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList() select a);
+            var v = (from a in databaseManager.SP_PES_ENT_PESSOAS(null, int.Parse(AcessControl.getLoginInfo("Sid")), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList() select a);
             TempData["QUERYRESULT_ALL"] = v.ToList();
 
             //SEARCH RESULT SET
@@ -382,12 +386,10 @@ namespace Gestreino.Controllers
                 if (databaseManager.UTILIZADORES.Where(x => x.LOGIN == Login).Any())
                     Login = Login + "" + (databaseManager.UTILIZADORES.Count() + 1);
 
-
                 // if (databaseManager.PES_CONTACTOS.Where(x => x.EMAIL == MODEL.Email).Any())
                 //    return Json(new { result = false, error = "Endereço de email já se encontra registado, por favor verifique a seleção!" });
 
-
-                var Status = true;
+                var Status = false;
                 var PasswordField = Login;
                 //var DateIni = string.IsNullOrWhiteSpace(MODEL.DateAct) ? (DateTime?)null : DateTime.ParseExact(MODEL.DateAct, "dd-MM-yyyy", CultureInfo.InvariantCulture);
                 //var DateEnd = string.IsNullOrWhiteSpace(MODEL.DateDisact) ? (DateTime?)null : DateTime.ParseExact(MODEL.DateDisact, "dd-MM-yyyy", CultureInfo.InvariantCulture);
@@ -398,13 +400,13 @@ namespace Gestreino.Controllers
                 // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
 
                 // Create
-                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, null, null, Login, MODEL.Nome, Telephone, !string.IsNullOrEmpty(MODEL.Email) ? MODEL.Email.Trim() : null, Password, Salt, Status, null, null, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(int.Parse(AcessControl.getLoginInfo("Sid")), null, null, Login, MODEL.Nome, Telephone, !string.IsNullOrEmpty(MODEL.Email) ? MODEL.Email.Trim() : null, Password, Salt, Status, null, null, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
                 // Get PesId
                 var UserId = create.First().ID;
                 var PesId = databaseManager.PES_PESSOAS.Where(x => x.UTILIZADORES_ID == UserId).Select(x => x.ID).FirstOrDefault();
 
                 // Create User and Pes
-                var UpdatePes = databaseManager.SP_PES_ENT_PESSOAS(PesId, MODEL.Nome, MODEL.Sexo == 1 ? "M" : "F", DateofBirth, MODEL.EstadoCivil, MODEL.NIF, null, MODEL.NAT_PAIS_ID, MODEL.NAT_CIDADE_ID, MODEL.NAT_MUN_ID, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, int.Parse(User.Identity.GetUserId()), "U").ToList();
+                var UpdatePes = databaseManager.SP_PES_ENT_PESSOAS(PesId, null, MODEL.Nome, MODEL.Sexo == 1 ? "M" : "F", DateofBirth, MODEL.EstadoCivil, MODEL.NIF, null, MODEL.NAT_PAIS_ID, MODEL.NAT_CIDADE_ID, MODEL.NAT_MUN_ID, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, int.Parse(User.Identity.GetUserId()), "U").ToList();
 
                 // Create or Update Caract
                 var createCaract = databaseManager.SP_PES_ENT_PESSOAS_CARACT(null, PesId, null, Altura, Peso, MODEL.Caract_FCRepouso, MODEL.Caract_FCMaximo, MODEL.Caract_TASistolica, MODEL.Caract_TADistolica, MODEL.Caract_MassaGorda, MODEL.Caract_VO2, MODEL.Caract_DuracaoPlano, MODEL.Caract_IMC, MODEL.FCTreino1, MODEL.FCTreino2, MODEL.FCTreino3, MODEL.FCTreino4, MODEL.FCTreino5, MODEL.FCTreino6, MODEL.FCTreino7, MODEL.FCTreino8, MODEL.FCTreino9, MODEL.FCTreino10, MODEL.FR_Hipertensao, MODEL.FR_Tabaco, MODEL.FR_Hiperlipidemia, MODEL.FR_Obesidade, MODEL.FR_Diabetes, MODEL.FR_Inactividade, MODEL.FR_Heriditariedade, MODEL.FR_Examescomplementares, MODEL.FR_Outros, MODEL.OB_Actividade, MODEL.OB_Controlopeso, MODEL.OB_PrevenirIdade, MODEL.OB_TreinoDesporto, MODEL.OB_AumentarMassa, MODEL.OB_BemEstar, MODEL.OB_Tonificar, MODEL.OB_Outros, MODEL.Caract_Protocolo==null?string.Empty:MODEL.Caract_Protocolo.ToString(), int.Parse(User.Identity.GetUserId()), "C").ToList();
@@ -416,11 +418,11 @@ namespace Gestreino.Controllers
                 // Create nationality rows
                 if (MODEL.NacionalidadeId != null)
                 {
-                    var removenationality = databaseManager.SP_PES_ENT_PESSOAS(PesId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "DN").ToList();
+                    var removenationality = databaseManager.SP_PES_ENT_PESSOAS(PesId, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "DN").ToList();
 
                     foreach (int item in MODEL.NacionalidadeId)
                     {
-                        var addnationality = databaseManager.SP_PES_ENT_PESSOAS(PesId, null, null, null, null, null, null, item, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "IN").ToList();
+                        var addnationality = databaseManager.SP_PES_ENT_PESSOAS(PesId, null,null, null, null, null, null, null, item, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "IN").ToList();
                     }
                 }
 
@@ -489,7 +491,7 @@ namespace Gestreino.Controllers
                 var Evolucao = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == MODEL.ID).Select(x => new {x.PESO,x.ALTURA,x.TADISTOLICA,x.TASISTOLICA}).ToList();
 
                 // Create User and Pes
-                var UpdatePes = databaseManager.SP_PES_ENT_PESSOAS(MODEL.ID, MODEL.Nome, MODEL.Sexo == 1 ? "M" : "F", DateofBirth, MODEL.EstadoCivil, MODEL.NIF, null, MODEL.NAT_PAIS_ID, MODEL.NAT_CIDADE_ID, MODEL.NAT_MUN_ID, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, int.Parse(User.Identity.GetUserId()), "U").ToList();
+                var UpdatePes = databaseManager.SP_PES_ENT_PESSOAS(MODEL.ID, null, MODEL.Nome, MODEL.Sexo == 1 ? "M" : "F", DateofBirth, MODEL.EstadoCivil, MODEL.NIF, null, MODEL.NAT_PAIS_ID, MODEL.NAT_CIDADE_ID, MODEL.NAT_MUN_ID, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, int.Parse(User.Identity.GetUserId()), "U").ToList();
 
                 // Create or Update Caract
                 var updateCaract = databaseManager.SP_PES_ENT_PESSOAS_CARACT(null, MODEL.ID, null, Altura, Peso, MODEL.Caract_FCRepouso, MODEL.Caract_FCMaximo, MODEL.Caract_TASistolica, MODEL.Caract_TADistolica, MODEL.Caract_MassaGorda, MODEL.Caract_VO2, MODEL.Caract_DuracaoPlano, MODEL.Caract_IMC, MODEL.FCTreino1, MODEL.FCTreino2, MODEL.FCTreino3, MODEL.FCTreino4, MODEL.FCTreino5, MODEL.FCTreino6, MODEL.FCTreino7, MODEL.FCTreino8, MODEL.FCTreino9, MODEL.FCTreino10, MODEL.FR_Hipertensao, MODEL.FR_Tabaco, MODEL.FR_Hiperlipidemia, MODEL.FR_Obesidade, MODEL.FR_Diabetes, MODEL.FR_Inactividade, MODEL.FR_Heriditariedade, MODEL.FR_Examescomplementares, MODEL.FR_Outros, MODEL.OB_Actividade, MODEL.OB_Controlopeso, MODEL.OB_PrevenirIdade, MODEL.OB_TreinoDesporto, MODEL.OB_AumentarMassa, MODEL.OB_BemEstar, MODEL.OB_Tonificar, MODEL.OB_Outros, MODEL.Caract_Protocolo == null ? string.Empty : MODEL.Caract_Protocolo.ToString(), int.Parse(User.Identity.GetUserId()), "C").ToList();
@@ -501,11 +503,11 @@ namespace Gestreino.Controllers
                 // Create nationality rows
                 if (MODEL.NacionalidadeId != null)
                 {
-                    var removenationality = databaseManager.SP_PES_ENT_PESSOAS(MODEL.ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "DN").ToList();
+                    var removenationality = databaseManager.SP_PES_ENT_PESSOAS(MODEL.ID, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "DN").ToList();
 
                     foreach (int item in MODEL.NacionalidadeId)
                     {
-                        var addnationality = databaseManager.SP_PES_ENT_PESSOAS(MODEL.ID, null, null, null, null, null, null, item, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "IN").ToList();
+                        var addnationality = databaseManager.SP_PES_ENT_PESSOAS(MODEL.ID, null,null, null, null, null, null, null, item, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "IN").ToList();
                     }
                 }
 
@@ -549,10 +551,12 @@ namespace Gestreino.Controllers
         public ActionResult ProfilePhoto(int? Id, Athlete MODEL)
         {
             if (!AcessControl.Authorized(AcessControl.GT_ATHLETES_ALTER_IMG)) return View("Lockout");
-            if (Id == null || Id <= 0) { return RedirectToAction("users", "gpmanagement"); }
-            var item = databaseManager.SP_PES_ENT_PESSOAS(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
+            if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
+            var item = databaseManager.SP_PES_ENT_PESSOAS(Id, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
             ViewBag.item = item;
-            if (item.Count == 0) return RedirectToAction("users", "gpmanagement");
+            if (item.Count == 0) return RedirectToAction("", "home");
+            if (item.First().INST_APLICACAO_ID != int.Parse(AcessControl.getLoginInfo("Sid"))) return RedirectToAction("", "home");
+
             MODEL.UserID = item.FirstOrDefault().UTILIZADORES_ID;
             MODEL.ID = item.FirstOrDefault().ID;
 
