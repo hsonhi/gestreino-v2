@@ -25,6 +25,7 @@ namespace Gestreino
         }
     
         public int ID { get; set; }
+        public Nullable<int> INST_APLICACAO_ID { get; set; }
         public string LOGIN { get; set; }
         public string SENHA_PASSWORD { get; set; }
         public string SALT { get; set; }
@@ -39,6 +40,7 @@ namespace Gestreino
         public Nullable<System.DateTime> DATA_ACTUALIZACAO { get; set; }
         public Nullable<System.DateTime> DATA_REMOCAO { get; set; }
     
+        public virtual INST_APLICACAO INST_APLICACAO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PES_PESSOAS> PES_PESSOAS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

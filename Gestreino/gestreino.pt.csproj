@@ -778,6 +778,7 @@
     <Content Include="Assets\images\loading.gif" />
     <Content Include="Assets\images\login.jpeg" />
     <Content Include="Assets\images\new.png" />
+    <Content Include="Assets\images\pencil.png" />
     <Content Include="Assets\images\printer.png" />
     <Content Include="Assets\images\save.png" />
     <Content Include="Assets\images\search.png" />
@@ -988,6 +989,10 @@
     <Content Include="Views\Help\SobreGestreino.chm" />
     <Content Include="Views\Help\SobreGestreino.hhp" />
     <Content Include="Views\Help\GESTREINO.pdf" />
+    <Content Include="Views\Administration\Institutions\Index.cshtml" />
+    <Content Include="Views\Administration\Institutions\ViewInstitutions.cshtml" />
+    <Content Include="Views\Administration\Institutions\NewInstitution.cshtml" />
+    <Content Include="Views\Administration\Institutions\UpdateInstitution.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

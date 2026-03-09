@@ -61,25 +61,26 @@ namespace Gestreino.Classes
         {
             if (string.IsNullOrEmpty(Configs.INST_INSTITUICAO_SIGLA))
             {
-                var configvalues = databaseManager.GRL_DEFINICOES.Join(databaseManager.INST_APLICACAO,x => x.INST_APLICACAO_ID, y => y.ID,(x, y) => new { x, y }).Where(y => y.y.ID == INST_INSTITUICAO_ID).ToList();
+                var configvalues = databaseManager.GRL_DEFINICOES.FirstOrDefault();
+                                   //databaseManager.GRL_DEFINICOES.Join(databaseManager.INST_APLICACAO,x => x.INST_APLICACAO_ID, y => y.ID,(x, y) => new { x, y }).Where(y => y.y.ID == INST_INSTITUICAO_ID).ToList();
                 
-                INST_INSTITUICAO_SIGLA = configvalues[0].y.SIGLA;
-                INST_INSTITUICAO_NOME = configvalues[0].y.NOME;
-                INST_PER_TEMA_1 = configvalues[0].x.INST_PER_TEMA_1;
-                INST_PER_TEMA_1_SIDEBAR = configvalues[0].x.INST_PER_TEMA_1_SIDEBAR;
-                INST_PER_TEMA_2 = configvalues[0].x.INST_PER_TEMA_2;
-                INST_PER_LOGOTIPO_WIDTH = configvalues[0].x.INST_PER_LOGOTIPO_WIDTH;
-                INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS = configvalues[0].x.INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS;
-                INST_MDL_GPAG_NOTA_DECIMAL = configvalues[0].x.INST_MDL_GPAG_NOTA_DECIMAL;
-                NET_STMP_HOST = configvalues[0].x.NET_STMP_HOST;
-                NET_STMP_PORT = configvalues[0].x.NET_STMP_PORT;
-                NET_SMTP_USERNAME = configvalues[0].x.NET_SMTP_USERNAME;
-                NET_SMTP_SENHA = configvalues[0].x.NET_SMTP_SENHA;
-                NET_STMP_FROM = configvalues[0].x.NET_SMTP_FROM;
-                SEC_SENHA_TENT_BLOQUEIO = configvalues[0].x.SEC_SENHA_TENT_BLOQUEIO;
-                SEC_SENHA_TENT_BLOQUEIO_TEMPO = configvalues[0].x.SEC_SENHA_TENT_BLOQUEIO_TEMPO;
-                SEC_SENHA_RECU_LIMITE_EMAIL = configvalues[0].x.SEC_SENHA_RECU_LIMITE_EMAIL;
-                SEC_SESSAO_TIMEOUT_TEMPO = configvalues[0].x.SEC_SESSAO_TIMEOUT_TEMPO;
+                //INST_INSTITUICAO_SIGLA = configvalues[0].y.SIGLA;
+                //INST_INSTITUICAO_NOME = configvalues[0].y.NOME;
+                INST_PER_TEMA_1 = configvalues.INST_PER_TEMA_1;
+                INST_PER_TEMA_1_SIDEBAR = configvalues.INST_PER_TEMA_1_SIDEBAR;
+                INST_PER_TEMA_2 = configvalues.INST_PER_TEMA_2;
+                INST_PER_LOGOTIPO_WIDTH = configvalues.INST_PER_LOGOTIPO_WIDTH;
+                INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS = configvalues.INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS;
+                INST_MDL_GPAG_NOTA_DECIMAL = configvalues.INST_MDL_GPAG_NOTA_DECIMAL;
+                NET_STMP_HOST = configvalues.NET_STMP_HOST;
+                NET_STMP_PORT = configvalues.NET_STMP_PORT;
+                NET_SMTP_USERNAME = configvalues.NET_SMTP_USERNAME;
+                NET_SMTP_SENHA = configvalues.NET_SMTP_SENHA;
+                NET_STMP_FROM = configvalues.NET_SMTP_FROM;
+                SEC_SENHA_TENT_BLOQUEIO = configvalues.SEC_SENHA_TENT_BLOQUEIO;
+                SEC_SENHA_TENT_BLOQUEIO_TEMPO = configvalues.SEC_SENHA_TENT_BLOQUEIO_TEMPO;
+                SEC_SENHA_RECU_LIMITE_EMAIL = configvalues.SEC_SENHA_RECU_LIMITE_EMAIL;
+                SEC_SESSAO_TIMEOUT_TEMPO = configvalues.SEC_SESSAO_TIMEOUT_TEMPO;
                 
             }
         }

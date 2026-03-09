@@ -50,9 +50,12 @@
                                 <li>
                                     <i class="fa fa-info fa-fw user-profile-icon"></i> @ViewBag.data[0].NOME (@ViewBag.data[0].SIGLA)
                                 </li>
-                                <li>
-                                    <i class="fa fa-dollar fa-fw user-profile-icon"></i> @ViewBag.data[0].NIF
-                                </li>
+                                @if (!string.IsNullOrEmpty(ViewBag.data[0].NIF))
+                                {
+                                    <li>
+                                        <i class="fa fa-dollar fa-fw user-profile-icon"></i> @ViewBag.data[0].NIF
+                                    </li>
+                                }
                                 <li>
                                     <i class="fa fa-phone fa-fw user-profile-icon"></i> @ViewBag.data[0].TELEFONE  @ViewBag.data[0].TELEFONE_ALTERNATIVO
                                 </li>
@@ -60,12 +63,15 @@
                                     <i class="fa fa-envelope fa-fw user-profile-icon"></i>
                                     @ViewBag.data[0].EMAIL
                                 </li>
-                                <li class="m-top-xs">
-                                    <i class="fa fa-globe fa-fw user-profile-icon"></i>
-                                    @ViewBag.data[0].URL
-                                </li>
+                                @if (!string.IsNullOrEmpty(ViewBag.data[0].URL))
+                                {
+                                    <li class="m-top-xs">
+                                        <i class="fa fa-globe fa-fw user-profile-icon"></i>
+                                        @ViewBag.data[0].URL
+                                    </li>
+                                }
                                 <li>
-                                    <i class="fa fa-location-arrow fa-fw user-profile-icon"></i>   @ViewBag.data[0].NUMERO  @ViewBag.data[0].RUA  @ViewBag.data[0].MORADA  @ViewBag.data[0].MUN_NOME @ViewBag.data[0].CIDADE_NOME @ViewBag.data[0].PAIS_NOME
+                                    <i class="fa fa-map-location-dot fa-fw user-profile-icon"></i>   @ViewBag.data[0].NUMERO  @ViewBag.data[0].RUA  @ViewBag.data[0].MORADA  @ViewBag.data[0].MUN_NOME @ViewBag.data[0].CIDADE_NOME @ViewBag.data[0].PAIS_NOME
                                 </li>
                             </ul>
                         </div>

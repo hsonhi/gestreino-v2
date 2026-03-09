@@ -34,7 +34,6 @@ namespace Gestreino
         public Nullable<System.DateTime> DATA_ACTUALIZACAO { get; set; }
         public Nullable<System.DateTime> DATA_REMOCAO { get; set; }
     
-        public virtual GT_FaseTreino GT_FaseTreino { get; set; }
         public virtual GT_TipoTreino GT_TipoTreino { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GT_TreinosPessoa> GT_TreinosPessoa { get; set; }
@@ -42,5 +41,6 @@ namespace Gestreino
         public virtual ICollection<GT_ExercicioTreino> GT_ExercicioTreino { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GT_ExercicioTreinoCardio> GT_ExercicioTreinoCardio { get; set; }
+        public virtual GT_FaseTreino GT_FaseTreino { get; set; }
     }
 }

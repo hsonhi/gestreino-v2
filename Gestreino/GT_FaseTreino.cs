@@ -21,6 +21,7 @@ namespace Gestreino
         }
     
         public int ID { get; set; }
+        public int INST_APLICACAO_ID { get; set; }
         public string SIGLA { get; set; }
         public int GT_Series_ID { get; set; }
         public int GT_Repeticoes_ID { get; set; }
@@ -34,6 +35,7 @@ namespace Gestreino
         public Nullable<System.DateTime> DATA_REMOCAO { get; set; }
     
         public virtual GT_Carga GT_Carga { get; set; }
+        public virtual INST_APLICACAO INST_APLICACAO { get; set; }
         public virtual GT_Repeticoes GT_Repeticoes { get; set; }
         public virtual GT_Series GT_Series { get; set; }
         public virtual GT_TempoDescanso GT_TempoDescanso { get; set; }

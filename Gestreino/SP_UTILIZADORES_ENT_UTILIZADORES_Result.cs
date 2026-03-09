@@ -14,6 +14,7 @@ namespace Gestreino
     public partial class SP_UTILIZADORES_ENT_UTILIZADORES_Result
     {
         public int ID { get; set; }
+        public Nullable<int> INST_APLICACAO_ID { get; set; }
         public string LOGIN { get; set; }
         public string ACTIVO { get; set; }
         public string DATA_ACT { get; set; }
@@ -26,8 +27,8 @@ namespace Gestreino
         public string FOTOGRAFIA { get; set; }
         public decimal TELEFONE { get; set; }
         public string EMAIL { get; set; }
-        public int TOTALGROUPS { get; set; }
-        public int TOTALPERFIS { get; set; }
+        public Nullable<int> TOTALGROUPS { get; set; }
+        public Nullable<int> TOTALPERFIS { get; set; }
         public string ULTIMA_SESSAO { get; set; }
         public string INSERCAO { get; set; }
         public string ACTUALIZACAO { get; set; }

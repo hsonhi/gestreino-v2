@@ -1,0 +1,75 @@
+﻿@model Gestreino.Models.SettingsInst
+@using Gestreino.Classes
+@{
+    ViewBag.Title = "Instituições";
+}
+<div class="right_col" role="main">
+            <div class="card mb-32pt">
+                <div class="card-header">
+                    <div class="form-inline">
+                        <label class="" for="length_change">Mostrar</label>
+                        <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="InstitutionTable">
+                            <option value='10'>10</option>
+                            <option value='25'>25</option>
+                            <option value='50'>50</option>
+                            <option value='100'>100</option>
+                            <option value='500'>500</option>
+                            <option value='1000'>1000</option>
+                            <option value='2000'>2000</option>
+                            <option value='5000'>5000</option>
+                            <option value='10000'>10000</option>
+                        </select>
+                        <label class="" for="length_change">registos</label>
+                        <div class="btn-group">
+                            <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="InstitutionTable"><i class="fa fa-check-square"></i></button>
+                            <button title="Pesquisar" class="btnSearch btn btn-default" data-id="InstitutionTable"><i class="fa fa-search"></i></button>
+                            <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="InstitutionTable"><i class="fa fa-eraser"></i></button>
+                            <a title="Adicionar instituição" href="@Url.Action("newinstitution", "administration")" class="open-modal-crud btn btn-default"><i class="fa fa-plus-circle"></i></a>
+                            <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUser", applyFilter = "true" })" target="_blank" data-id="InstitutionTable"><i class="fa fa-filter"></i></a>
+                            <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUser", applyFilter = "false" })" target="_blank" data-id="InstitutionTable"><i class="fa fa-file-excel"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="InstitutionTable" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" id="Sigla" class="form-control form-control-sm" /></td>
+                                <td><input type="text" id="Nome" class="form-control form-control-sm" /></td>
+                                <td><input type="text" id="Telefone" class="form-control form-control-sm" /></td>
+                                <td><input type="text" id="Email" class="form-control form-control-sm" /></td>
+                                <td><input type="text" id="Insercao" class="form-control form-control-sm" /></td>
+                                <td><input type="text" id="DataInsercao" class="form-control form-control-sm datepicker" /></td>
+                                <td><input type="text" id="Actualizacao" class="form-control form-control-sm" /></td>
+                                <td><input type="text" id="DataActualizacao" class="form-control form-control-sm datepicker" /></td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th data-name="Sigla">Sigla</th>
+                                <th data-name="Nome">Nome</th>
+                                <th data-name="Telefone">Telefone</th>
+                                <th data-name="Email">Email</th>
+                                <th data-name="Insercao">Inserção</th>
+                                <th data-name="DataInsercao">Data Inserção</th>
+                                <th data-name="Actualizacao">Actualização</th>
+                                <th data-name="DataActualizacao">Data Actualização</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="card-footer p-8pt">
+                    <span class="paginateInfoInstitution paginateInfo mr-12pt" style="float:right"></span>
+                    <div id="paginateInstitution" class="pagination justify-content-start pagination-xsm m-0"></div>
+                </div>
+            </div>
+            <h2>&nbsp;</h2>
+            <h2>&nbsp;</h2>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function (event) {
+                handleDataInstitution();
+            });
+        </script>

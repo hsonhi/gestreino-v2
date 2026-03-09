@@ -32,10 +32,245 @@ namespace Gestreino.Controllers
         int _MenuLeftBarLink_Parameters = 104;
         int _MenuLeftBarLink_Settings = 105;
         int _MenuLeftBarLink_Tokens = 106;
+        int _MenuLeftBarLink_Institution = 107;
         public ActionResult Index()
         {
             return View();
         }
+
+        //Institutions
+        public ActionResult Institutions()
+        {
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH)) return View("Lockout");
+            ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Institution;
+            return View("Institutions/Index");
+        }
+        [HttpGet]
+        public ActionResult ViewInstitutions(int? Id)
+        {
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
+            var data = databaseManager.SP_INST_APLICACAO(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+
+            if (!data.Any()) { return RedirectToAction("", "home"); }
+            var path = (from j1 in databaseManager.INST_APLICACAO
+                        join j2 in databaseManager.INST_APLICACAO_ARQUIVOS on j1.ID equals j2.INST_APLICACAO_ID
+                        join j3 in databaseManager.GRL_ARQUIVOS on j2.ARQUIVOS_ID equals j3.ID
+                        where j1.ID == Id && j3.GRL_ARQUIVOS_TIPO_DOCS_ID == Configs.INST_MDL_ADM_VLRID_ARQUIVO_LOGOTIPO
+                        && j2.ACTIVO == true
+                        orderby j2.ID descending
+                        select new { j3.CAMINHO_URL });
+
+            Configs.INST_INSTITUICAO_LOGO = path.Any() ? path.FirstOrDefault().CAMINHO_URL : string.Empty;
+            ViewBag.imgSrc = (string.IsNullOrEmpty(Configs.INST_INSTITUICAO_LOGO)) ? "/Assets/images/user-avatar.jpg" : "/" + Configs.INST_INSTITUICAO_LOGO;
+            ViewBag.data = data;
+            ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Institution;
+            return View("Institutions/ViewInstitutions");
+        }
+        [HttpPost]
+        public ActionResult GetInstitution()
+        {
+            //UI DATATABLE PAGINATION BUTTONS
+            var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            var start = Request.Form.GetValues("start").FirstOrDefault();
+            var length = Request.Form.GetValues("length").FirstOrDefault();
+
+            //UI DATATABLE COLUMN ORDERING
+            var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+            var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+
+            //UI DATATABLE SEARCH INPUTS
+            var Sigla = Request.Form.GetValues("columns[0][search][value]").FirstOrDefault();
+            var Nome = Request.Form.GetValues("columns[1][search][value]").FirstOrDefault();
+            var Telefone = Request.Form.GetValues("columns[2][search][value]").FirstOrDefault();
+            var Email = Request.Form.GetValues("columns[3][search][value]").FirstOrDefault();
+            var Insercao = Request.Form.GetValues("columns[4][search][value]").FirstOrDefault();
+            var DataInsercao = Request.Form.GetValues("columns[5][search][value]").FirstOrDefault();
+            var Actualizacao = Request.Form.GetValues("columns[6][search][value]").FirstOrDefault();
+            var DataActualizacao = Request.Form.GetValues("columns[7][search][value]").FirstOrDefault();
+
+            //DECLARE PAGINATION VARIABLES
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt32(start) : 0;
+            int totalRecords = 0;
+
+            var v = (from a in databaseManager.SP_INST_APLICACAO(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
+            TempData["QUERYRESULT_ALL"] = v.ToList();
+
+            //SEARCH RESULT SET
+            if (!string.IsNullOrEmpty(Sigla)) v = v.Where(a => a.SIGLA != null && a.SIGLA.ToUpper().Contains(Sigla.ToUpper()));
+            if (!string.IsNullOrEmpty(Nome)) v = v.Where(a => a.NOME != null && a.NOME.ToUpper().Contains(Nome.ToUpper()));
+            if (!string.IsNullOrEmpty(Telefone)) v = v.Where(a => a.TELEFONE != null && a.TELEFONE.ToString().Contains(Telefone.ToUpper()));
+            if (!string.IsNullOrEmpty(Email)) v = v.Where(a => a.EMAIL != null && a.EMAIL.ToUpper().Contains(Email.ToUpper()));
+            if (!string.IsNullOrEmpty(Insercao)) v = v.Where(a => a.INSERCAO != null && a.INSERCAO.ToUpper().Contains(Insercao.ToUpper()));
+            if (!string.IsNullOrEmpty(DataInsercao)) v = v.Where(a => a.DATA_INSERCAO != null && a.DATA_INSERCAO.ToUpper().Contains(DataInsercao.Replace("-", "/").ToUpper())); // Simply replace no need for DateTime Parse
+            if (!string.IsNullOrEmpty(Actualizacao)) v = v.Where(a => a.ACTUALIZACAO != null && a.ACTUALIZACAO.ToUpper().Contains(Actualizacao.ToUpper()));
+            if (!string.IsNullOrEmpty(DataActualizacao)) v = v.Where(a => a.DATA_ACTUALIZACAO != null && a.DATA_ACTUALIZACAO.ToUpper().Contains(DataActualizacao.Replace("-", "/").ToUpper())); // Simply replace no need for DateTime Parse
+
+
+            //ORDER RESULT SET
+            if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
+            {
+                if (sortColumnDir == "asc")
+                {
+                    switch (sortColumn)
+                    {
+                        case "SIGLA": v = v.OrderBy(s => s.SIGLA); break;
+                        case "NOME": v = v.OrderBy(s => s.NOME); break;
+                        case "TELEFONE": v = v.OrderBy(s => s.NOME); break;
+                        case "EMAIL": v = v.OrderBy(s => s.NOME); break;
+                        case "INSERCAO": v = v.OrderBy(s => s.INSERCAO); break;
+                        case "DATAINSERCAO": v = v.OrderBy(s => s.DATA_INSERCAO); break;
+                        case "ACTUALIZACAO": v = v.OrderBy(s => s.ACTUALIZACAO); break;
+                        case "DATAACTUALIZACAO": v = v.OrderBy(s => s.DATA_ACTUALIZACAO); break;
+                    }
+                }
+                else
+                {
+                    switch (sortColumn)
+                    {
+                        case "SIGLA": v = v.OrderByDescending(s => s.SIGLA); break;
+                        case "NOME": v = v.OrderByDescending(s => s.NOME); break;
+                        case "TELEFONE": v = v.OrderByDescending(s => s.NOME); break;
+                        case "EMAIL": v = v.OrderByDescending(s => s.NOME); break;
+                        case "INSERCAO": v = v.OrderByDescending(s => s.INSERCAO); break;
+                        case "DATAINSERCAO": v = v.OrderByDescending(s => s.DATA_INSERCAO); break;
+                        case "ACTUALIZACAO": v = v.OrderByDescending(s => s.ACTUALIZACAO); break;
+                        case "DATAACTUALIZACAO": v = v.OrderByDescending(s => s.DATA_ACTUALIZACAO); break;
+                    }
+                }
+            }
+
+            totalRecords = v.Count();
+            var data = v.Skip(skip).Take(pageSize).ToList();
+            TempData["QUERYRESULT"] = v.ToList();
+
+            //RETURN RESPONSE JSON PARSE
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = totalRecords,
+                recordsTotal = totalRecords,
+                data = data.Select(x => new
+                {
+                    Id = x.ID,
+                    SIGLA = x.SIGLA,
+                    NOME = x.NOME,
+                    TELEFONE = x.TELEFONE,
+                    EMAIL = x.EMAIL,
+                    INSERCAO = x.INSERCAO,
+                    DATAINSERCAO = x.DATA_INSERCAO,
+                    ACTUALIZACAO = x.ACTUALIZACAO,
+                    DATAACTUALIZACAO = x.DATA_ACTUALIZACAO
+                }),
+                sortColumn = sortColumn,
+                sortColumnDir = sortColumnDir,
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult NewInstitution(SettingsInst MODEL)
+        {
+            //if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT)) return View("Lockout");
+
+            MODEL.PAIS_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.CIDADE_LIST = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null && x.ID==0).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.MUN_LIST = databaseManager.GRL_ENDERECO_MUN_DISTR.Where(x => x.DATA_REMOCAO == null && x.ID == 0).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Institution;
+            return View("Institutions/NewInstitution", MODEL);
+        }
+        [HttpGet]
+        public ActionResult UpdateInstitution(int? Id,SettingsInst MODEL)
+        {
+            //if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT)) return View("Lockout");
+            if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
+            var data = databaseManager.SP_INST_APLICACAO(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+            if (!data.Any()) { return RedirectToAction("", "home"); }
+
+            MODEL.ID = data.First().ID;
+            MODEL.Sigla = data.First().SIGLA;
+            MODEL.Nome = data.First().NOME;
+            MODEL.NIF = data.First().NIF;
+
+            MODEL.Telephone = (!string.IsNullOrEmpty(data.First().TELEFONE.ToString())) ? data.First().TELEFONE.ToString() : null;
+            MODEL.TelephoneAlternativo = (!string.IsNullOrEmpty(data.First().TELEFONE_ALTERNATIVO.ToString())) ? data.First().TELEFONE_ALTERNATIVO.ToString() : null;
+            MODEL.Fax = (!string.IsNullOrEmpty(data.First().FAX.ToString())) ? data.First().FAX.ToString() : null;
+            MODEL.Email = data.First().EMAIL;
+            MODEL.CodigoPostal = data.First().CODIGO_POSTAL;
+            MODEL.URL = data.First().URL;
+            MODEL.Numero = data.First().NUMERO;
+            MODEL.Rua = data.First().RUA;
+            MODEL.Morada = data.First().MORADA;
+            MODEL.ENDERECO_PAIS_ID = data.First().ENDERECO_PAIS_ID;
+            MODEL.ENDERECO_CIDADE_ID = data.First().GRL_ENDERECO_CIDADE_ID;
+            MODEL.ENDERECO_MUN_ID = data.First().ENDERECO_MUN_DISTR_ID;
+            MODEL.PAIS_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.CIDADE_LIST = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null && x.ENDERECO_PAIS_ID==MODEL.ENDERECO_PAIS_ID).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.MUN_LIST = databaseManager.GRL_ENDERECO_MUN_DISTR.Where(x => x.DATA_REMOCAO == null && x.ENDERECO_CIDADE_ID==MODEL.ENDERECO_CIDADE_ID).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Settings;
+            return View("Institutions/UpdateInstitutions", MODEL);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewInstitution(SettingsInst MODEL, string returnUrl)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                Decimal Telephone = (!string.IsNullOrEmpty(MODEL.Telephone)) ? Convert.ToDecimal(MODEL.Telephone) : 0;
+                Decimal TelephoneAlternativo = (!string.IsNullOrEmpty(MODEL.TelephoneAlternativo)) ? Convert.ToDecimal(MODEL.TelephoneAlternativo) : 0;
+                Decimal Fax = (!string.IsNullOrEmpty(MODEL.Fax)) ? Convert.ToDecimal(MODEL.Fax) : 0;
+
+                // New
+                var create = databaseManager.SP_INST_APLICACAO(null, MODEL.Sigla, MODEL.Nome, MODEL.NIF, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, MODEL.Rua, MODEL.Morada, MODEL.ENDERECO_PAIS_ID, MODEL.ENDERECO_CIDADE_ID, MODEL.ENDERECO_MUN_ID, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                var Id = create.First().ID;
+                ModelState.Clear();
+
+                returnUrl = "/institutions/viewInstitutions/" + Id;
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, url = returnUrl, showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateInstitution(SettingsInst MODEL, string returnUrl)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                Decimal Telephone = (!string.IsNullOrEmpty(MODEL.Telephone)) ? Convert.ToDecimal(MODEL.Telephone) : 0;
+                Decimal TelephoneAlternativo = (!string.IsNullOrEmpty(MODEL.TelephoneAlternativo)) ? Convert.ToDecimal(MODEL.TelephoneAlternativo) : 0;
+                Decimal Fax = (!string.IsNullOrEmpty(MODEL.Fax)) ? Convert.ToDecimal(MODEL.Fax) : 0;
+
+                // Update
+                var update = databaseManager.SP_INST_APLICACAO(MODEL.ID, MODEL.Sigla, MODEL.Nome, MODEL.NIF, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, MODEL.Rua, MODEL.Morada, MODEL.ENDERECO_PAIS_ID, MODEL.ENDERECO_CIDADE_ID, MODEL.ENDERECO_MUN_ID, int.Parse(User.Identity.GetUserId()), "U").ToList();
+                ModelState.Clear();
+
+                returnUrl = "/institutions/viewInstitutions/"+MODEL.ID;
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, url = returnUrl, showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+
 
         //Users
         public ActionResult Users()
@@ -214,6 +449,9 @@ namespace Gestreino.Controllers
                 var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, null, null, MODEL.Login, MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, Status, DateIni, DateEnd, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
                 var UserId = create.First().ID;
                 //Add to group
+               // var groupId = ;
+                //if (AcessControl.isGROUP_INST())
+               //     MODEL.INST_APLICACAO_ID = AcessControl.GROUP_INST;
                 databaseManager.SP_UTILIZADORES_ENT_GRUPOS_UTILIZADORES(null, AcessControl.getUserGroup().Value, UserId, int.Parse(User.Identity.GetUserId()), "C").ToList();
 
 
@@ -225,7 +463,7 @@ namespace Gestreino.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { result = false, error = ex.InnerException.Message });
+                return Json(new { result = false, error = ex.Message /*ex.InnerException.Message*/});
             }
             return Json(new { result = true, error = string.Empty, table = "UserTable", showToastr = true, toastrMessage = "Submetido com sucesso!" });
         }
@@ -1864,7 +2102,7 @@ namespace Gestreino.Controllers
         {
             if (AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_GT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_PES)) { }else return View("Lockout");
 
-            var setts = databaseManager.GRL_DEFINICOES.Where(x => x.INST_APLICACAO_ID == Configs.INST_INSTITUICAO_ID).ToList();
+            var setts = databaseManager.GRL_DEFINICOES.ToList();
 
             MODEL.MOEDA_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME + " - " + x.CODIGO.ToString() });
             MODEL.INST_PER_TEMA_1 = setts.First().INST_PER_TEMA_1;
@@ -5027,7 +5265,7 @@ namespace Gestreino.Controllers
            return View("Lockout");
 
             var data = databaseManager.SP_INST_APLICACAO(Configs.INST_INSTITUICAO_ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
-            var setts = databaseManager.GRL_DEFINICOES.Where(x => x.INST_APLICACAO_ID == Configs.INST_INSTITUICAO_ID).ToList();
+            //var setts = databaseManager.GRL_DEFINICOES.Where(x => x.INST_APLICACAO_ID == Configs.INST_INSTITUICAO_ID).ToList();
 
             var path = (from j1 in databaseManager.INST_APLICACAO
                                              join j2 in databaseManager.INST_APLICACAO_ARQUIVOS on j1.ID equals j2.INST_APLICACAO_ID
@@ -5041,7 +5279,7 @@ namespace Gestreino.Controllers
 
 
             MODEL.MOEDA_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME + " - " + x.CODIGO.ToString() });
-            MODEL.INST_PER_TEMA_1 = setts.First().INST_PER_TEMA_1;
+            /*MODEL.INST_PER_TEMA_1 = setts.First().INST_PER_TEMA_1;
             MODEL.INST_PER_TEMA_1_SIDEBAR = setts.First().INST_PER_TEMA_1_SIDEBAR;
             MODEL.INST_PER_TEMA_2 = setts.First().INST_PER_TEMA_2;
             MODEL.INST_PER_LOGOTIPO_WIDTH = setts.First().INST_PER_LOGOTIPO_WIDTH;
@@ -5056,7 +5294,7 @@ namespace Gestreino.Controllers
             MODEL.NET_STMP_PORT = setts.First().NET_STMP_PORT;
             MODEL.NET_SMTP_USERNAME = setts.First().NET_SMTP_USERNAME;
             MODEL.NET_SMTP_SENHA = setts.First().NET_SMTP_SENHA;
-            MODEL.NET_SMTP_FROM = setts.First().NET_SMTP_FROM;
+            MODEL.NET_SMTP_FROM = setts.First().NET_SMTP_FROM;*/
             ViewBag.data = data;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Settings;
             return View("Settings/Index", MODEL);
@@ -5143,7 +5381,7 @@ namespace Gestreino.Controllers
                 // Update
                 using (var db = databaseManager)
                 {
-                    var row = db.GRL_DEFINICOES.FirstOrDefault(x => x.INST_APLICACAO_ID == Configs.INST_INSTITUICAO_ID);
+                    var row = db.GRL_DEFINICOES.FirstOrDefault();
 
                     // this variable is tracked by the db context
                     row.INST_PER_TEMA_1 = MODEL.INST_PER_TEMA_1;
@@ -5182,7 +5420,7 @@ namespace Gestreino.Controllers
                 // Update
                 using (var db = databaseManager)
                 {
-                    var row = db.GRL_DEFINICOES.FirstOrDefault(x => x.INST_APLICACAO_ID == Configs.INST_INSTITUICAO_ID);
+                    var row = db.GRL_DEFINICOES.FirstOrDefault();
 
                     // this variable is tracked by the db context
                     row.INST_MDL_GPAG_MOEDA_PADRAO = MODEL.INST_MDL_GPAG_MOEDA_PADRAO;
@@ -5220,7 +5458,7 @@ namespace Gestreino.Controllers
                 // Update
                 using (var db = databaseManager)
                 {
-                    var row = db.GRL_DEFINICOES.FirstOrDefault(x => x.INST_APLICACAO_ID == Configs.INST_INSTITUICAO_ID);
+                    var row = db.GRL_DEFINICOES.FirstOrDefault();
 
                     // this variable is tracked by the db context
                     row.SEC_SENHA_TENT_BLOQUEIO = MODEL.SEC_SENHA_TENT_BLOQUEIO;
@@ -5259,7 +5497,7 @@ namespace Gestreino.Controllers
                 // Update
                 using (var db = databaseManager)
                 {
-                    var row = db.GRL_DEFINICOES.FirstOrDefault(x => x.INST_APLICACAO_ID == Configs.INST_INSTITUICAO_ID);
+                    var row = db.GRL_DEFINICOES.FirstOrDefault();
 
                     // this variable is tracked by the db context
                     row.NET_STMP_HOST = MODEL.NET_STMP_HOST;

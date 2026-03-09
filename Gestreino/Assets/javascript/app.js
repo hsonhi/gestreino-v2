@@ -777,7 +777,6 @@ function handleDataFileUploaderView() {
         },
     });
 }; 
-
 function handleDataUsers() {
     var table = $("#UserTable").DataTable({
         "processing": true, // Para exibir mensagem de processamento a cada requisição
@@ -853,6 +852,81 @@ function handleDataUsers() {
         //Remove pagination from table and add to custom Div
         initComplete: (settings, json) => {
             $('#UserTable_paginate').appendTo('#paginateUser');
+        },
+    });
+};
+function handleDataInstitution() {
+    var table = $("#InstitutionTable").DataTable({
+        "processing": true, // Para exibir mensagem de processamento a cada requisição
+        "serverSide": true, // Para processar as requisições no back-end
+        //"filter": false, // : está comentado porque estamos a usar filtros que enviamos no back-end
+        "orderMulti": false, // Opção de ordenação para uma coluna de cada vez.
+        //Linguagem PT
+        "language": {
+            "url": "/Assets/lib/datatable/pt-PT.json"
+        },
+        fixedHeader: {
+            header: true,
+            footer: true
+        },
+        "dom": '<"toolbox">rtp',//remove componentes i - for pagination information, l -length, p -pagination
+        "ajax": {
+            "url": "../../administration/GetInstitution", // POST TO CONTROLLER
+            "type": "POST",
+            "datatype": "json",
+            data: { }
+        },
+        "columns": [
+            { "data": "Id", "name": null, "autoWidth": true },
+            //Column customizada
+            {
+                sortable: false,
+                "render": function (data, type, full, meta) {
+                    return '<a title="Visualizar" href="/administration/viewinstitutions/' + full.Id + '"><i class="fa fa-search"/></i></a>';
+
+                }
+            },
+            //Cada dado representa uma coluna da tabela
+            { "data": "SIGLA", "name": "SIGLA", "autoWidth": true },
+            { "data": "NOME", "name": "NOME", "autoWidth": true },
+            { "data": "TELEFONE", "name": "TELEFONE", "autoWidth": true },
+            { "data": "EMAIL", "name": "EMAIL", "autoWidth": true },
+            { "data": "INSERCAO", "name": "INSERCAO", "autoWidth": true },
+            { "data": "DATAINSERCAO", "name": "DATAINSERCAO", "autoWidth": true },
+            { "data": "ACTUALIZACAO", "name": "ACTUALIZACAO", "autoWidth": true },
+            { "data": "DATAACTUALIZACAO", "name": "DATAACTUALIZACAO", "autoWidth": true },
+        ],
+        //Configuração da tabela para os checkboxes
+        'columnDefs': [
+            {
+                'targets': 0,
+                'checkboxes': {
+                    'selectRow': true
+                },
+            }
+        ], 'select': {
+            'style': 'multi'
+        },
+        'order': [[1, 'false']],
+        'rowCallback': function (row, data, dataIndex) {
+            // Get row ID
+            var rowId = data["Id"];
+            //if (data.ESTADO == "Inactivo") $(row).closest("tr").addClass("bg-inactive");
+            //console.log(rowId)
+            //Dra table and add selected option to previously selected checkboxes
+            $.each(values, function (i, r) {
+                if (rowId == r) {
+                    $(row).find('input[type="checkbox"]').prop('checked', true);
+                    $(row).closest("tr").addClass("selected");
+                }
+            })
+        },
+        drawCallback: function () {
+            processInfo(this.api().page.info(), 'paginateInfoInstitution');
+        },
+        //Remove pagination from table and add to custom Div
+        initComplete: (settings, json) => {
+            $('#InstitutionTable_paginate').appendTo('#paginateInstitution');
         },
     });
 };

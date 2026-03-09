@@ -22,6 +22,13 @@ namespace Gestreino.Controllers
         public ActionResult Users(Gestreino.Models.Users MODEL, string action, int? id, int?[] bulkids)
         {
             MODEL.Status = 1;
+            //if (AcessControl.isGROUP_INST())
+            //    MODEL.INST_APLICACAO_ID = AcessControl.GROUP_INST;
+            if (AcessControl.isGROUP_ADM())
+                MODEL.INST_APLICACAO_LIST = databaseManager.INST_APLICACAO.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            else
+                MODEL.INST_APLICACAO_ID = Configs.INST_INSTITUICAO_ID;
+
             if (id>0)
             {
                 var data = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(id, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();

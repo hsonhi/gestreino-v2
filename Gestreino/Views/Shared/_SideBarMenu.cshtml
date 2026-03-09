@@ -4,15 +4,12 @@
     List<int> Settings = new List<int> { 101, 102, 103, 104, 105,106 };}
 @if (Request.IsAuthenticated)
 {
-
-
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
         <div class="menu_section">
             <ul class="nav side-menu">
                 @if (AcessControl.isGROUP_ADM())
                 {
-                    <li><a href="javascript:"><i class="fa fa-bar-chart fa-fw"></i> Dashboard</a></li>
-                    <li class="@(ViewBag.LeftBarLinkActive == 203 ? "current-page" : "")"><a href="@Url.Action("cardioplans", "gtmanagement", new { Id = string.Empty })"><i class="fa fa-home fa-fw"></i> Instituições</a></li>
+                    <li class="@(ViewBag.LeftBarLinkActive == 107 ? "current-page" : "")"><a href="@Url.Action("institutions", "administration", new { Id = string.Empty })"><i class="fa fa-home fa-fw"></i> Instituições</a></li>
                     if (AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH)
 || AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_LIST_VIEW_SEARCH)
 || AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_LIST_VIEW_SEARCH)
@@ -47,6 +44,10 @@
                         </li>
                     }
                 }
+
+
+
+
                 @if (AcessControl.isGROUP_INST())
                 {
                     <li class="@(ViewBag.LeftBarLinkActive == 201 ? "active" : "")">

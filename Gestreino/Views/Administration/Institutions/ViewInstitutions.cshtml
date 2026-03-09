@@ -1,0 +1,108 @@
+﻿@model Gestreino.Models.SettingsInst
+@using Gestreino.Classes;
+@{
+    ViewBag.Title = ViewBag.data[0].NOME;
+}
+<div class="right_col" role="main">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("institutions","administration")">Instituições</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.data[0].NOME</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-md-3   widget widget_tally_box">
+            <div class="x_panel ">
+                <div class="x_content">
+                    <div class="flex">
+                        <ul class="list-inline widget_profile_box">
+                            <li>
+                                <a>
+
+                                </a>
+                            </li>
+                            <li>
+                                <img class="img-circle profile_img" src="@ViewBag.imgSrc" alt="@Configs.INST_INSTITUICAO_SIGLA" title="@Configs.INST_INSTITUICAO_NOME">
+                            </li>
+                            <li>
+                                <a>
+
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h3 class="name">@ViewBag.data[0].NOME (@ViewBag.data[0].SIGLA)</h3>
+                    @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT))
+                    {
+                        <div class="">
+                            <center>
+                                <a title="Atualizar dados da instituição" href="@Url.Action("updateinst", "administration")" class="btn btn-sm btn-light btn-block"><img src="~/Assets/images/pencil.png" width="19" /> Atualizar</a>
+                            </center>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 col-sm-12 ">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="animated flipInY ">
+                        <div class="tile-stats">
+                            <div class="icon">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <h3 class="p-2">Instituição</h3>
+                            <ul class="list-unstyled user_data p-3">
+                                <li>
+                                    <i class="fa fa-info fa-fw user-profile-icon"></i> @ViewBag.data[0].NOME (@ViewBag.data[0].SIGLA)
+                                </li>
+                                @if (!string.IsNullOrEmpty(ViewBag.data[0].NIF))
+                                {
+                                    <li>
+                                        <i class="fa fa-dollar fa-fw user-profile-icon"></i> @ViewBag.data[0].NIF
+                                    </li>
+                                }
+                                    <li>
+                                        <i class="fa fa-phone fa-fw user-profile-icon"></i> @ViewBag.data[0].TELEFONE  @ViewBag.data[0].TELEFONE_ALTERNATIVO
+                                    </li>
+                                    <li class="m-top-xs">
+                                        <i class="fa fa-envelope fa-fw user-profile-icon"></i>
+                                        @ViewBag.data[0].EMAIL
+                                    </li>
+                                    @if (!string.IsNullOrEmpty(ViewBag.data[0].URL))
+                                    {
+                                        <li class="m-top-xs">
+                                            <i class="fa fa-globe fa-fw user-profile-icon"></i>
+                                            @ViewBag.data[0].URL
+                                        </li>
+}
+                                    <li>
+                                        <i class="fa fa-map-location-dot fa-fw user-profile-icon"></i>   @ViewBag.data[0].NUMERO  @ViewBag.data[0].RUA  @ViewBag.data[0].MORADA  @ViewBag.data[0].MUN_NOME @ViewBag.data[0].CIDADE_NOME @ViewBag.data[0].PAIS_NOME
+                                    </li>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="animated flipInY ">
+                        <div class="tile-stats">
+                            <div class="icon">
+                                <i class="fa fa-key"></i>
+                            </div>
+                            <h3 class="p-2">Subscrição</h3>
+                            <h2 class="p-2 text-center text-muted">Não há dados da subscrição</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2>&nbsp;</h2>
+    <h2>&nbsp;</h2>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+    });
+</script>

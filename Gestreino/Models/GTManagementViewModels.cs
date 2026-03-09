@@ -68,6 +68,9 @@ namespace Gestreino.Models
         [Display(Name = "Enviar senha por email")]
         public bool isAutomaticEmail { get; set; }
         public int? PesId { get; set; }
+        [Display(Name = "Instituição")]
+        public int? INST_APLICACAO_ID { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> INST_APLICACAO_LIST { get; set; }
     }
     public class AccessAppendItems
     {

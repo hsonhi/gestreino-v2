@@ -69,8 +69,8 @@ namespace Gestreino
         public virtual ICollection<PES_PESSOAS_CARACT_DEFICIENCIA> PES_PESSOAS_CARACT_DEFICIENCIA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PES_ARQUIVOS> PES_ARQUIVOS { get; set; }
-        public virtual UTILIZADORES UTILIZADORES { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PES_PESSOAS_CARACT> PES_PESSOAS_CARACT { get; set; }
+        public virtual UTILIZADORES UTILIZADORES { get; set; }
     }
 }
