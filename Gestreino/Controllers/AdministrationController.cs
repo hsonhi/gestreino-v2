@@ -42,14 +42,14 @@ namespace Gestreino.Controllers
         //Institutions
         public ActionResult Institutions()
         {
-            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Institution;
             return View("Institutions/Index");
         }
         [HttpGet]
         public ActionResult ViewInstitutions(int? Id)
         {
-            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
             var data = databaseManager.SP_INST_APLICACAO(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
 
@@ -171,7 +171,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult NewInstitution(SettingsInst MODEL)
         {
-            //if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             MODEL.PAIS_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.CIDADE_LIST = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null && x.ID==0).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
@@ -182,7 +182,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult UpdateInstitution(int? Id,SettingsInst MODEL)
         {
-            //if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
             var data = databaseManager.SP_INST_APLICACAO(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
             if (!data.Any()) { return RedirectToAction("", "home"); }
@@ -267,6 +267,15 @@ namespace Gestreino.Controllers
                 Decimal TelephoneAlternativo = (!string.IsNullOrEmpty(MODEL.TelephoneAlternativo)) ? Convert.ToDecimal(MODEL.TelephoneAlternativo) : 0;
                 Decimal Fax = (!string.IsNullOrEmpty(MODEL.Fax)) ? Convert.ToDecimal(MODEL.Fax) : 0;
 
+                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.EMAIL == MODEL.Email && x.INST_APLICACAO_ID != MODEL.ID).Any())
+                    return Json(new { result = false, error = "Endereço de email já se encontra registado, por favor verifique a seleção!" });
+
+                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.TELEFONE == Telephone && x.INST_APLICACAO_ID != MODEL.ID).Any())
+                    return Json(new { result = false, error = "Telefone já se encontra registado, por favor verifique a seleção!" });
+
+                if (databaseManager.INST_APLICACAO.Where(x => x.SIGLA == MODEL.Sigla && x.ID != MODEL.ID || x.NOME == MODEL.Nome && x.ID != MODEL.ID).Any())
+                    return Json(new { result = false, error = "Sigla e/ou Nome desta instituição já se encontra registada, por favor verifique a seleção!" });
+
                 // Update
                 var update = databaseManager.SP_INST_APLICACAO(MODEL.ID, MODEL.Sigla, MODEL.Nome, MODEL.NIF, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, MODEL.Rua, MODEL.Morada, MODEL.ENDERECO_PAIS_ID, MODEL.ENDERECO_CIDADE_ID, MODEL.ENDERECO_MUN_ID, int.Parse(User.Identity.GetUserId()), "U").ToList();
                 ModelState.Clear();
@@ -284,14 +293,20 @@ namespace Gestreino.Controllers
         //Users
         public ActionResult Users()
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (AcessControl.isGROUP_ADM()) { }
+            else if (AcessControl.isGROUP_INST() && AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) { }
+            else return View("Lockout");
+
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_User;
             return View("Users/Index");
         }
         [HttpGet]
         public ActionResult ViewUsers(int? Id)
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (AcessControl.isGROUP_ADM()) { }
+            else if (AcessControl.isGROUP_INST() && AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) { }
+            else return View("Lockout");
+
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
             var data = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
             if (!data.Any()) { return RedirectToAction("", "home"); }
@@ -333,6 +348,7 @@ namespace Gestreino.Controllers
 
             GroupId = GroupId == null ? null : GroupId;
             ProfileId = ProfileId == null ? null : ProfileId;
+
             var v = (from a in databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, GroupId, ProfileId, AcessControl.getUserGroup().ToString(), null, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
             TempData["QUERYRESULT_ALL"] = v.ToList();
 
@@ -572,8 +588,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult Access()
         {
-            if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_LIST_VIEW_SEARCH) || AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_LIST_VIEW_SEARCH) || AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_LIST_VIEW_SEARCH)) { }
-            else return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Access;
             return View("Access/Index");
@@ -583,7 +598,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult ViewGroups(int? Id)
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
             var data = databaseManager.SP_UTILIZADORES_ENT_GRUPOS(Id, null, null, null, null, null, null, "R").ToList();
@@ -672,8 +687,7 @@ namespace Gestreino.Controllers
                 recordsTotal = totalRecords,
                 data = data.Select(x => new
                 {
-                    AccessControlEdit = !AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_EDIT) ? "none" : "",
-                    AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_DELETE) ? "none" : "",
+                    AccessControlDelete = "none",
                     Id = x.ID,
                     SIGLA = x.SIGLA,
                     NOME = x.NOME,
@@ -699,6 +713,8 @@ namespace Gestreino.Controllers
                     ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
                     return Json(new { result = false, error = errors });
                 }
+
+                return Json(new { result = false, error = "Operação está temporariamente indisponível!" });
 
                 if (databaseManager.UTILIZADORES_ACESSO_GRUPOS.Where(x => x.SIGLA == MODEL.SIGLA || x.NOME == MODEL.NOME).Any())
                     return Json(new { result = false, error = "Sigla e/ou Nome desta entidade já se encontra registada, por favor verifique a seleção!" });
@@ -726,6 +742,7 @@ namespace Gestreino.Controllers
                     ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
                     return Json(new { result = false, error = errors });
                 }
+
                 if (databaseManager.UTILIZADORES_ACESSO_GRUPOS.Where(x => x.SIGLA == MODEL.SIGLA && x.ID != MODEL.ID || x.NOME == MODEL.NOME && x.ID != MODEL.ID).Any())
                     return Json(new { result = false, error = "Sigla e/ou Nome desta entidade já se encontra registada, por favor verifique a seleção!" });
 
@@ -753,6 +770,8 @@ namespace Gestreino.Controllers
                     return Json(new { result = false, error = errors });
                 }
 
+                return Json(new { result = false, error = "Operação está temporariamente indisponível!" });
+
                 // Delete
                 foreach (var i in ids)
                 {
@@ -771,7 +790,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult ViewProfiles(int? Id)
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
             var data = databaseManager.SP_UTILIZADORES_ENT_PERFIS(Id, null,null,null, null, null, "R").ToList();
@@ -860,8 +879,8 @@ namespace Gestreino.Controllers
                 recordsTotal = totalRecords,
                 data = data.Select(x => new
                 {
-                    AccessControlEdit = !AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_EDIT) ? "none" : "",
-                    AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_DELETE) ? "none" : "",
+                    //AccessControlEdit = !AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_EDIT) ? "none" : "",
+                    //AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_DELETE) ? "none" : "",
                     Id = x.ID,
                     NOME = x.NOME,
                     DESCRICAO = x.DESCRICAO,
@@ -958,7 +977,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult ViewAtoms(int? Id)
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
             var data = databaseManager.SP_UTILIZADORES_ENT_ATOMOS(Id, null, null, null, null, null, "R").ToList();
@@ -1047,7 +1066,7 @@ namespace Gestreino.Controllers
                 recordsTotal = totalRecords,
                 data = data.Select(x => new
                 {
-                    AccessControlEdit = "none",//!AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_EDIT) ? "none" : "",
+                    //AccessControlEdit = "none",//!AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_EDIT) ? "none" : "",
                     AccessControlDelete = "none",// !AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_DELETE) ? "none" : "",
                     Id = x.ID,
                     NOME = x.NOME,
@@ -1074,6 +1093,9 @@ namespace Gestreino.Controllers
                     ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
                     return Json(new { result = false, error = errors });
                 }
+
+                return Json(new { result = false, error = "Operação está temporariamente indisponível!" });
+
                 if (databaseManager.UTILIZADORES_ACESSO_ATOMOS.Where(x => x.NOME == MODEL.NOME || x.DESCRICAO == MODEL.DESCRICAO).Any())
                     return Json(new { result = false, error = "Nome e/ou Descrição desta entidade já se encontra registada, por favor verifique a seleção!" });
 
@@ -1126,7 +1148,8 @@ namespace Gestreino.Controllers
                     ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
                     return Json(new { result = false, error = errors });
                 }
-                return Json(new { result = false, error = "Não autorizado!" });
+
+                return Json(new { result = false, error = "Operação está temporariamente indisponível!" });
 
                 // Delete
                 foreach (var i in ids)
@@ -1223,7 +1246,7 @@ namespace Gestreino.Controllers
                 recordsTotal = totalRecords,
                 data = data.Select(x => new
                 {
-                    AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_GROUP_USERS_DELETE) ? "none" : "",
+                    AccessControlDelete = "none",//!AcessControl.Authorized(AcessControl.ADM_USERS_GROUP_USERS_DELETE) ? "none" : "",
                     Id = x.ID,
                     GRUPO = x.GRUPO_NOME + " (" + x.SIGLA + ")",
                     UTILIZADOR = x.NOME_PROPIO + " " + x.APELIDO + " (" + x.LOGIN + ")",
@@ -1391,7 +1414,7 @@ namespace Gestreino.Controllers
                 recordsTotal = totalRecords,
                 data = data.Select(x => new
                 {
-                    AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_GROUPS_DELETE) ? "none" : "",
+                    //AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_GROUPS_DELETE) ? "none" : "",
                     Id = x.ID,
                     GRUPO = x.GRUPO_NOME + " (" + x.GRUPO_SIGLA + ")",
                     ATOMO = x.ATOMO_NOME,
@@ -1424,11 +1447,15 @@ namespace Gestreino.Controllers
                     {
                         if (databaseManager.UTILIZADORES_ACESSO_ATOMOS_GRUPOS.Where(x => x.UTILIZADORES_ACESSO_GRUPOS_ID == MODEL.GroupId && x.UTILIZADORES_ACESSO_ATOMOS_ID == i).Any())
                             return Json(new { result = false, error = "Relação já se encontra associada, por favor verifique a seleção!" });
+                        if(MODEL.GroupId ==AcessControl.GROUP_ADM)
+                            return Json(new { result = false, error = "Não pode atribuir Átomo(s) à Administração Gestreino, por favor verifique a seleção do grupo!" });
                     }
                     if (MODEL.GroupId == null)
                     {
                         if (databaseManager.UTILIZADORES_ACESSO_ATOMOS_GRUPOS.Where(x => x.UTILIZADORES_ACESSO_GRUPOS_ID == i && x.UTILIZADORES_ACESSO_ATOMOS_ID == MODEL.AtomId).Any())
                             return Json(new { result = false, error = "Relação já se encontra associada, por favor verifique a seleção!" });
+                        if (i == AcessControl.GROUP_ADM)
+                            return Json(new { result = false, error = "Não pode atribuir Átomo(s) à Administração Gestreino, por favor verifique a seleção do grupo!" });
                     }
                 }
                 // Create
@@ -1556,7 +1583,7 @@ namespace Gestreino.Controllers
                 recordsTotal = totalRecords,
                 data = data.Select(x => new
                 {
-                    AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_PROFILES_DELETE) ? "none" : "",
+                    //AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_PROFILES_DELETE) ? "none" : "",
                     Id = x.ID,
                     PERFIL = x.PERFIL_NOME,
                     ATOMO = x.ATOMO_NOME,
@@ -1721,7 +1748,7 @@ namespace Gestreino.Controllers
                 recordsTotal = totalRecords,
                 data = data.Select(x => new
                 {
-                    AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_PROFILE_USERS_DELETE) ? "none" : "",
+                    //AccessControlDelete = !AcessControl.Authorized(AcessControl.ADM_USERS_PROFILE_USERS_DELETE) ? "none" : "",
                     Id = x.ID,
                     PERFIL = x.PERFIL_NOME,
                     UTILIZADOR = x.NOME_PROPIO + " " + x.APELIDO + " (" + x.LOGIN + ")",
@@ -1906,7 +1933,7 @@ namespace Gestreino.Controllers
         //UserLogs
         public ActionResult LoginLogs()
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_LOGIN_LOGS_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_LoginLogs;
             return View("Access/LoginLogs");
@@ -2011,7 +2038,7 @@ namespace Gestreino.Controllers
         //Tokens
         public ActionResult Tokens()
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_SEC_TOKENS_LIST_VIEW_SEARCH)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Tokens;
             return View("Access/Tokens");
@@ -2106,7 +2133,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult Parameters(SettingsDef MODEL) 
         {
-            if (AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_GT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_PES)) { }else return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             var setts = databaseManager.GRL_DEFINICOES.ToList();
 
@@ -2134,7 +2161,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult ParametersGRL()
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Parameters;
             return View("Parameters/ParametersGRL");
@@ -2142,7 +2169,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult ParametersPES()
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_PES)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Parameters;
             return View("Parameters/ParametersPES");
@@ -2150,7 +2177,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult ParametersGT(Gestreino.Models.GTExercicio MODEL)
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_GT)) return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
 
             MODEL.TipoList = databaseManager.GT_TipoTreino.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Parameters;
@@ -2161,8 +2188,8 @@ namespace Gestreino.Controllers
         //Exercicios
         public ActionResult ViewExercises(int? Id, Gestreino.Models.GTExercicio MODEL)
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_GT)) return View("Lockout");
-            
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
+
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
 
             var data = databaseManager.SP_GT_ENT_EXERCICIO(Id, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
@@ -5266,7 +5293,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult Phases()
         {
-            //if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM)) return View("Lockout");
+            if (!AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) return View("Lockout");
 
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Phases;
             return View("Settings/Phases");
@@ -5276,12 +5303,10 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult Settings(SettingsDef MODEL)
         {
-           if (AcessControl.Authorized(AcessControl.ADM_CONFIG_FILEMGR) || AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_SETINGS_EDIT)) { }else
-           return View("Lockout");
+            if (!AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) return View("Lockout");
 
             var data = databaseManager.SP_INST_APLICACAO(Configs.INST_INSTITUICAO_ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
-            //var setts = databaseManager.GRL_DEFINICOES.Where(x => x.INST_APLICACAO_ID == Configs.INST_INSTITUICAO_ID).ToList();
-
+            
             var path = (from j1 in databaseManager.INST_APLICACAO
                                              join j2 in databaseManager.INST_APLICACAO_ARQUIVOS on j1.ID equals j2.INST_APLICACAO_ID
                                              join j3 in databaseManager.GRL_ARQUIVOS on j2.ARQUIVOS_ID equals j3.ID
@@ -5294,22 +5319,6 @@ namespace Gestreino.Controllers
 
 
             MODEL.MOEDA_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME + " - " + x.CODIGO.ToString() });
-            /*MODEL.INST_PER_TEMA_1 = setts.First().INST_PER_TEMA_1;
-            MODEL.INST_PER_TEMA_1_SIDEBAR = setts.First().INST_PER_TEMA_1_SIDEBAR;
-            MODEL.INST_PER_TEMA_2 = setts.First().INST_PER_TEMA_2;
-            MODEL.INST_PER_LOGOTIPO_WIDTH = setts.First().INST_PER_LOGOTIPO_WIDTH;
-            MODEL.INST_MDL_GPAG_MOEDA_PADRAO = setts.First().INST_MDL_GPAG_MOEDA_PADRAO;
-            MODEL.INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS = setts.First().INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS;
-            MODEL.INST_MDL_GPAG_NOTA_DECIMAL = setts.First().INST_MDL_GPAG_NOTA_DECIMAL;
-            MODEL.SEC_SENHA_TENT_BLOQUEIO = setts.First().SEC_SENHA_TENT_BLOQUEIO;
-            MODEL.SEC_SENHA_TENT_BLOQUEIO_TEMPO = setts.First().SEC_SENHA_TENT_BLOQUEIO_TEMPO;
-            MODEL.SEC_SENHA_RECU_LIMITE_EMAIL = setts.First().SEC_SENHA_RECU_LIMITE_EMAIL;
-            MODEL.SEC_SESSAO_TIMEOUT_TEMPO = setts.First().SEC_SESSAO_TIMEOUT_TEMPO;
-            MODEL.NET_STMP_HOST = setts.First().NET_STMP_HOST;
-            MODEL.NET_STMP_PORT = setts.First().NET_STMP_PORT;
-            MODEL.NET_SMTP_USERNAME = setts.First().NET_SMTP_USERNAME;
-            MODEL.NET_SMTP_SENHA = setts.First().NET_SMTP_SENHA;
-            MODEL.NET_SMTP_FROM = setts.First().NET_SMTP_FROM;*/
             ViewBag.data = data;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Settings;
             return View("Settings/Index", MODEL);
@@ -5317,7 +5326,7 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult UpdateInst(SettingsInst MODEL)
         {
-            if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT)) return View("Lockout");
+            if (!AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) return View("Lockout");
 
             var data = databaseManager.SP_INST_APLICACAO(Configs.INST_INSTITUICAO_ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
 

@@ -5,8 +5,6 @@
 <div class="right_col" role="main">
     <div class="row">
         <div class="col-md-12 col-sm-12">
-            @if (AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_LIST_VIEW_SEARCH))
-            {
                 <div class="alert alert-primary-light"
                      role="alert">
                     <div class="d-flex flex-wrap align-items-start">
@@ -39,13 +37,10 @@
                             <label class="" for="length_change">registos</label>
                             <div class="btn-group">
                                 <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="GroupTable"><i class="fa fa-check-square"></i></button>
-                                @if (AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_DELETE))
-                                {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="groups" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
-                                } <button title="Pesquisar" class="btnSearch btn btn-default" data-id="GroupTable"><i class="fa fa-search"></i></button>
+                                @*<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="groups" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>*@
+                                <button title="Pesquisar" class="btnSearch btn btn-default" data-id="GroupTable"><i class="fa fa-search"></i></button>
                                 <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="GroupTable"><i class="fa fa-eraser"></i></button>
-                                @if (AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_NEW))
-                                {<a title="Adicionar grupo" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="groups" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
-                                }
+                                @*<a title="Adicionar grupo" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="groups" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>*@
                             </div>
                         </div>
                     </div>
@@ -81,9 +76,7 @@
                     </div>
                 </div>
                 <br />
-            }
-            @if (AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_LIST_VIEW_SEARCH))
-            {
+            
                 <div class="alert alert-primary-light"
                      role="alert">
                     <div class="d-flex flex-wrap align-items-start">
@@ -116,13 +109,11 @@
                             <label class="" for="length_change">registos</label>
                             <div class="btn-group">
                                 <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="ProfileTable"><i class="fa fa-check-square"></i></button>
-                                @if (AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_DELETE))
-                                {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="profiles" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
-                                }  <button title="Pesquisar" class="btnSearch btn btn-default" data-id="ProfileTable"><i class="fa fa-search"></i></button>
+                                <button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="profiles" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                                <button title="Pesquisar" class="btnSearch btn btn-default" data-id="ProfileTable"><i class="fa fa-search"></i></button>
                                 <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="ProfileTable"><i class="fa fa-eraser"></i></button>
-                                @if (AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_NEW))
-                                {<a title="Adicionar perfil" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="profiles" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
-                                }
+                                <a title="Adicionar perfil" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="profiles" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                                
                             </div>
                         </div>
                     </div>
@@ -158,9 +149,7 @@
                     </div>
                 </div>
                 <br />
-            }
-            @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_LIST_VIEW_SEARCH))
-            {
+            
                 <div class="alert alert-primary-light"
                      role="alert">
                     <div class="d-flex flex-wrap align-items-start">
@@ -193,14 +182,11 @@
                             <label class="" for="length_change">registos</label>
                             <div class="btn-group">
                                 <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="AtomTable"><i class="fa fa-check-square"></i></button>
-                                @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_DELETE))
-                                {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="atoms" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
-                                } <button title="Pesquisar" class="btnSearch btn btn-default" data-id="AtomTable"><i class="fa fa-search"></i></button>
+                                @*<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="atoms" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button> *@
+                                <button title="Pesquisar" class="btnSearch btn btn-default" data-id="AtomTable"><i class="fa fa-search"></i></button>
                                 <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="AtomTable"><i class="fa fa-eraser"></i></button>
-                                @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_NEW))
-                                {<a title="Adicionar átomo" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="atoms" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
-                                }
-                            </div>
+                                @*<a title="Adicionar átomo" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="atoms" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a> *@
+                             </div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -234,7 +220,6 @@
                         <div id="paginateAtom" class="pagination justify-content-start pagination-xsm m-0"></div>
                     </div>
                 </div>
-            }
                 <h2>&nbsp;</h2>
                 <h2>&nbsp;</h2>
             </div>

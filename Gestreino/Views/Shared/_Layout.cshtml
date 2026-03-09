@@ -51,7 +51,7 @@
                             <a href="javascript:" id="selecionaravaliado" data-placement="top" title="Selecionar Avaliado" class="open-modal-crud bg-blue-sky" data-id="0" data-action="Adicionar" data-entity="gtavaliado" data-toggle="modal" data-target="#crudControlModal">
                                 <span class="fa fa-random" aria-hidden="true"></span>
                             </a>
-                            if (AcessControl.Authorized(AcessControl.ADM_CONFIG_FILEMGR) || AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_SETINGS_EDIT))
+                            if (AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS))
                             {
                                 <a data-toggle="tooltip" href="@Url.Action("settings", "administration")" data-placement="top" title="Configurações">
                                     <span class="fa fa-cog" aria-hidden="true"></span>

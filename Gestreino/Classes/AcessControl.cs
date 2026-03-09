@@ -7,54 +7,6 @@ namespace Gestreino.Classes
 {
     public class AcessControl
     {
-        public static int ADM_USERS_ATOMS_LIST_VIEW_SEARCH = 1;
-        public static int ADM_USERS_ATOMS_NEW = 2;
-        public static int ADM_USERS_ATOMS_EDIT = 3;
-        public static int ADM_USERS_ATOMS_DELETE = 4;
-
-        public static int ADM_USERS_PROFILES_LIST_VIEW_SEARCH = 5;
-        public static int ADM_USERS_PROFILES_NEW = 6;
-        public static int ADM_USERS_PROFILES_EDIT = 7;
-        public static int ADM_USERS_PROFILES_DELETE = 8;
-
-        public static int ADM_USERS_GROUPS_LIST_VIEW_SEARCH = 9;
-        public static int ADM_USERS_GROUPS_NEW = 10;
-        public static int ADM_USERS_GROUPS_EDIT = 11;
-        public static int ADM_USERS_GROUPS_DELETE = 12;
-
-        public static int ADM_USERS_ATOMS_GROUPS_LIST_VIEW_SEARCH = 13;
-        public static int ADM_USERS_ATOMS_GROUPS_NEW = 14;
-        public static int ADM_USERS_ATOMS_GROUPS_DELETE = 15;
-
-        public static int ADM_USERS_ATOMS_PROFILES_LIST_VIEW_SEARCH = 16;
-        public static int ADM_USERS_ATOMS_PROFILES_NEW = 17;
-        public static int ADM_USERS_ATOMS_PROFILES_DELETE = 18;
-
-        public static int ADM_USERS_PROFILE_USERS_LIST_VIEW_SEARCH = 19;
-        public static int ADM_USERS_PROFILE_USERS_NEW = 20;
-        public static int ADM_USERS_PROFILE_USERS_DELETE = 21;
-
-        public static int ADM_USERS_GROUP_USERS_LIST_VIEW_SEARCH = 22;
-        public static int ADM_USERS_GROUP_USERS_NEW = 23;
-        public static int ADM_USERS_GROUP_USERS_DELETE = 24;
-
-        public static int ADM_USERS_USERS_LIST_VIEW_SEARCH = 25;
-        public static int ADM_USERS_USERS_NEW = 26;
-        public static int ADM_USERS_USERS_EDIT = 27;
-        public static int ADM_USERS_USERS_ALTER_PASSWORD = 28;
-        public static int ADM_USERS_USERS_CLEAR_PWD_ATTEMPT = 29;
-        public static int ADM_USERS_LOGIN_LOGS_LIST_VIEW_SEARCH = 30;
-
-        public static int ADM_SEC_TOKENS_LIST_VIEW_SEARCH = 31;
-
-        public static int ADM_CONFIG_INST_EDIT = 32;
-        public static int ADM_CONFIG_SETINGS_EDIT = 33;
-        public static int ADM_CONFIG_FILEMGR = 34;
-
-        public static int ADM_CONFIG_PARAM_PES = 35;
-        public static int ADM_CONFIG_PARAM_ADM = 36;
-        public static int ADM_CONFIG_PARAM_GT = 37;
-
         public static int GT_ATHLETES_LIST_VIEW_SEARCH = 38;
         public static int GT_ATHLETES_NEW = 39;
         public static int GT_ATHLETES_EDIT = 40;
@@ -138,6 +90,8 @@ namespace Gestreino.Classes
 
         public static int GT_REPORTS_LIST_VIEW_SEARCH = 101;
 
+        public static int GT_ADM_CONFIGURATIONS = 102;
+
         public static int GROUP_ADM = 1;
         public static int GROUP_INST = 2; 
 
@@ -151,7 +105,7 @@ namespace Gestreino.Classes
 
             foreach (var i in atoms)
             {
-                if (int.Parse(i.Value) == atom) Authorized = true; 
+                if (int.Parse(i.Value) == atom && isGROUP_INST()) Authorized = true; 
             }
             return Authorized;
         }

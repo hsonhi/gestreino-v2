@@ -23,14 +23,11 @@
                         </ul>
                     </div>
                     <h3 class="name">@ViewBag.data[0].NOME</h3>
-                    @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT))
-                    {
                         <div class="">
                             <center>
                                 <a title="Atualizar dados da instituição" href="@Url.Action("updateinstitution", "administration", new {Id=ViewBag.data[0].ID})" class="btn btn-sm btn-light btn-block"><img src="~/Assets/images/pencil.png" width="19" /> Atualizar</a>
                             </center>
                         </div>
-                    }
                 </div>
             </div>
         </div>

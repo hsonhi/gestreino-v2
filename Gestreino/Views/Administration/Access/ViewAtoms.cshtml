@@ -15,20 +15,15 @@
         <div class="col-md-12 col-sm-12 ">
             <div class="x_panel">
                 <div class="x_content">
-                        <div class="col-md-2" @(AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_EDIT) || AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_DELETE) ? "" : "hidden")>
+                        <div class="col-md-2">
                             <ul class="list-unstyled user_data">
-                                @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_EDIT))
-                                {
-                                    <li>
-                                        <a hidden="" title="Editar" href="javascript:void(0)" class="open-modal-crud btn btn-sm btn-secondary btn-block" data-id="@ViewBag.data[0].ID" data-action="Editar" data-entity="atoms" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil user-profile-icon"></i> Editar</a>
-                                    </li>
-                                }
-                                @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_DELETE))
-                                {
-                                    <li>
-                                        <a hidden="" title="Remover" href="javascript:void(0)" class="open-modal-crud btn btn-sm btn-secondary btn-block" data-id="@ViewBag.data[0].ID" data-action="Remover" data-entity="atoms" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-trash user-profile-icon"></i> Remover</a>
-                                    </li>
-                                }
+                                <li>
+                                    <a title="Editar" href="javascript:void(0)" class="open-modal-crud btn btn-sm btn-secondary btn-block" data-id="@ViewBag.data[0].ID" data-action="Editar" data-entity="atoms" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil user-profile-icon"></i> Editar</a>
+                                </li>
+                                @*
+        <li>
+               <a title="Remover" href="javascript:void(0)" class="open-modal-crud btn btn-sm btn-secondary btn-block" data-id="@ViewBag.data[0].ID" data-action="Remover" data-entity="atoms" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-trash user-profile-icon"></i> Remover</a>
+           </li>*@
                             </ul>
                         </div>
                         <div class="col-md-8 col-sm-12">
@@ -65,8 +60,7 @@
             </div>
         </div>
     </div>
-    @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_PROFILES_LIST_VIEW_SEARCH))
-    {
+    
         <div class="alert alert-primary-light"
              role="alert">
             <div class="d-flex flex-wrap align-items-start">
@@ -99,13 +93,11 @@
                     <label class="" for="length_change">registos</label>
                     <div class="btn-group">
                         <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="ProfileAtomTable"><i class="fa fa-check-square"></i></button>
-                        @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_PROFILES_DELETE))
-                        {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplosAtomProfile" data-entity="usergroups" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
-                        }  <button title="Pesquisar" class="btnSearch btn btn-default" data-id="ProfileAtomTable"><i class="fa fa-search"></i></button>
+                       <button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplosAtomProfile" data-entity="usergroups" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                         <button title="Pesquisar" class="btnSearch btn btn-default" data-id="ProfileAtomTable"><i class="fa fa-search"></i></button>
                         <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="ProfileAtomTable"><i class="fa fa-eraser"></i></button>
-                        @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_PROFILES_NEW))
-                        {<a title="Adicionar perfil" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="AdicionarAtomProfile" data-entity="usergroups" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
-                        }
+                        <a title="Adicionar perfil" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="AdicionarAtomProfile" data-entity="usergroups" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                        
                     </div>
                 </div>
             </div>
@@ -141,9 +133,7 @@
             </div>
         </div>
         <br />
-    }
-    @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_GROUPS_LIST_VIEW_SEARCH))
-    {
+    
         <div class="alert alert-primary-light"
              role="alert">
             <div class="d-flex flex-wrap align-items-start">
@@ -176,13 +166,11 @@
                     <label class="" for="length_change">registos</label>
                     <div class="btn-group">
                         <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="AtomGroupTable"><i class="fa fa-check-square"></i></button>
-                        @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_GROUPS_DELETE))
-                        {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplosGroupAtom" data-entity="usergroups" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
-                        }   <button title="Pesquisar" class="btnSearch btn btn-default" data-id="AtomGroupTable"><i class="fa fa-search"></i></button>
+                       <button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplosGroupAtom" data-entity="usergroups" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                           <button title="Pesquisar" class="btnSearch btn btn-default" data-id="AtomGroupTable"><i class="fa fa-search"></i></button>
                         <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="AtomGroupTable"><i class="fa fa-eraser"></i></button>
-                        @if (AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_GROUPS_NEW))
-                        {<a title="Adicionar grupo" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="AdicionarAtomGroup" data-entity="usergroups" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
-                        }</div>
+                       <a title="Adicionar grupo" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="AdicionarAtomGroup" data-entity="usergroups" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                       </div>
                 </div>
             </div>
             <div class="table-responsive">
@@ -216,7 +204,6 @@
                 <div id="paginateAtomGroupTable" class="pagination justify-content-start pagination-xsm m-0"></div>
             </div>
         </div>
-    }
         @Html.HiddenFor(m => m.ID, new { Id = "AtomId" })
         <h2>&nbsp;</h2>
         <h2>&nbsp;</h2>

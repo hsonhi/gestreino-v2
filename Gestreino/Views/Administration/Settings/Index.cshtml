@@ -16,14 +16,11 @@
                         </ul>
                     </div>
                     <h3 class="name">@ViewBag.data[0].NOME</h3>
-                    @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT))
-                    {
-                        <div class="">
+                     <div class="">
                             <center>
                                 <a title="Atualizar dados da instituição" href="@Url.Action("updateinst", "administration")" class="btn btn-sm btn-light btn-block"><img src="~/Assets/images/pencil.png" width="19" /> Atualizar</a>
                             </center>
                         </div>
-                    }
                 </div>
             </div>
         </div>
@@ -67,8 +64,7 @@
                         </div>
                     </div>
                 </div>
-                @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_FILEMGR))
-                {
+               
                     <div class="col-md-12">
                         <div class="animated flipInY ">
                             <div class="tile-stats" style="padding-bottom:0 !important">
@@ -176,7 +172,6 @@
                             </div>
                         </div>
                     </div>
-                }
             </div>
             <div class="row">
                 <div class="col-md-12">

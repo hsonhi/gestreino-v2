@@ -43,10 +43,14 @@ namespace Gestreino.Controllers
             }
 
             ViewBag.Action = action;
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_NEW) && ViewBag.Action == "Adicionar") return View("Lockout");
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_EDIT) && ViewBag.Action == "Editar") return View("Lockout");
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_ALTER_PASSWORD) && ViewBag.Action == "AlterarSenha") return View("Lockout");
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_CLEAR_PWD_ATTEMPT) && ViewBag.Action == "LimparLogs") return View("Lockout");
+
+            if (AcessControl.isGROUP_ADM()) { }
+            else if (AcessControl.isGROUP_INST() && AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) { }
+            else return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_NEW) && ViewBag.Action == "Adicionar") return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_EDIT) && ViewBag.Action == "Editar") return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_ALTER_PASSWORD) && ViewBag.Action == "AlterarSenha") return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_USERS_CLEAR_PWD_ATTEMPT) && ViewBag.Action == "LimparLogs") return View("Lockout");
             return View("administration/Users/Index",MODEL);
         }
         public ActionResult Groups(UTILIZADORES_ACESSO_GRUPOS MODEL,string action, int? id, int?[] bulkids)
@@ -65,10 +69,11 @@ namespace Gestreino.Controllers
 
             ViewBag.bulkids = ids;
             ViewBag.Action = action;
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_NEW) && ViewBag.Action == "Adicionar") return View("Lockout");
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_EDIT) && ViewBag.Action == "Editar") return View("Lockout");
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_DELETE) && ViewBag.Action == "Remover") return View("Lockout");
-          
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_NEW) && ViewBag.Action == "Adicionar") return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_EDIT) && ViewBag.Action == "Editar") return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUPS_DELETE) && ViewBag.Action == "Remover") return View("Lockout");
+
             return View("administration/Access/Groups", MODEL);
         }
         public ActionResult Profiles(UTILIZADORES_ACESSO_PERFIS MODEL, string action, int? id, int?[] bulkids)
@@ -86,9 +91,10 @@ namespace Gestreino.Controllers
 
             ViewBag.bulkids = ids;
             ViewBag.Action = action;
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_NEW) && ViewBag.Action == "Adicionar") return View("Lockout");
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_EDIT) && ViewBag.Action == "Editar") return View("Lockout");
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_DELETE) && ViewBag.Action == "Remover") return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_NEW) && ViewBag.Action == "Adicionar") return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_EDIT) && ViewBag.Action == "Editar") return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILES_DELETE) && ViewBag.Action == "Remover") return View("Lockout");
 
             return View("administration/Access/Profiles", MODEL);
         }
@@ -107,9 +113,10 @@ namespace Gestreino.Controllers
 
             ViewBag.bulkids = ids;
             ViewBag.Action = action;
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_NEW) && ViewBag.Action == "Adicionar") return View("Lockout");
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_EDIT) && ViewBag.Action == "Editar") return View("Lockout");
-            if (!AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_DELETE) && ViewBag.Action == "Remover") return View("Lockout");
+            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_NEW) && ViewBag.Action == "Adicionar") return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_EDIT) && ViewBag.Action == "Editar") return View("Lockout");
+            //if (!AcessControl.Authorized(AcessControl.ADM_USERS_ATOMS_DELETE) && ViewBag.Action == "Remover") return View("Lockout");
 
             return View("administration/Access/Atoms", MODEL);
         }
@@ -144,6 +151,10 @@ namespace Gestreino.Controllers
             ViewBag.bulkids = ids;
             ViewBag.Action = action;
 
+            if (AcessControl.isGROUP_ADM()) { }
+            else if (AcessControl.isGROUP_INST() && AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) { }
+            else return View("Lockout");
+            /*
             if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUP_USERS_NEW) && ViewBag.Action == "AdicionarGroupUtil") return View("Lockout");
             if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUP_USERS_NEW) && ViewBag.Action == "AdicionarUtilGroup") return View("Lockout");
             if (!AcessControl.Authorized(AcessControl.ADM_USERS_GROUP_USERS_DELETE) && ViewBag.Action == "RemoverGroupUtil") return View("Lockout");
@@ -159,7 +170,7 @@ namespace Gestreino.Controllers
             if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILE_USERS_NEW) && ViewBag.Action == "AdicionarProfileUtil") return View("Lockout");
             if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILE_USERS_NEW) && ViewBag.Action == "AdicionarUtilProfile") return View("Lockout");
             if (!AcessControl.Authorized(AcessControl.ADM_USERS_PROFILE_USERS_DELETE) && ViewBag.Action == "RemoverUtilProfile") return View("Lockout");
-
+            */
             return View("administration/Access/AppendItems", MODEL);
         }
 
