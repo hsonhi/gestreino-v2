@@ -89,7 +89,7 @@ namespace Gestreino.Controllers
 
             GroupId = GroupId == null ? null : GroupId;
             ProfileId = ProfileId == null ? null : ProfileId;
-            var v = (from a in databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, GroupId, ProfileId, null, null, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
+            var v = (from a in databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, GroupId, ProfileId, AcessControl.getUserGroup().ToString(), null, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
             TempData["QUERYRESULT_ALL"] = v.ToList();
 
             //SEARCH RESULT SET
@@ -198,6 +198,8 @@ namespace Gestreino.Controllers
                 if (databaseManager.PES_CONTACTOS.Where(x => x.EMAIL == MODEL.Email).Any())
                     return Json(new { result = false, error = "Endereço de email já se encontra registado, por favor verifique a seleção!" });
 
+                if (Converters.WordCount(MODEL.Name) <= 1)
+                    return Json(new { result = false, error = "Nome completo deve conter mais de uma palavra!" });
 
                 var Status = MODEL.Status == 1 ? true : false;
                 var DateIni = string.IsNullOrWhiteSpace(MODEL.DateAct) ? (DateTime?)null : DateTime.ParseExact(MODEL.DateAct, "dd-MM-yyyy", CultureInfo.InvariantCulture);
@@ -210,6 +212,10 @@ namespace Gestreino.Controllers
 
                 // Create
                 var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, null, null, MODEL.Login, MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, Status, DateIni, DateEnd, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                var UserId = create.First().ID;
+                //Add to group
+                databaseManager.SP_UTILIZADORES_ENT_GRUPOS_UTILIZADORES(null, AcessControl.getUserGroup().Value, UserId, int.Parse(User.Identity.GetUserId()), "C").ToList();
+
 
                 // Send Email
                 string url = "http://gestreino.pt/";
@@ -219,7 +225,7 @@ namespace Gestreino.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { result = false, error = ex.Message });
+                return Json(new { result = false, error = ex.InnerException.Message });
             }
             return Json(new { result = true, error = string.Empty, table = "UserTable", showToastr = true, toastrMessage = "Submetido com sucesso!" });
         }
@@ -1854,12 +1860,32 @@ namespace Gestreino.Controllers
 
         //Parameters
         [HttpGet]
-        public ActionResult Parameters()
+        public ActionResult Parameters(SettingsDef MODEL) 
         {
             if (AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_GT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_PES)) { }else return View("Lockout");
 
+            var setts = databaseManager.GRL_DEFINICOES.Where(x => x.INST_APLICACAO_ID == Configs.INST_INSTITUICAO_ID).ToList();
+
+            MODEL.MOEDA_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME + " - " + x.CODIGO.ToString() });
+            MODEL.INST_PER_TEMA_1 = setts.First().INST_PER_TEMA_1;
+            MODEL.INST_PER_TEMA_1_SIDEBAR = setts.First().INST_PER_TEMA_1_SIDEBAR;
+            MODEL.INST_PER_TEMA_2 = setts.First().INST_PER_TEMA_2;
+            MODEL.INST_PER_LOGOTIPO_WIDTH = setts.First().INST_PER_LOGOTIPO_WIDTH;
+            MODEL.INST_MDL_GPAG_MOEDA_PADRAO = setts.First().INST_MDL_GPAG_MOEDA_PADRAO;
+            MODEL.INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS = setts.First().INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS;
+            MODEL.INST_MDL_GPAG_NOTA_DECIMAL = setts.First().INST_MDL_GPAG_NOTA_DECIMAL;
+            MODEL.SEC_SENHA_TENT_BLOQUEIO = setts.First().SEC_SENHA_TENT_BLOQUEIO;
+            MODEL.SEC_SENHA_TENT_BLOQUEIO_TEMPO = setts.First().SEC_SENHA_TENT_BLOQUEIO_TEMPO;
+            MODEL.SEC_SENHA_RECU_LIMITE_EMAIL = setts.First().SEC_SENHA_RECU_LIMITE_EMAIL;
+            MODEL.SEC_SESSAO_TIMEOUT_TEMPO = setts.First().SEC_SESSAO_TIMEOUT_TEMPO;
+            MODEL.NET_STMP_HOST = setts.First().NET_STMP_HOST;
+            MODEL.NET_STMP_PORT = setts.First().NET_STMP_PORT;
+            MODEL.NET_SMTP_USERNAME = setts.First().NET_SMTP_USERNAME;
+            MODEL.NET_SMTP_SENHA = setts.First().NET_SMTP_SENHA;
+            MODEL.NET_SMTP_FROM = setts.First().NET_SMTP_FROM;
+
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Parameters;
-            return View("Parameters/Index");
+            return View("Parameters/Index", MODEL);
         }
         [HttpGet]
         public ActionResult ParametersGRL()

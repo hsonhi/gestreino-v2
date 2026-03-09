@@ -137,9 +137,8 @@ namespace Gestreino.Classes
 
         public static int GT_REPORTS_LIST_VIEW_SEARCH = 101;
 
-        public static List<int> ADM_GROUP_EST = new List<int>(new int[] { 21 }); 
-        public static List<int> ADM_GROUP_ADM_FUN = new List<int>(new int[] { 6, 140 }); 
-        public static List<int> ADM_GROUP_ADM_FUN_DOC = new List<int>(new int[] { 10 });
+        public static int GROUP_ADM = 1;
+        public static int GROUP_INST = 2; 
 
         public static bool Authorized(int atom)
         {
@@ -154,6 +153,49 @@ namespace Gestreino.Classes
                 if (int.Parse(i.Value) == atom) Authorized = true; 
             }
             return Authorized;
+        }
+        public static bool isGROUP_ADM()
+        {
+            var Authorized = false;
+
+            var claimsIdentity = System.Web.HttpContext.Current.User.Identity as ClaimsIdentity;
+
+            var groups = claimsIdentity.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarygroupsid").ToList();
+
+            foreach (var i in groups)
+            {
+                if (int.Parse(i.Value) == GROUP_ADM) Authorized = true;
+            }
+            return Authorized;
+        }
+        public static bool isGROUP_INST()
+        {
+            var Authorized = false;
+
+            var claimsIdentity = System.Web.HttpContext.Current.User.Identity as ClaimsIdentity;
+
+            var groups = claimsIdentity.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarygroupsid").ToList();
+
+            foreach (var i in groups)
+            {
+                if (int.Parse(i.Value) == GROUP_INST) Authorized = true;
+            }
+            return Authorized;
+        }
+        public static int? getUserGroup()
+        {
+            //Fetch one only
+            int? group = null;
+
+            var claimsIdentity = System.Web.HttpContext.Current.User.Identity as ClaimsIdentity;
+
+            var groups = claimsIdentity.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarygroupsid").ToList();
+
+            foreach (var i in groups)
+            {
+                group=(int.Parse(i.Value));
+            }
+            return group;
         }
     }
 }

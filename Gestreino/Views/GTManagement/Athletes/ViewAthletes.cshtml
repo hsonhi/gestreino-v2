@@ -5,6 +5,17 @@
 }
 <!-- page content -->
 <div class="right_col" role="main">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="btn-group" style="border:1px solid #ddd; border-radius:4px">
+                @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_NEW))
+                {<a title="Adicionar atleta" href="@Url.Action("newathlete", "gtmanagement")" class="btn btn-light"><img src="~/Assets/images/new.png" width="26" /> Novo</a>
+                }
+                <button type="button" disabled class="btn btn-light" title="Imprimir"><img src="~/Assets/images/printer.png" width="19" /> Imprimir</button>
+                <button type="button" class="btn btn-light" onclick="openHelpWindow('DadosBiograficos')" title="Ajuda"><img src="~/Assets/images/help.png" width="19" /> Ajuda</button>
+            </div>
+        </div>
+    </div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="@Url.Action("athletes","gtmanagement")">Atletas</a></li>
@@ -25,11 +36,12 @@
                         <h3>@ViewBag.data[0].NOME_PROPIO @ViewBag.data[0].APELIDO</h3>
                     </center>
                     <div class="btn-group-vertical btn-toolbar">
-                         @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_NEW)) {<a title="Atualizar informação" href="@Url.Action("updateathlete", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm btn-block btn-secondary w-100"><i class="fa fa-pencil user-profile-icon"></i> Atualizar informação</a>}
-                         @if (AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH))
-                         {<a title="Perfil do utilizador" href="@Url.Action("viewusers", "administration", new { Id = ViewBag.data[0].UTILIZADORES_ID })" class="btn  btn-block btn-sm btn-secondary w-100"><i class="fa fa-user user-profile-icon"></i> Utilizador</a>}
-                         @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_ALTER_IMG))
-                         { <a title="Carregar foto" href="@Url.Action("profilephoto", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm  btn-block btn-secondary w-100"><i class="fa fa-camera user-profile-icon"></i> Carregar foto</a>}
+                        @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_NEW))
+                        {<a title="Atualizar informação" href="@Url.Action("updateathlete", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm btn-block btn-secondary w-100"><i class="fa fa-pencil user-profile-icon"></i> Atualizar informação</a>}
+                        @if (AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH))
+                        {<a title="Perfil do utilizador" href="@Url.Action("viewusers", "administration", new { Id = ViewBag.data[0].UTILIZADORES_ID })" class="btn  btn-block btn-sm btn-secondary w-100"><i class="fa fa-user user-profile-icon"></i> Utilizador</a>}
+                        @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_ALTER_IMG))
+                        {<a title="Carregar foto" href="@Url.Action("profilephoto", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm  btn-block btn-secondary w-100"><i class="fa fa-camera user-profile-icon"></i> Carregar foto</a>}
                     </div>
                 </div>
             </div>
@@ -46,7 +58,8 @@
                             </tr>
                             <tr>
                                 <td>Peso (kg):</td>
-                                <td>@ViewBag.dataCaract[0].PESO.ToString("G29")
+                                <td>
+                                    @ViewBag.dataCaract[0].PESO.ToString("G29")
                                 </td>
                             </tr>
                             <tr>
@@ -359,25 +372,25 @@
                             <a href="#tab_contentd3" role="tab" id="" data-toggle="tab" aria-expanded="false">Agregados</a>
                         </li>
                     }
-                        @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_PROFESSIONAL_LIST_VIEW_SEARCH))
-                        {
-                            <li role="presentation" class="">
-                                <a href="#tab_contentd4" role="tab" id="" data-toggle="tab" aria-expanded="false">Dados profissionais</a>
-                            </li>
-                        }
-                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_DEFICIENCY_LIST_VIEW_SEARCH))
-                            {
-                                <li role="presentation" class="">
-                                    <a href="#tab_contentd5" role="tab" id="" data-toggle="tab" aria-expanded="false">Deficiências</a>
-                                </li>
-                            }
-                                @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_FILEMGR))
-                                {
-                                    <li role="presentation" class="">
-                                        <a href="#tab_contentd6" role="tab" id="" data-toggle="tab" aria-expanded="false">Documentos</a>
-                                    </li>
-                                }
-                                </ul>
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_PROFESSIONAL_LIST_VIEW_SEARCH))
+                    {
+                        <li role="presentation" class="">
+                            <a href="#tab_contentd4" role="tab" id="" data-toggle="tab" aria-expanded="false">Dados profissionais</a>
+                        </li>
+                    }
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_DEFICIENCY_LIST_VIEW_SEARCH))
+                    {
+                        <li role="presentation" class="">
+                            <a href="#tab_contentd5" role="tab" id="" data-toggle="tab" aria-expanded="false">Deficiências</a>
+                        </li>
+                    }
+                    @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_FILEMGR))
+                    {
+                        <li role="presentation" class="">
+                            <a href="#tab_contentd6" role="tab" id="" data-toggle="tab" aria-expanded="false">Documentos</a>
+                        </li>
+                    }
+                </ul>
                 <div id="myTabContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane active " id="tab_contentd1" aria-labelledby="">
                         <div class="">
@@ -462,13 +475,13 @@
                                             @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_IDENTIFICATION_DELETE))
                                             {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="pesident" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
                                             }  <button title="Pesquisar" class="btnSearch btn btn-default" data-id="UserIdentTable"><i class="fa fa-search"></i></button>
-                                                <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="UserIdentTable"><i class="fa fa-eraser"></i></button>
-                                                @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_IDENTIFICATION_NEW))
-                                                {<a title="Adicionar identificação pessoal" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="pesident" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
-                                                } <!--Separator-->
-                                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersIdentification", applyFilter = "true" })" target="_blank" data-id="UserIdentTable"><i class="fa fa-filter"></i></a>
-                                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersIdentification", applyFilter = "false" })" target="_blank" data-id="UserIdentTable"><i class="fa fa-file-excel"></i></a>
-                                            </div>
+                                            <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="UserIdentTable"><i class="fa fa-eraser"></i></button>
+                                            @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_IDENTIFICATION_NEW))
+                                            {<a title="Adicionar identificação pessoal" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="pesident" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                                            } <!--Separator-->
+                                            <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersIdentification", applyFilter = "true" })" target="_blank" data-id="UserIdentTable"><i class="fa fa-filter"></i></a>
+                                            <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersIdentification", applyFilter = "false" })" target="_blank" data-id="UserIdentTable"><i class="fa fa-file-excel"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -544,9 +557,9 @@
                                             @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_FAM_NEW))
                                             {<a title="Adicionar agregado familiar" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="pesfamily" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
                                             }<!--Separator-->
-                                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersFamily", applyFilter = "true" })" target="_blank" data-id="UserFamilyTable"><i class="fa fa-filter"></i></a>
-                                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersFamily", applyFilter = "false" })" target="_blank" data-id="UserFamilyTable"><i class="fa fa-file-excel"></i></a>
-                                            </div>
+                                            <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersFamily", applyFilter = "true" })" target="_blank" data-id="UserFamilyTable"><i class="fa fa-filter"></i></a>
+                                            <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersFamily", applyFilter = "false" })" target="_blank" data-id="UserFamilyTable"><i class="fa fa-file-excel"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -632,9 +645,9 @@
                                             @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_PROFESSIONAL_NEW))
                                             {<a title="Adicionar dados profissionais" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="pesprofessional" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
                                             } <!--Separator-->
-                                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersProfessional", applyFilter = "true" })" target="_blank" data-id="UserProfissaoTable"><i class="fa fa-filter"></i></a>
-                                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersProfessional", applyFilter = "false" })" target="_blank" data-id="UserProfissaoTable"><i class="fa fa-file-excel"></i></a>
-                                            </div>
+                                            <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersProfessional", applyFilter = "true" })" target="_blank" data-id="UserProfissaoTable"><i class="fa fa-filter"></i></a>
+                                            <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersProfessional", applyFilter = "false" })" target="_blank" data-id="UserProfissaoTable"><i class="fa fa-file-excel"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -710,9 +723,9 @@
                                             @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_DEFICIENCY_NEW))
                                             {<a title="Adicionar registo de deficiência" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="@ViewBag.data[0].ID" data-action="Adicionar" data-entity="pesdisability" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
                                             } <!--Separator-->
-                                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersDisability", applyFilter = "true" })" target="_blank" data-id="UserDisabilityTable"><i class="fa fa-filter"></i></a>
-                                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersDisability", applyFilter = "false" })" target="_blank" data-id="UserDisabilityTable"><i class="fa fa-file-excel"></i></a>
-                                            </div>
+                                            <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersDisability", applyFilter = "true" })" target="_blank" data-id="UserDisabilityTable"><i class="fa fa-filter"></i></a>
+                                            <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "GetUsersDisability", applyFilter = "false" })" target="_blank" data-id="UserDisabilityTable"><i class="fa fa-file-excel"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -880,8 +893,8 @@
                             <input type="hidden" id="upload" value="pespessoas" />
                         </div>
                     }
-                    </div>
                 </div>
+            </div>
         </div>
     </div>
     @Html.HiddenFor(m => m.ID, new { Id = "PesId" })

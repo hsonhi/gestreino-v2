@@ -23,6 +23,17 @@
             </div>
         </div>
     </div>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="btn-group" style="border:1px solid #ddd; border-radius:4px">
+                @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_NEW))
+                {<a title="Adicionar atleta" href="@Url.Action("newathlete", "gtmanagement")" class="btn btn-light"><img src="~/Assets/images/new.png" width="26" /> Novo</a>
+                }
+                <button type="button" disabled class="btn btn-light" title="Imprimir"><img src="~/Assets/images/printer.png" width="19" /> Imprimir</button>
+                <button type="button" class="btn btn-light" onclick="openHelpWindow('DadosBiograficos')" title="Ajuda"><img src="~/Assets/images/help.png" width="19" /> Ajuda</button>
+            </div>
+        </div>
+    </div>
     @using (Ajax.BeginForm("newathlete", "gtmanagement", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }))
     {
         @Html.AntiForgeryToken()
@@ -124,7 +135,7 @@
                                     <label class="col-md-2 col-form-label required" for="Numero">Endereço físico</label>
 
                                     <div class="col-md-3">
-                                        @Html.TextBoxFor(m => m.EndNumero, new { @class = "form-control form-control-sm", @type = "number", min = "1",placeholder= "Número" })
+                                        @Html.TextBoxFor(m => m.EndNumero, new { @class = "form-control form-control-sm", @type = "number", min = "1", placeholder = "Número" })
                                     </div>
                                     <div class="col-md-3">
                                         @Html.TextBoxFor(m => m.Rua, new { @class = "form-control form-control-sm", required = "", placeholder = "Rua" })

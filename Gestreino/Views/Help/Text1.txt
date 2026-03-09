@@ -1,0 +1,14 @@
+Microsoft HTML Help Compiler 4.74.8702
+
+Compiling g:\Pessoal\Temp\Help\Configuracoes.chm
+
+
+Compile time: 0 minutes, 1 second
+1	Topic
+0	Local links
+0	Internet links
+0	Graphics
+
+
+Created g:\Pessoal\Temp\Help\Configuracoes.chm, 13,468 bytes
+Compression increased file by 2,550 bytes.

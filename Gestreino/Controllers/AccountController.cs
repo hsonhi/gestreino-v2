@@ -71,24 +71,19 @@ namespace Gestreino.Controllers
             //ViewBag.MORADA = PessoaEndereco.Count() > 0 ? PessoaEndereco[0].MORADA : String.Empty;
             //ViewBag.PessoaIdent = databaseManager.SP_PES_ENT_PESSOAS_IDENTIFICACAO(PesId.ID, null, null, null, null, null, null, null, null, null, null, "R").ToList();
 
-            /*
+            
              // Get claims after login
-             var claimsIdentity = User.Identity as ClaimsIdentity;
+             //var claimsIdentity = User.Identity as ClaimsIdentity;
              // Fetch grupos
              var grupoClaim = claimsIdentity.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarygroupsid").ToList();
-             // Fetch subgrupos
-             var subgrupoClaim = claimsIdentity.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/groupsid").ToList();
              // Fetch atomos
              var atomoClaim = claimsIdentity.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").ToList();
 
              List<string> grupos = new List<string>();
-             List<string> subgrupos = new List<string>();
+             //List<string> subgrupos = new List<string>();
              List<string> atomos = new List<string>();
 
-             foreach (var i in subgrupoClaim)
-             {
-                 subgrupos.Add(i.Value);
-             }
+             
              foreach (var i in grupoClaim)
              {
                  grupos.Add(i.Value);
@@ -97,13 +92,13 @@ namespace Gestreino.Controllers
              {
                  atomos.Add(i.Value);
              }
-             //string combindedStringG = string.Join(",", grupos.ToArray());
-             //string combindedStringS = string.Join(",", subgrupos.ToArray());
-             //string combindedStringA = string.Join(",", atomos.ToArray());
-             ViewBag.Grupos = grupos;
-             ViewBag.SubGrupos = subgrupos;
-             ViewBag.Atomos = atomos;
-            */
+             string combindedStringG = string.Join(",", grupos.ToArray());
+             
+             string combindedStringA = string.Join(",", atomos.ToArray());
+             ViewBag.Grupos = combindedStringG;
+             
+             ViewBag.Atomos = combindedStringA;
+           
             ViewBag.LeftBarLinkActive = 0;
             return View(MODEL);
         }

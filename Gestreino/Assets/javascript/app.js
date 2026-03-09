@@ -4087,6 +4087,9 @@ function setChangePicturePES(pesid) {
 function setPictureWebcamBtn(userid, pesid) {
     window.open("/gtmanagement/webcam?id=" + userid + "&pesId=" + pesid + "", "webcam", "location=yes,resizable=no,height=620,width=550,scrollbars=yes,status=yes")
 }
+function openHelpWindow(name) {
+    window.open("/home/help?page="+name, "webcam", "location=yes,resizable=no,height=620,width=550,scrollbars=yes,status=yes")
+}
 function setPictureWebCam(data) {
     var imageUrl = "/" + data.imageUrl
 

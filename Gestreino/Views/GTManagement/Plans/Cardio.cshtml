@@ -8,7 +8,7 @@
     <!-- page content -->
 <div class="right_col" role="main">
     <div class="row">
-        <div class="col-md-11 col-sm-12 ">
+        <div class="col-md-12 col-sm-12 ">
             <div class="handle-error alert alert-accent"
                  role="alert" style="display:none;">
                 <div class="d-flex flex-wrap align-items-start">
@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-11 col-sm-12 ">
+        <div class="col-md-9 col-sm-12 ">
             @using (Ajax.BeginForm("GTPlans", "gtmanagement", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }))
             {
                 @Html.AntiForgeryToken()
@@ -175,17 +175,19 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mt-4">
-                                        @if (AcessControl.Authorized(AcessControl.GT_PLANS_CARDIO_UPDATE))
-                                        {<button class="btn btn-success btn-block"><i class="fa fa-floppy-disk"></i> Guardar</button>
-                                        }
-                                        @if (Model.ID > 0)
-                                        {
-                                            <a href="@Url.Action("cardio", "pdfreports", new { Id=Model.ID})" class="btn btn-success btn-block" title="Imprimir"><i class="fa fa-print"></i> Imprimir</a>
-                                        }
-                                        @if (AcessControl.Authorized(AcessControl.GT_PLANS_CARDIO_UPDATE))
-                                        {<button type="button" id="gttreinoclr" class="btn btn-secondary btn-block"><<</button>
-                                            <a class="btn btn-secondary btn-block" href="@Url.Action("cardioplans", "gtmanagement", new { Id = string.Empty })"><i class="fa fa-plus-circle"></i> Novo</a>
-                                        }
+                                        <div class="btn-group-vertical w-100" style="border:1px solid #ddd; border-radius:4px">
+                                            @if (AcessControl.Authorized(AcessControl.GT_PLANS_CARDIO_UPDATE))
+                                            {
+                                                <a title="Novo" href="@Url.Action("cardioplans", "gtmanagement", new { Id = string.Empty })" class="btn-block btn btn-light"><img src="~/Assets/images/new.png" width="26" /> Novo</a>
+                                                <button title="Guardar" class="btn-block btn btn-light"><img src="~/Assets/images/save.png" width="26" /> Guardar</button>
+                                                <button type="button" id="gttreinoclr" class="btn btn-light btn-block" title="Limpar"><img src="~/Assets/images/eraser.png" width="19" /> Limpar</button>
+                                            }
+                                            @if (Model.ID > 0)
+                                            {
+                                                <a href="@Url.Action("cardio", "pdfreports", new { Id = Model.ID })" class="btn btn-light btn-block" title="Imprimir"><img src="~/Assets/images/printer.png" width="19" /> Imprimir</a>
+                                            }
+                                            <button type="button" class="btn btn-light btn-block" onclick="openHelpWindow('Prescricoes')" title="Ajuda"><img src="~/Assets/images/help.png" width="19" /> Ajuda</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
@@ -232,7 +234,7 @@
                 </div>
             }
         </div>
-        <div class="col-md-11 col-sm-12 ">
+        <div class="col-md-3 col-sm-12 ">
             <!--  DATATABLE START -->
             <div class="card mb-32pt">
                 <div class="card-header">

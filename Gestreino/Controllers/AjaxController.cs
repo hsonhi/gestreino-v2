@@ -710,7 +710,7 @@ namespace Gestreino.Controllers
             ViewBag.Action = action;
             return View("GTManagement/Athletes/GTAvaliado", MODEL);
         }
-        private void SetGTAvaliado(int PesId)
+        public void SetGTAvaliado(int PesId)
         {
             if (PesId > 0)
             {

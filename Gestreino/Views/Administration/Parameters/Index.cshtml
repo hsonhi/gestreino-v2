@@ -1,54 +1,298 @@
 ﻿@using Gestreino.Classes;
+@model Gestreino.Models.SettingsDef
 @{
-    ViewBag.Title = "Parametrização";
+    ViewBag.Title = "Definições e Parametrização";
 }
 <div class="right_col" role="main">
     <div class="row">
-        @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM))
-        {
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <a href="@Url.Action("parametersgrl", "administration")">
-                    <div class="tile-stats">
-                        <div class="icon">
-                            <i class="fa fa-cogs"></i>
-                        </div>
-                        <div class="count">&nbsp;</div>
-                        <h3>Entidades gerais (GRL)</h3>
-                        <p>Parametrização de dados gerais</p>
+        <div class="col-md-12">
+            <div class="row">
+                @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM))
+                {
+
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6">
+                        <a href="@Url.Action("parametersgrl", "administration")">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-cogs"></i>
+                                </div>
+                                <div class="count">&nbsp;</div>
+                                @*<h3>Entidades gerais (GRL)</h3>*@
+                                <p>Parametrização de dados gerais</p>
+                            </div>
+                        </a>
                     </div>
-                </a>
-            </div>
-        }
-        @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_PES))
-        {
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <a href="@Url.Action("parameterspes", "administration")">
-                    <div class="tile-stats">
-                        <div class="icon">
-                            <i class="fa fa-users"></i>
-                        </div>
-                        <div class="count">&nbsp;</div>
-                        <h3>Entidades pessoais (PES)</h3>
-                        <p>Parametrização de dados biográficos</p>
+                }
+                @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_PES))
+                {
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                        <a href="@Url.Action("parameterspes", "administration")">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-users"></i>
+                                </div>
+                                <div class="count">&nbsp;</div>
+                                @*<h3>Entidades pessoais (PES)</h3>*@
+                                <p>Parametrização de dados biográficos</p>
+                            </div>
+                        </a>
                     </div>
-                </a>
-            </div>
-        }
-        @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_GT))
-        {
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <a href="@Url.Action("parametersgt", "administration")">
-                    <div class="tile-stats">
-                        <div class="icon">
-                            <i class="fa fa-code"></i>
-                        </div>
-                        <div class="count">&nbsp;</div>
-                        <h3>Entidades Gestreino (GT)</h3>
-                        <p>Parametrização de dados aplicacionais</p>
+                }
+                @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_GT))
+                {
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                        <a href="@Url.Action("parametersgt", "administration")">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-code"></i>
+                                </div>
+                                <div class="count">&nbsp;</div>
+                                @* <h3>Entidades Gestreino (GT)</h3>*@
+                                <p>Parametrização de dados aplicacionais</p>
+                            </div>
+                        </a>
                     </div>
-                </a>
+                }
             </div>
-        }
+        </div>
     </div>
+    @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_SETINGS_EDIT))
+    {
+        <div class="row">
+            <div class="col-md-9">
+                <div class="animated flipInY ">
+                    <div class="tile-stats">
+                        <h3 class="p-2">Definições e Parametrização</h3>
+                        <div class=" mb-32pt p-3 mt-2">
+                            <div class="card">
+                                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                        <li role="presentation" class="active">
+                                            <a href="#tab_content1" id="" role="tab" data-toggle="tab" aria-expanded="true">Personalização</a>
+                                        </li>
+                                        <li role="presentation" class="">
+                                            <a href="#tab_content4" role="tab" id="" data-toggle="tab" aria-expanded="false">SMTP</a>
+                                        </li>
+                                        <li role="presentation" class="">
+                                            <a href="#tab_content2" role="tab" id="" data-toggle="tab" aria-expanded="false">Pagamentos</a>
+                                        </li>
+                                        <li role="presentation" class="">
+                                            <a href="#tab_content3" role="tab" id="" data-toggle="tab" aria-expanded="false">Segurança</a>
+                                        </li>
+                                    </ul>
+                                    <div id="myTabContent" class="tab-content">
+                                        <div role="tabpanel" class="tab-pane active" id="tab_content1" aria-labelledby="">
+                                            <div class="alert alert-primary-light mb-0"
+                                                 role="alert" style="border-radius:0 !important">
+                                                <div class="d-flex flex-wrap align-items-start">
+                                                    <div class="mr-8pt">
+                                                        <i class="fa fa-cogs"></i>&nbsp;
+                                                    </div>
+                                                    <div class="flex"
+                                                         style="min-width: 180px">
+                                                        <span class="text-black-100">
+                                                            <strong>Personalização!</strong> Cores de temas e tamanho de formato de Logotipo
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @using (Ajax.BeginForm("UpdateInstPer", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "p-4" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.INST_PER_TEMA_1, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.INST_PER_TEMA_1, new { @class = "form-control form-control-sm", @type = "color", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.INST_PER_TEMA_1_SIDEBAR, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.INST_PER_TEMA_1_SIDEBAR, new { @class = "form-control form-control-sm", @type = "color", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.INST_PER_TEMA_2, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.INST_PER_TEMA_2, new { @class = "form-control form-control-sm", @type = "color", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.INST_PER_LOGOTIPO_WIDTH, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.INST_PER_LOGOTIPO_WIDTH, new { @class = "form-control form-control-sm", @type = "number" })
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <div class="col-sm-4 text-right">
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="">
+                                            <div class="alert alert-primary-light mb-0"
+                                                 role="alert">
+                                                <div class="d-flex flex-wrap align-items-start">
+                                                    <div class="mr-8pt">
+                                                        <i class="fa fa-cogs"></i>&nbsp;
+                                                    </div>
+                                                    <div class="flex"
+                                                         style="min-width: 180px">
+                                                        <span class="text-black-100">
+                                                            <strong>Pagamentos!</strong> Moeda padrão e número de dígitos
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @using (Ajax.BeginForm("UpdateInstPag", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "p-4" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.INST_MDL_GPAG_MOEDA_PADRAO, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.DropDownListFor(x => Model.INST_MDL_GPAG_MOEDA_PADRAO, Model.MOEDA_LIST, "Selecionar uma opção", new { @class = "form-control form-control-sm", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.INST_MDL_GPAG_N_DIGITOS_VALORES_PAGAMENTOS, new { @class = "form-control form-control-sm", @type = "number", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.INST_MDL_GPAG_NOTA_DECIMAL, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.DropDownListFor(m => Model.INST_MDL_GPAG_NOTA_DECIMAL, Enum.GetValues(typeof(SelectValues.NotaDecimal)).Cast<int>().Select(e => new SelectListItem() { Text = Enum.GetName(typeof(SelectValues.NotaDecimal), e), Value = e.ToString() }), new { @class = "form-control form-control-sm" })
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <div class="col-sm-4 text-right">
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="">
+                                            <div class="alert alert-primary-light mb-0"
+                                                 role="alert">
+                                                <div class="d-flex flex-wrap align-items-start">
+                                                    <div class="mr-8pt">
+                                                        <i class="fa fa-cogs"></i>&nbsp;
+                                                    </div>
+                                                    <div class="flex"
+                                                         style="min-width: 180px">
+                                                        <span class="text-black-100">
+                                                            <strong>Segurança!</strong> Definições de sessão e tokens
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @using (Ajax.BeginForm("UpdateInstSec", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "p-4" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.SEC_SENHA_TENT_BLOQUEIO, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.SEC_SENHA_TENT_BLOQUEIO, new { @class = "form-control form-control-sm", @type = "number", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.SEC_SENHA_TENT_BLOQUEIO_TEMPO, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.SEC_SENHA_TENT_BLOQUEIO_TEMPO, new { @class = "form-control form-control-sm", @type = "number", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.SEC_SENHA_RECU_LIMITE_EMAIL, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.SEC_SENHA_RECU_LIMITE_EMAIL, new { @class = "form-control form-control-sm", @type = "number", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.SEC_SESSAO_TIMEOUT_TEMPO, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.SEC_SESSAO_TIMEOUT_TEMPO, new { @class = "form-control form-control-sm", @type = "number", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <div class="col-sm-4 text-right">
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="">
+                                            <div class="alert alert-primary-light mb-0"
+                                                 role="alert">
+                                                <div class="d-flex flex-wrap align-items-start">
+                                                    <div class="mr-8pt">
+                                                        <i class="fa fa-cogs"></i>&nbsp;
+                                                    </div>
+                                                    <div class="flex"
+                                                         style="min-width: 180px">
+                                                        <span class="text-black-100">
+                                                            <strong>SMTP!</strong> Definições do servidor SMTP
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @using (Ajax.BeginForm("UpdateInstNet", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "p-4" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.NET_STMP_HOST, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.NET_STMP_HOST, new { @class = "form-control form-control-sm", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.NET_STMP_PORT, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.NET_STMP_PORT, new { @class = "form-control form-control-sm", @type = "number", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.NET_SMTP_USERNAME, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.NET_SMTP_USERNAME, new { @class = "form-control form-control-sm", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.NET_SMTP_SENHA, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.NET_SMTP_SENHA, new { @class = "form-control form-control-sm", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.NET_SMTP_FROM, new { @class = "col-md-4 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.TextBoxFor(m => m.NET_SMTP_FROM, new { @class = "form-control form-control-sm", required = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <div class="col-sm-4 text-right">
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     <h2>&nbsp;</h2>
 </div>

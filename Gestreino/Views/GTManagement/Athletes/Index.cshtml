@@ -4,6 +4,17 @@
 }
 <!-- page content -->
 <div class="right_col" role="main">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="btn-group" style="border:1px solid #ddd; border-radius:4px">
+                @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_NEW))
+                {<a title="Adicionar atleta" href="@Url.Action("newathlete", "gtmanagement")" class="btn btn-light"><img src="~/Assets/images/new.png" width="26" /> Novo</a>
+                }
+                <button type="button" disabled class="btn btn-light" title="Imprimir"><img src="~/Assets/images/printer.png" width="19" /> Imprimir</button>
+                <button type="button" class="btn btn-light" onclick="openHelpWindow('DadosBiograficos')" title="Ajuda"><img src="~/Assets/images/help.png" width="19" /> Ajuda</button>
+            </div>
+        </div>
+    </div>
     <!--  DATATABLE START -->
     <div class="card mb-32pt">
         <div class="card-header">

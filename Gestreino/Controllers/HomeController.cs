@@ -15,9 +15,13 @@ namespace Gestreino.Controllers
             return View();
         }
         [AllowAnonymous]
-        public ActionResult Help()
+        public ActionResult Help(string page)
         {
-            return View();
+            var pageRoute = "~/views/help/" + page + ".htm";
+            var staticPageToRender = new FilePathResult(pageRoute, "text/html");
+
+            if (string.IsNullOrEmpty(page)) { return View(); } else { return staticPageToRender; }
         }
+
     }
 }

@@ -38,29 +38,32 @@
                         @Html.HiddenFor(m => m.PEsId)
                         @Html.HiddenFor(m => m.ID)
                         <input type="hidden" value="GT_RespPessoaIdosa" id="GT_Res" />
-                        if (AcessControl.Authorized(AcessControl.GT_QUEST_ELDERLY_UPDATE))
-                        {
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="btn-group">
-                                        <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-floppy-disk"></i> Guardar</button>
-                                        <a class="btn btn-secondary" href="@Url.Action("elderly", "gtmanagement", new { Id = string.Empty })"><i class="fa fa-plus-circle"></i> Novo</a>
-                                    </div>
+                     
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="btn-group" style="border:1px solid #ddd; border-radius:4px">
+                                    @if (AcessControl.Authorized(AcessControl.GT_QUEST_ELDERLY_UPDATE))
+                                    {
+                                        <a title="Novo" class="btn btn-light" href="@Url.Action("elderly", "gtmanagement", new { Id = string.Empty })"><img src="~/Assets/images/new.png" width="26" /> Novo</a>
+                                        <button type="submit" class="btn btn-light"><img src="~/Assets/images/save.png" width="19" /> Guardar</button>
+                                    }
+                                    <button type="button" disabled class="btn btn-light" title="Imprimir"><img src="~/Assets/images/printer.png" width="19" /> Imprimir</button>
+                                    <button type="button" class="btn btn-light" onclick="openHelpWindow('Avaliacoes')" title="Ajuda"><img src="~/Assets/images/help.png" width="19" /> Ajuda</button>
                                 </div>
                             </div>
-                        }
-                            <div class="row">
-                                <div class="col-md-9 mt-2">
-                                    <div class="animated flipInY">
-                                        <div class="tile-stats">
-                                            <div class="icon">
-                                                <i class="fa fa-clipboard-check"></i>
-                                            </div>
-                                            <h3 class="p-2">Pessoa Idosa</h3>
-                                            @if (Model.lblDataInsercao != null)
-                                            {
-                                                <h6 class="p-2 mt-2 text-success"><i class="fa fa-floppy-disk"></i> Questionário registado: @Model.lblDataInsercao.Value.ToString("dd/MM/yyyy HH:mm")</h6>
-                                            }
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="animated flipInY">
+                                    <div class="tile-stats">
+                                        <div class="icon">
+                                            <i class="fa fa-clipboard-check"></i>
+                                        </div>
+                                        <h3 class="p-2">Pessoa Idosa</h3>
+                                        @if (Model.lblDataInsercao != null)
+                                        {
+                                            <h6 class="p-2 mt-2 text-success"><i class="fa fa-floppy-disk"></i> Questionário registado: @Model.lblDataInsercao.Value.ToString("dd/MM/yyyy HH:mm")</h6>
+                                        }
                                         <div class="p4-quest mt-3">
                                             <fieldset class="p-2 border-r">
                                                 <div class="row">
@@ -241,75 +244,75 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <!--  DATATABLE START -->
-                                    <div class="card mb-32pt mt-2">
-                                        <div class="card-header">
-                                            <div class="form-inline">
-                                                <label class="" for="length_change">Mostrar</label>
-                                                <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="GTQuestTable">
-                                                    <option value='10'>10</option>
-                                                    <option value='25'>25</option>
-                                                    <option value='50'>50</option>
-                                                    <option value='100'>100</option>
-                                                    <option value='500'>500</option>
-                                                    <option value='1000'>1000</option>
-                                                    <option value='2000'>2000</option>
-                                                    <option value='5000'>5000</option>
-                                                    <option value='10000'>10000</option>
-                                                </select>
-                                                <label class="" for="length_change">registos</label>
-                                                <div class="btn-group">
-                                                    <button type="button" title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="GTQuestTable"><i class="fa fa-check-square"></i></button>
-                                                    @if (AcessControl.Authorized(AcessControl.GT_QUEST_ELDERLY_DELETE))
-                                                    {<button type="button" title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-upload="GT_RespPessoaIdosa" data-entity="gtquest" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
-                                                    }<button type="button" title="Pesquisar" class="btnSearch btn btn-default" data-id="GTQuestTable"><i class="fa fa-search"></i></button>
-                                                    <button type="button" title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="GTQuestTable"><i class="fa fa-eraser"></i></button>
-                                                    <!--Separator-->
-                                                    <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gtquest", applyFilter = "true" })" target="_blank" data-id="GTQuestTable"><i class="fa fa-filter"></i></a>
-                                                    <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gtquest", applyFilter = "false" })" target="_blank" data-id="GTQuestTable"><i class="fa fa-file-excel"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table id="GTQuestTable" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
-                                                <thead>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td><input type="text" id="GTQuestTableTreino" class="form-control form-control-sm" /></td>
-                                                        <td><input type="text" id="GTQuestTableInsercao" class="form-control form-control-sm" /></td>
-                                                        <td><input type="text" id="GTQuestTableDataInsercao" class="form-control form-control-sm datepicker" /></td>
-                                                        <td><input type="text" id="GTQuestTableActualizacao" class="form-control form-control-sm" /></td>
-                                                        <td><input type="text" id="GTQuestTableDataActualizacao" class="form-control form-control-sm datepicker" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th data-name="GTQuestTableTreino">&nbsp;</th>
-                                                        <th data-name="GTQuestTableInsercao">Inserção</th>
-                                                        <th data-name="GTQuestTableDataInsercao">Data Inserção</th>
-                                                        <th data-name="GTQuestTableActualizacao">Actualização</th>
-                                                        <th data-name="GTQuestTableDataActualizacao">Data Actualização</th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                        <div class="card-footer p-8pt">
-                                            <span class="paginateInfoGTQuestTable paginateInfo mr-12pt" style="float:right"></span>
-                                            <div id="paginateGTQuestTable" class="pagination justify-content-start pagination-xsm m-0"></div>
-                                        </div>
-                                    </div>
-                                    <!--  DATATABLE START -->
                                 </div>
                             </div>
-                        }
+                            <div class="col-md-3">
+                                <!--  DATATABLE START -->
+                                <div class="card mb-32pt">
+                                    <div class="card-header">
+                                        <div class="form-inline">
+                                            <label class="" for="length_change">Mostrar</label>
+                                            <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="GTQuestTable">
+                                                <option value='10'>10</option>
+                                                <option value='25'>25</option>
+                                                <option value='50'>50</option>
+                                                <option value='100'>100</option>
+                                                <option value='500'>500</option>
+                                                <option value='1000'>1000</option>
+                                                <option value='2000'>2000</option>
+                                                <option value='5000'>5000</option>
+                                                <option value='10000'>10000</option>
+                                            </select>
+                                            <label class="" for="length_change">registos</label>
+                                            <div class="btn-group">
+                                                <button type="button" title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="GTQuestTable"><i class="fa fa-check-square"></i></button>
+                                                @if (AcessControl.Authorized(AcessControl.GT_QUEST_ELDERLY_DELETE))
+                                                {<button type="button" title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-upload="GT_RespPessoaIdosa" data-entity="gtquest" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                                                }<button type="button" title="Pesquisar" class="btnSearch btn btn-default" data-id="GTQuestTable"><i class="fa fa-search"></i></button>
+                                                <button type="button" title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="GTQuestTable"><i class="fa fa-eraser"></i></button>
+                                                <!--Separator-->
+                                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gtquest", applyFilter = "true" })" target="_blank" data-id="GTQuestTable"><i class="fa fa-filter"></i></a>
+                                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gtquest", applyFilter = "false" })" target="_blank" data-id="GTQuestTable"><i class="fa fa-file-excel"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="GTQuestTable" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><input type="text" id="GTQuestTableTreino" class="form-control form-control-sm" /></td>
+                                                    <td><input type="text" id="GTQuestTableInsercao" class="form-control form-control-sm" /></td>
+                                                    <td><input type="text" id="GTQuestTableDataInsercao" class="form-control form-control-sm datepicker" /></td>
+                                                    <td><input type="text" id="GTQuestTableActualizacao" class="form-control form-control-sm" /></td>
+                                                    <td><input type="text" id="GTQuestTableDataActualizacao" class="form-control form-control-sm datepicker" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th data-name="GTQuestTableTreino">&nbsp;</th>
+                                                    <th data-name="GTQuestTableInsercao">Inserção</th>
+                                                    <th data-name="GTQuestTableDataInsercao">Data Inserção</th>
+                                                    <th data-name="GTQuestTableActualizacao">Actualização</th>
+                                                    <th data-name="GTQuestTableDataActualizacao">Data Actualização</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer p-8pt">
+                                        <span class="paginateInfoGTQuestTable paginateInfo mr-12pt" style="float:right"></span>
+                                        <div id="paginateGTQuestTable" class="pagination justify-content-start pagination-xsm m-0"></div>
+                                    </div>
+                                </div>
+                                <!--  DATATABLE START -->
+                            </div>
+                        </div>
                     }
-                </div>
+                }
+            </div>
         </div>
         <h2>&nbsp;</h2>
         <h2>&nbsp;</h2>

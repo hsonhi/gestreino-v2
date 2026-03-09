@@ -346,8 +346,8 @@ namespace Gestreino.Controllers
                     MODEL.Age = Converters.CalculateAge(DateofBirth.Value);
                     if (MODEL.Age < 15)
                         return Json(new { result = false, error = "Não pode ter uma idade inferior a 15 anos!" });
-                    //if (MODEL.Age > 69)
-                      //  return Json(new { result = false, error = "Não pode ter uma idade superior a 69 anos!" });
+                    if (MODEL.Age > 69)
+                        return Json(new { result = false, error = "Não pode ter uma idade superior a 69 anos!" });
                 }
 
                 if (databaseManager.PES_CONTACTOS.Where(a => a.EMAIL == MODEL.Email).ToList().Count() > 0)
@@ -469,8 +469,8 @@ namespace Gestreino.Controllers
                     MODEL.Age = Converters.CalculateAge(DateofBirth.Value);
                     if (MODEL.Age < 15)
                         return Json(new { result = false, error = "Não pode ter uma idade inferior a 15 anos!" });
-                    //if (MODEL.Age > 69)
-                      //  return Json(new { result = false, error = "Não pode ter uma idade superior a 69 anos!" });
+                    if (MODEL.Age > 69)
+                        return Json(new { result = false, error = "Não pode ter uma idade superior a 69 anos!" });
                 }
                 if (databaseManager.PES_CONTACTOS.Where(a => a.EMAIL == MODEL.Email && a.PES_PESSOAS_ID != MODEL.ID).ToList().Count() > 0)
                 {
@@ -527,6 +527,13 @@ namespace Gestreino.Controllers
                 databaseManager.GT_SOCIOS_EVOLUCAO.Add(fx);
                 databaseManager.SaveChanges();
 
+                if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)))
+                {
+                    AjaxController f = new AjaxController();
+                    if(MODEL.ID==int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)))
+                       f.SetGTAvaliado(MODEL.ID.Value);
+                }
+               
                 returnUrl = "/gtmanagement/viewathletes/" + MODEL.ID;
                 ModelState.Clear();
             }
@@ -6664,7 +6671,7 @@ namespace Gestreino.Controllers
             //Cálculo do Estimação (txtEstimacao)
             if (MODEL.GT_TipoNivelActividade_ID == 1)
                 MODEL.Estimacao = Convert.ToDecimal(MODEL.MetabolismoRepouso) * Convert.ToDecimal(1.2);
-            else if (MODEL.GT_TipoNivelActividade_ID == 3)
+            else if (MODEL.GT_TipoNivelActividade_ID == 2)
                 MODEL.Estimacao = Convert.ToDecimal(MODEL.MetabolismoRepouso) * Convert.ToDecimal(1.375);
             else if (MODEL.GT_TipoNivelActividade_ID == 3)
                 MODEL.Estimacao = Convert.ToDecimal(MODEL.MetabolismoRepouso) * Convert.ToDecimal(1.55);

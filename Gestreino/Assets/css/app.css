@@ -6625,3 +6625,9 @@ select.is-valid ~ .select2-container--bootstrap4 .select2-selection, form.was-va
 fieldset legend {
     padding: .22rem
 }
+
+.btn-group button img {
+    vertical-align: text-bottom;
+
+}
+

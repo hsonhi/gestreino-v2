@@ -35,19 +35,21 @@
                     @Html.HiddenFor(m => m.PEsId)
                     @Html.HiddenFor(m => m.ID)
                     <input type="hidden" value="GT_RespAptidaoCardio" id="GT_Res" />
-                    if (AcessControl.Authorized(AcessControl.GT_QUEST_CARDIO_UPDATE))
-                    {
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="btn-group">
-                                    <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-floppy-disk"></i> Guardar</button>
-                                    <a class="btn btn-secondary" href="@Url.Action("cardio", "gtmanagement", new { Id = string.Empty })"><i class="fa fa-plus-circle"></i> Novo</a>
-                                </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="btn-group" style="border:1px solid #ddd; border-radius:4px">
+                                @if (AcessControl.Authorized(AcessControl.GT_QUEST_CARDIO_UPDATE))
+                                {
+                                    <a title="Novo" class="btn btn-light" href="@Url.Action("cardio", "gtmanagement", new { Id = string.Empty })"><img src="~/Assets/images/new.png" width="26" /> Novo</a>
+                                    <button type="submit" class="btn btn-light"><img src="~/Assets/images/save.png" width="19" /> Guardar</button>
+                                }
+                                <button type="button" disabled class="btn btn-light" title="Imprimir"><img src="~/Assets/images/printer.png" width="19" /> Imprimir</button>
+                                <button type="button" class="btn btn-light" onclick="openHelpWindow('Avaliacoes')" title="Ajuda"><img src="~/Assets/images/help.png" width="19" /> Ajuda</button>
                             </div>
                         </div>
-                    }
+                    </div>
                     <div class="row">
-                        <div class="col-md-9 mt-2">
+                        <div class="col-md-9">
                             <div class="animated flipInY">
                                 <div class="tile-stats">
                                     <div class="icon">
@@ -480,7 +482,7 @@
                         </div>
                         <div class="col-md-3">
                             <!--  DATATABLE START -->
-                            <div class="card mb-32pt mt-2">
+                            <div class="card mb-32pt">
                                 <div class="card-header">
                                     <div class="form-inline">
                                         <label class="" for="length_change">Mostrar</label>

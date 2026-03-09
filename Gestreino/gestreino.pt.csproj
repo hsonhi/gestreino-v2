@@ -722,7 +722,9 @@
     <Content Include="Assets\fonts\style\fontawesome.min.css" />
     <Content Include="Assets\fonts\style\solid.css" />
     <Content Include="Assets\images\athlete.png" />
+    <Content Include="Assets\images\eraser.png" />
     <Content Include="Assets\images\gt.png" />
+    <Content Include="Assets\images\help.png" />
     <Content Include="Assets\images\imagesflexi\f1.jpg" />
     <Content Include="Assets\images\imagesflexi\f10.jpg" />
     <Content Include="Assets\images\imagesflexi\f11.jpg" />
@@ -775,6 +777,10 @@
     <Content Include="Assets\images\imagesfunc\func73.jpg" />
     <Content Include="Assets\images\loading.gif" />
     <Content Include="Assets\images\login.jpeg" />
+    <Content Include="Assets\images\new.png" />
+    <Content Include="Assets\images\printer.png" />
+    <Content Include="Assets\images\save.png" />
+    <Content Include="Assets\images\search.png" />
     <Content Include="Assets\images\user-avatar.jpg" />
     <Content Include="Assets\images\home.jpg" />
     <Content Include="Assets\images\icon.jpg" />
@@ -864,6 +870,16 @@
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Views\Administration\EmailTemplate.htm" />
     <Content Include="Views\Ajax\Administration\EmailTemplate.htm" />
+    <Content Include="Views\Help\Ajuda.htm" />
+    <Content Include="Views\Help\Avaliacoes.htm" />
+    <Content Include="Views\Help\Configuracoes.htm" />
+    <Content Include="Views\Help\Consultas.htm" />
+    <Content Include="Views\Help\DadosBiograficos.htm" />
+    <Content Include="Views\Help\Prescricoes.htm" />
+    <Content Include="Views\Help\Relatorios.htm" />
+    <Content Include="Views\Help\SobreGestreino.htm" />
+    <Content Include="Views\Help\Text1.txt" />
+    <Content Include="Views\Help\Untitled1.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -956,6 +972,22 @@
     <Content Include="Views\Administration\Access\Tokens.cshtml" />
     <Content Include="Views\GTManagement\Reports\Index.cshtml" />
     <Content Include="Views\Home\Help.cshtml" />
+    <Content Include="Views\Help\Avaliacoes.chm" />
+    <Content Include="Views\Help\Avaliacoes.hhp" />
+    <Content Include="Views\Help\Configuracoes.chm" />
+    <Content Include="Views\Help\configuracoes.hhp" />
+    <Content Include="Views\Help\Consultas.chm" />
+    <Content Include="Views\Help\Consultas.hhp" />
+    <Content Include="Views\Help\DadosBiograficos.chm" />
+    <Content Include="Views\Help\DadosBiograficos.hhp" />
+    <Content Include="Views\Help\Log1.log" />
+    <Content Include="Views\Help\Prescricoes.chm" />
+    <Content Include="Views\Help\Prescricoes.hhp" />
+    <Content Include="Views\Help\Relatorios.chm" />
+    <Content Include="Views\Help\Relatorios.hhp" />
+    <Content Include="Views\Help\SobreGestreino.chm" />
+    <Content Include="Views\Help\SobreGestreino.hhp" />
+    <Content Include="Views\Help\GESTREINO.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
