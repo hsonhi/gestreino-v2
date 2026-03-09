@@ -172,9 +172,9 @@
                             <a><i class="fa fa-cog fa-fw"></i> Configurações <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu"
                                 style="display:@(Settings.Contains(ViewBag.LeftBarLinkActive) ? "block" : "")">
-                                <li @(AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_GT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_PES) ? "" : "hidden") class="@(ViewBag.LeftBarLinkActive == 104 ? "current-page" : "")"><a href="@Url.Action("phases", "administration")">Fases de treino</a></li>
+                                <li @(AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_GT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_PES) ? "" : "hidden") class="@(ViewBag.LeftBarLinkActive == 108 ? "current-page" : "")"><a href="@Url.Action("phases", "administration")">Fases de treino</a></li>
                                 <li @(AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_FILEMGR) || AcessControl.Authorized(AcessControl.ADM_CONFIG_SETINGS_EDIT) ? "" : "hidden") class="@(ViewBag.LeftBarLinkActive == 105 ? "current-page" : "")"><a href="@Url.Action("users", "administration")">Utilizadores</a></li>
-                                <li @(AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_FILEMGR) || AcessControl.Authorized(AcessControl.ADM_CONFIG_SETINGS_EDIT) ? "" : "hidden") class="@(ViewBag.LeftBarLinkActive == 105 ? "current-page" : "")"><a href="@Url.Action("settings", "administration")">Aplicação</a></li>
+                                <li @(AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT) || AcessControl.Authorized(AcessControl.ADM_CONFIG_FILEMGR) || AcessControl.Authorized(AcessControl.ADM_CONFIG_SETINGS_EDIT) ? "" : "hidden") class="@(ViewBag.LeftBarLinkActive == 105 ? "current-page" : "")"><a href="@Url.Action("settings", "administration")">Instituição</a></li>
                             </ul>
                         </li>
                     }

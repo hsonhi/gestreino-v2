@@ -36,7 +36,6 @@ namespace Gestreino
         public virtual DbSet<GRL_TOKENS> GRL_TOKENS { get; set; }
         public virtual DbSet<GRL_TOKENS_TIPOS> GRL_TOKENS_TIPOS { get; set; }
         public virtual DbSet<INST_APLICACAO_CONTACTOS> INST_APLICACAO_CONTACTOS { get; set; }
-        public virtual DbSet<INST_APLICACAO_ENDERECOS> INST_APLICACAO_ENDERECOS { get; set; }
         public virtual DbSet<PES_ENDERECOS> PES_ENDERECOS { get; set; }
         public virtual DbSet<PES_ESTADO_CIVIL> PES_ESTADO_CIVIL { get; set; }
         public virtual DbSet<PES_FAMILIARES_GRUPOS> PES_FAMILIARES_GRUPOS { get; set; }
@@ -110,6 +109,7 @@ namespace Gestreino
         public virtual DbSet<GRL_DEFINICOES> GRL_DEFINICOES { get; set; }
         public virtual DbSet<GT_FaseTreino> GT_FaseTreino { get; set; }
         public virtual DbSet<UTILIZADORES> UTILIZADORES { get; set; }
+        public virtual DbSet<INST_APLICACAO_ENDERECOS> INST_APLICACAO_ENDERECOS { get; set; }
     
         public virtual ObjectResult<SP_UTILIZADORES_LOGIN_LOGS_Result> SP_UTILIZADORES_LOGIN_LOGS(Nullable<int> userId, string action)
         {
@@ -387,83 +387,6 @@ namespace Gestreino
                 new ObjectParameter("Action", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GRL_ENT_TIPOTOKEN_Result>("SP_GRL_ENT_TIPOTOKEN", idParameter, nomeParameter, userInsercaoIdParameter, actionParameter);
-        }
-    
-        public virtual ObjectResult<SP_INST_APLICACAO_Result> SP_INST_APLICACAO(Nullable<int> id, string sigla, string nome, string nIF, Nullable<decimal> telefone, Nullable<decimal> telefoneAlternativo, Nullable<decimal> fax, string email, string codigoPostal, string uRL, Nullable<int> numero, string rua, string morada, Nullable<int> paisId, Nullable<int> cidadeId, Nullable<int> munId, Nullable<int> userInsercaoId, string action)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("Id", id) :
-                new ObjectParameter("Id", typeof(int));
-    
-            var siglaParameter = sigla != null ?
-                new ObjectParameter("Sigla", sigla) :
-                new ObjectParameter("Sigla", typeof(string));
-    
-            var nomeParameter = nome != null ?
-                new ObjectParameter("Nome", nome) :
-                new ObjectParameter("Nome", typeof(string));
-    
-            var nIFParameter = nIF != null ?
-                new ObjectParameter("NIF", nIF) :
-                new ObjectParameter("NIF", typeof(string));
-    
-            var telefoneParameter = telefone.HasValue ?
-                new ObjectParameter("Telefone", telefone) :
-                new ObjectParameter("Telefone", typeof(decimal));
-    
-            var telefoneAlternativoParameter = telefoneAlternativo.HasValue ?
-                new ObjectParameter("TelefoneAlternativo", telefoneAlternativo) :
-                new ObjectParameter("TelefoneAlternativo", typeof(decimal));
-    
-            var faxParameter = fax.HasValue ?
-                new ObjectParameter("Fax", fax) :
-                new ObjectParameter("Fax", typeof(decimal));
-    
-            var emailParameter = email != null ?
-                new ObjectParameter("Email", email) :
-                new ObjectParameter("Email", typeof(string));
-    
-            var codigoPostalParameter = codigoPostal != null ?
-                new ObjectParameter("CodigoPostal", codigoPostal) :
-                new ObjectParameter("CodigoPostal", typeof(string));
-    
-            var uRLParameter = uRL != null ?
-                new ObjectParameter("URL", uRL) :
-                new ObjectParameter("URL", typeof(string));
-    
-            var numeroParameter = numero.HasValue ?
-                new ObjectParameter("Numero", numero) :
-                new ObjectParameter("Numero", typeof(int));
-    
-            var ruaParameter = rua != null ?
-                new ObjectParameter("Rua", rua) :
-                new ObjectParameter("Rua", typeof(string));
-    
-            var moradaParameter = morada != null ?
-                new ObjectParameter("Morada", morada) :
-                new ObjectParameter("Morada", typeof(string));
-    
-            var paisIdParameter = paisId.HasValue ?
-                new ObjectParameter("PaisId", paisId) :
-                new ObjectParameter("PaisId", typeof(int));
-    
-            var cidadeIdParameter = cidadeId.HasValue ?
-                new ObjectParameter("CidadeId", cidadeId) :
-                new ObjectParameter("CidadeId", typeof(int));
-    
-            var munIdParameter = munId.HasValue ?
-                new ObjectParameter("MunId", munId) :
-                new ObjectParameter("MunId", typeof(int));
-    
-            var userInsercaoIdParameter = userInsercaoId.HasValue ?
-                new ObjectParameter("UserInsercaoId", userInsercaoId) :
-                new ObjectParameter("UserInsercaoId", typeof(int));
-    
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_INST_APLICACAO_Result>("SP_INST_APLICACAO", idParameter, siglaParameter, nomeParameter, nIFParameter, telefoneParameter, telefoneAlternativoParameter, faxParameter, emailParameter, codigoPostalParameter, uRLParameter, numeroParameter, ruaParameter, moradaParameter, paisIdParameter, cidadeIdParameter, munIdParameter, userInsercaoIdParameter, actionParameter);
         }
     
         public virtual ObjectResult<SP_PES_ENT_PESSOAS_ENDERECO_Result> SP_PES_ENT_PESSOAS_ENDERECO(Nullable<int> id, Nullable<int> pesId, Nullable<int> tipoEndereco, Nullable<bool> principal, Nullable<int> numero, string rua, string morada, Nullable<int> paisId, Nullable<int> cidadeId, Nullable<int> municipioId, Nullable<System.DateTime> dataInicio, Nullable<System.DateTime> dataFim, Nullable<int> userInsercaoId, string action)
@@ -1877,6 +1800,83 @@ namespace Gestreino
                 new ObjectParameter("Action", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_UTILIZADORES_ENT_UTILIZADORES_Result>("SP_UTILIZADORES_ENT_UTILIZADORES", idParameter, subGroupIdParameter, profileIdParameter, loginParameter, nomeParameter, telefoneParameter, emailParameter, senhaParameter, saltParameter, activoParameter, dataActParameter, dataDesactParameter, validadaParameter, userInsercaoIdParameter, actionParameter);
+        }
+    
+        public virtual ObjectResult<SP_INST_APLICACAO_Result> SP_INST_APLICACAO(Nullable<int> id, string sigla, string nome, string nIF, Nullable<decimal> telefone, Nullable<decimal> telefoneAlternativo, Nullable<decimal> fax, string email, string codigoPostal, string uRL, Nullable<int> numero, string rua, string morada, Nullable<int> paisId, Nullable<int> cidadeId, Nullable<int> munId, Nullable<int> userInsercaoId, string action)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            var siglaParameter = sigla != null ?
+                new ObjectParameter("Sigla", sigla) :
+                new ObjectParameter("Sigla", typeof(string));
+    
+            var nomeParameter = nome != null ?
+                new ObjectParameter("Nome", nome) :
+                new ObjectParameter("Nome", typeof(string));
+    
+            var nIFParameter = nIF != null ?
+                new ObjectParameter("NIF", nIF) :
+                new ObjectParameter("NIF", typeof(string));
+    
+            var telefoneParameter = telefone.HasValue ?
+                new ObjectParameter("Telefone", telefone) :
+                new ObjectParameter("Telefone", typeof(decimal));
+    
+            var telefoneAlternativoParameter = telefoneAlternativo.HasValue ?
+                new ObjectParameter("TelefoneAlternativo", telefoneAlternativo) :
+                new ObjectParameter("TelefoneAlternativo", typeof(decimal));
+    
+            var faxParameter = fax.HasValue ?
+                new ObjectParameter("Fax", fax) :
+                new ObjectParameter("Fax", typeof(decimal));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var codigoPostalParameter = codigoPostal != null ?
+                new ObjectParameter("CodigoPostal", codigoPostal) :
+                new ObjectParameter("CodigoPostal", typeof(string));
+    
+            var uRLParameter = uRL != null ?
+                new ObjectParameter("URL", uRL) :
+                new ObjectParameter("URL", typeof(string));
+    
+            var numeroParameter = numero.HasValue ?
+                new ObjectParameter("Numero", numero) :
+                new ObjectParameter("Numero", typeof(int));
+    
+            var ruaParameter = rua != null ?
+                new ObjectParameter("Rua", rua) :
+                new ObjectParameter("Rua", typeof(string));
+    
+            var moradaParameter = morada != null ?
+                new ObjectParameter("Morada", morada) :
+                new ObjectParameter("Morada", typeof(string));
+    
+            var paisIdParameter = paisId.HasValue ?
+                new ObjectParameter("PaisId", paisId) :
+                new ObjectParameter("PaisId", typeof(int));
+    
+            var cidadeIdParameter = cidadeId.HasValue ?
+                new ObjectParameter("CidadeId", cidadeId) :
+                new ObjectParameter("CidadeId", typeof(int));
+    
+            var munIdParameter = munId.HasValue ?
+                new ObjectParameter("MunId", munId) :
+                new ObjectParameter("MunId", typeof(int));
+    
+            var userInsercaoIdParameter = userInsercaoId.HasValue ?
+                new ObjectParameter("UserInsercaoId", userInsercaoId) :
+                new ObjectParameter("UserInsercaoId", typeof(int));
+    
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_INST_APLICACAO_Result>("SP_INST_APLICACAO", idParameter, siglaParameter, nomeParameter, nIFParameter, telefoneParameter, telefoneAlternativoParameter, faxParameter, emailParameter, codigoPostalParameter, uRLParameter, numeroParameter, ruaParameter, moradaParameter, paisIdParameter, cidadeIdParameter, munIdParameter, userInsercaoIdParameter, actionParameter);
         }
     }
 }

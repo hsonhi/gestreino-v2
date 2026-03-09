@@ -21,7 +21,7 @@ namespace Gestreino
         public string MORADA { get; set; }
         public int ENDERECO_PAIS_ID { get; set; }
         public int GRL_ENDERECO_CIDADE_ID { get; set; }
-        public int ENDERECO_MUN_DISTR_ID { get; set; }
+        public Nullable<int> ENDERECO_MUN_DISTR_ID { get; set; }
         public int INSERIDO_POR { get; set; }
         public Nullable<int> ACTUALIZADO_POR { get; set; }
         public Nullable<int> REMOVIDO_POR { get; set; }

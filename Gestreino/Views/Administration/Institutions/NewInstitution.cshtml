@@ -1,6 +1,6 @@
 ﻿@model Gestreino.Models.SettingsInst
 @{
-    ViewBag.Title = "Atualizar dados da aplicação";
+    ViewBag.Title = "Adicionar instituição";
 }
 <div class="right_col" role="main">
     <div class="row">
@@ -21,10 +21,9 @@
             </div>
         </div>
     </div>
-    @using (Ajax.BeginForm("UpdateInst", "gtmanagement", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "" }))
+    @using (Ajax.BeginForm("NewInstitution", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "" }))
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.ID)
         <div class="row">
             <div class="col-md-10 col-sm-12 ">
                 <div class="animated flipInY">
@@ -44,26 +43,7 @@
                                 <div class="col-md-7">
                                     @Html.TextBoxFor(m => m.Nome, new { @class = "form-control form-control-sm", required = "" })
                                 </div>
-                            </div>
-                            <div class="">
-                                <div class="row mt-1">
-                                    @Html.LabelFor(m => m.Telephone, new { @class = "col-md-2 col-form-label required" })
-                                    <div class="col-md-4">
-                                        @Html.TextBoxFor(m => m.Telephone, new { @class = "form-control form-control-sm", required = "", @type = "number", min = "1" })
-                                    </div>
-                                    @Html.LabelFor(m => m.TelephoneAlternativo, new { @class = "col-md-2 col-form-label" })
-                                    <div class="col-md-4">
-                                        @Html.TextBoxFor(m => m.TelephoneAlternativo, new { @class = "form-control form-control-sm", @type = "number", min = "1" })
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label required" })
-                                    <div class="col-md-10">
-                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-sm", required = "", type = "email" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-1">
+                            </div> <div class="mt-1">
                                 <div class="row">
                                     <label class="col-md-2 col-form-label required" for="Numero">Endereço físico</label>
                                     <div class="col-md-3">
@@ -80,7 +60,7 @@
                                     <label class="col-md-2 col-form-label required" for="Numero"></label>
                                     <div class="col-md-3">
                                         @Html.DropDownListFor(x => Model.ENDERECO_PAIS_ID, Model.PAIS_LIST, "Selecionar uma opção", new { @class = "SelectCountry select-control form-control form-control-sm", required = "" })
-                                        <p class="form-text text-muted text-left">Informe o país de residência</p>
+                                        <p class="form-text text-muted text-left">Informe o país</p>
                                     </div>
                                     <div class="col-md-3">
                                         @Html.DropDownListFor(x => Model.ENDERECO_CIDADE_ID, Model.CIDADE_LIST, "Selecionar uma opção", new { @class = "SelectCity select-control form-control form-control-sm", required = "" })
@@ -89,6 +69,24 @@
                                     <div class="col-md-4">
                                         @Html.DropDownListFor(x => Model.ENDERECO_MUN_ID, Model.MUN_LIST, "Selecionar uma opção", new { @class = "SelectDistrict select-control form-control form-control-sm" })
                                         <p class="form-text text-muted text-left">Informe o districto ou município (Opcional)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="row mt-1">
+                                    @Html.LabelFor(m => m.Telephone, new { @class = "col-md-2 col-form-label required" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.Telephone, new { @class = "form-control form-control-sm", required = "", @type = "number", min = "1" })
+                                    </div>
+                                    @Html.LabelFor(m => m.TelephoneAlternativo, new { @class = "col-md-2 col-form-label" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.TelephoneAlternativo, new { @class = "form-control form-control-sm", @type = "number", min = "1" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label required" })
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-sm", required = "", type = "email" })
                                     </div>
                                 </div>
                             </div>

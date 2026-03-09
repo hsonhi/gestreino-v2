@@ -33,6 +33,7 @@ namespace Gestreino.Controllers
         int _MenuLeftBarLink_Settings = 105;
         int _MenuLeftBarLink_Tokens = 106;
         int _MenuLeftBarLink_Institution = 107;
+        int _MenuLeftBarLink_Phases = 108;
         public ActionResult Index()
         {
             return View();
@@ -207,7 +208,7 @@ namespace Gestreino.Controllers
             MODEL.CIDADE_LIST = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null && x.ENDERECO_PAIS_ID==MODEL.ENDERECO_PAIS_ID).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.MUN_LIST = databaseManager.GRL_ENDERECO_MUN_DISTR.Where(x => x.DATA_REMOCAO == null && x.ENDERECO_CIDADE_ID==MODEL.ENDERECO_CIDADE_ID).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Settings;
-            return View("Institutions/UpdateInstitutions", MODEL);
+            return View("Institutions/UpdateInstitution", MODEL);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -222,17 +223,25 @@ namespace Gestreino.Controllers
                     ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
                     return Json(new { result = false, error = errors });
                 }
-
                 Decimal Telephone = (!string.IsNullOrEmpty(MODEL.Telephone)) ? Convert.ToDecimal(MODEL.Telephone) : 0;
                 Decimal TelephoneAlternativo = (!string.IsNullOrEmpty(MODEL.TelephoneAlternativo)) ? Convert.ToDecimal(MODEL.TelephoneAlternativo) : 0;
                 Decimal Fax = (!string.IsNullOrEmpty(MODEL.Fax)) ? Convert.ToDecimal(MODEL.Fax) : 0;
+
+                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.EMAIL == MODEL.Email).Any())
+                    return Json(new { result = false, error = "Endereço de email já se encontra registado, por favor verifique a seleção!" });
+
+                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.TELEFONE == Telephone).Any())
+                    return Json(new { result = false, error = "Telefone já se encontra registado, por favor verifique a seleção!" });
+
+                if (databaseManager.INST_APLICACAO.Where(x => x.SIGLA == MODEL.Sigla || x.NOME == MODEL.Nome).Any())
+                    return Json(new { result = false, error = "Sigla e/ou Nome desta instituição já se encontra registada, por favor verifique a seleção!" });
 
                 // New
                 var create = databaseManager.SP_INST_APLICACAO(null, MODEL.Sigla, MODEL.Nome, MODEL.NIF, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, MODEL.Rua, MODEL.Morada, MODEL.ENDERECO_PAIS_ID, MODEL.ENDERECO_CIDADE_ID, MODEL.ENDERECO_MUN_ID, int.Parse(User.Identity.GetUserId()), "C").ToList();
                 var Id = create.First().ID;
                 ModelState.Clear();
 
-                returnUrl = "/institutions/viewInstitutions/" + Id;
+                returnUrl = "/administration/viewinstitutions/" + Id;
             }
             catch (Exception ex)
             {
@@ -262,7 +271,7 @@ namespace Gestreino.Controllers
                 var update = databaseManager.SP_INST_APLICACAO(MODEL.ID, MODEL.Sigla, MODEL.Nome, MODEL.NIF, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, MODEL.Rua, MODEL.Morada, MODEL.ENDERECO_PAIS_ID, MODEL.ENDERECO_CIDADE_ID, MODEL.ENDERECO_MUN_ID, int.Parse(User.Identity.GetUserId()), "U").ToList();
                 ModelState.Clear();
 
-                returnUrl = "/institutions/viewInstitutions/"+MODEL.ID;
+                returnUrl = "/administration/viewinstitutions/" + MODEL.ID;
             }
             catch (Exception ex)
             {
@@ -446,14 +455,11 @@ namespace Gestreino.Controllers
                 // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
 
                 // Create
-                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, null, null, MODEL.Login, MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, Status, DateIni, DateEnd, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.INST_APLICACAO_ID, null, null, MODEL.Login, MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, Status, DateIni, DateEnd, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
                 var UserId = create.First().ID;
                 //Add to group
-               // var groupId = ;
-                //if (AcessControl.isGROUP_INST())
-               //     MODEL.INST_APLICACAO_ID = AcessControl.GROUP_INST;
-                databaseManager.SP_UTILIZADORES_ENT_GRUPOS_UTILIZADORES(null, AcessControl.getUserGroup().Value, UserId, int.Parse(User.Identity.GetUserId()), "C").ToList();
-
+                var UserGroup = MODEL.INST_APLICACAO_ID == null ? AcessControl.GROUP_ADM : AcessControl.GROUP_INST;
+                databaseManager.SP_UTILIZADORES_ENT_GRUPOS_UTILIZADORES(null, UserGroup, UserId, int.Parse(User.Identity.GetUserId()), "C").ToList();
 
                 // Send Email
                 string url = "http://gestreino.pt/";
@@ -5256,6 +5262,15 @@ namespace Gestreino.Controllers
 
 
 
+        //Phases 
+        [HttpGet]
+        public ActionResult Phases()
+        {
+            //if (!AcessControl.Authorized(AcessControl.ADM_CONFIG_PARAM_ADM)) return View("Lockout");
+
+            ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Phases;
+            return View("Settings/Phases");
+        }
 
         //Settings 
         [HttpGet]

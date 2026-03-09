@@ -11,32 +11,23 @@
         </ol>
     </nav>
     <div class="row">
-        <div class="col-md-3   widget widget_tally_box">
+        <div class="col-md-3 col-sm-12 widget_tally_box">
             <div class="x_panel ">
                 <div class="x_content">
                     <div class="flex">
                         <ul class="list-inline widget_profile_box">
                             <li>
-                                <a>
-
-                                </a>
-                            </li>
-                            <li>
                                 <img class="img-circle profile_img" src="@ViewBag.imgSrc" alt="@Configs.INST_INSTITUICAO_SIGLA" title="@Configs.INST_INSTITUICAO_NOME">
                             </li>
-                            <li>
-                                <a>
-
-                                </a>
-                            </li>
+                           
                         </ul>
                     </div>
-                    <h3 class="name">@ViewBag.data[0].NOME (@ViewBag.data[0].SIGLA)</h3>
+                    <h3 class="name">@ViewBag.data[0].NOME</h3>
                     @if (AcessControl.Authorized(AcessControl.ADM_CONFIG_INST_EDIT))
                     {
                         <div class="">
                             <center>
-                                <a title="Atualizar dados da instituição" href="@Url.Action("updateinst", "administration")" class="btn btn-sm btn-light btn-block"><img src="~/Assets/images/pencil.png" width="19" /> Atualizar</a>
+                                <a title="Atualizar dados da instituição" href="@Url.Action("updateinstitution", "administration", new {Id=ViewBag.data[0].ID})" class="btn btn-sm btn-light btn-block"><img src="~/Assets/images/pencil.png" width="19" /> Atualizar</a>
                             </center>
                         </div>
                     }
@@ -54,12 +45,12 @@
                             <h3 class="p-2">Instituição</h3>
                             <ul class="list-unstyled user_data p-3">
                                 <li>
-                                    <i class="fa fa-info fa-fw user-profile-icon"></i> @ViewBag.data[0].NOME (@ViewBag.data[0].SIGLA)
+                                    <i class="fa fa-home fa-fw user-profile-icon"></i> @ViewBag.data[0].NOME (@ViewBag.data[0].SIGLA)
                                 </li>
                                 @if (!string.IsNullOrEmpty(ViewBag.data[0].NIF))
                                 {
                                     <li>
-                                        <i class="fa fa-dollar fa-fw user-profile-icon"></i> @ViewBag.data[0].NIF
+                                        <i class="fa fa-file-invoice-dollar fa-fw user-profile-icon"></i> @ViewBag.data[0].NIF
                                     </li>
                                 }
                                     <li>

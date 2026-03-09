@@ -725,6 +725,7 @@
     <Content Include="Assets\images\eraser.png" />
     <Content Include="Assets\images\gt.png" />
     <Content Include="Assets\images\help.png" />
+    <Content Include="Assets\images\home-button.png" />
     <Content Include="Assets\images\imagesflexi\f1.jpg" />
     <Content Include="Assets\images\imagesflexi\f10.jpg" />
     <Content Include="Assets\images\imagesflexi\f11.jpg" />
@@ -785,6 +786,7 @@
     <Content Include="Assets\images\user-avatar.jpg" />
     <Content Include="Assets\images\home.jpg" />
     <Content Include="Assets\images\icon.jpg" />
+    <Content Include="Assets\images\user.png" />
     <Content Include="Assets\javascript\app.js" />
     <Content Include="Assets\javascript\bootstrap.bundle.min.js" />
     <Content Include="Assets\javascript\dataTables.checkboxes.min.js" />
@@ -993,6 +995,7 @@
     <Content Include="Views\Administration\Institutions\ViewInstitutions.cshtml" />
     <Content Include="Views\Administration\Institutions\NewInstitution.cshtml" />
     <Content Include="Views\Administration\Institutions\UpdateInstitution.cshtml" />
+    <Content Include="Views\Administration\Settings\Phases.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

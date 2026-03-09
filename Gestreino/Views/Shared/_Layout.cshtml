@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
 @using Gestreino.Classes
-@using System.Security.Claims
 @{ int init = string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_SIDEBAR_MENU_COLLAPSE)) ? 0 : int.Parse(Cookies.ReadCookie(Cookies.COOKIES_SIDEBAR_MENU_COLLAPSE)); }
 <!DOCTYPE html>
 <html>
@@ -59,7 +58,7 @@
                                 </a>
                             }
                             <a data-toggle="tooltip" href="@Url.Action("help", "home")" data-placement="top" title="Ajuda">
-                                <span class="fa fa-video" aria-hidden="true"></span>
+                                <span class="fa fa-question-circle" aria-hidden="true"></span>
                             </a>
                         }
                             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "" }))
@@ -77,9 +76,6 @@
                 <!-- top navigation -->
                 if (Request.IsAuthenticated)
                 {
-                    var claimsIdentity = User.Identity as ClaimsIdentity;
-                    var existingClaim = claimsIdentity.FindFirst(ClaimTypes.UserData);
-
                     <div class="top_nav">
                         <div class="nav_menu">
                             <div class="nav toggle">
@@ -96,7 +92,7 @@
                                 <ul class=" navbar-right">
                                     <li class="nav-item dropdown open" style="padding-left: 15px;">
                                         <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                            <img src="@(existingClaim != null && !string.IsNullOrEmpty(claimsIdentity.FindFirst(ClaimTypes.UserData).Value) ? "/" + claimsIdentity.FindFirst(ClaimTypes.UserData).Value :  "/Assets/images/user-avatar.jpg")" alt="@User.Identity.GetUserName()">@User.Identity.GetUserName()
+                                            <img src="@(!string.IsNullOrEmpty(AcessControl.getLoginInfo("UserData")) ? "/" + AcessControl.getLoginInfo("UserData") :  "/Assets/images/user-avatar.jpg")" alt="@User.Identity.GetUserName()">@User.Identity.GetUserName()
                                         </a>
                                         <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="@Url.Action("profile","account")"> Perfil</a>
@@ -120,12 +116,15 @@
                 <!-- footer content -->
                 <footer>
                     <div class="pull-right">
-                        <i class="fa fa-user"></i> @User.Identity.GetUserName() 
-                        @if (AcessControl.isGROUP_INST()) { 
+                        <img src="~/Assets/images/user.png" width="16" /> @User.Identity.GetUserName()
+                        @if (AcessControl.isGROUP_INST())
+                        {
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <img src="~/Assets/images/home-button.png" width="16" /> @AcessControl.getLoginInfo("GivenName")
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
                             {
-                                <a target="_blank" href="@Url.Action("viewathletes", "gtmanagement", new {Id=int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO))})" class="blue-gradient-angled text-white p-1 br-1"><img src="~/Assets/images/athlete.png" width="18" /> Atleta: @Configs.GESTREINO_AVALIDO_NOME,  Idade: @Configs.GESTREINO_AVALIDO_IDADE,   Peso: @Configs.GESTREINO_AVALIDO_PESO,    Altura: @Configs.GESTREINO_AVALIDO_ALTURA cm</a>
+                                <a target="_blank" href="@Url.Action("viewathletes", "gtmanagement", new {Id=int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO))})" class="blue-gradient-angled text-white p-1 br-1"><img src="~/Assets/images/athlete.png" width="18" /> Atleta: @Configs.GESTREINO_AVALIDO_NOME,  Idade: @Configs.GESTREINO_AVALIDO_IDADE,   Peso: @Configs.GESTREINO_AVALIDO_PESO Kg,    Altura: @Configs.GESTREINO_AVALIDO_ALTURA cm</a>
                             }
                             else
                             { <span class="blue-gradient-angled text-white p-1 br-1">Atleta: Nenhum selecionado</span>}

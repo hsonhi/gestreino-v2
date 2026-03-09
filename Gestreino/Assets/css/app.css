@@ -1151,6 +1151,7 @@ h2 {
     display: inline-block;
     background: #fff;
     border: 1px solid #E6E9ED;
+    border-radius:5px;
     -webkit-column-break-inside: avoid;
     -moz-column-break-inside: avoid;
     column-break-inside: avoid;
@@ -3225,35 +3226,7 @@ ul.widget_profile_box {
     margin-left: 1px;
 }
 
-    ul.widget_profile_box li:first-child {
-        width: 25%;
-        float: left;
-    }
-
-        ul.widget_profile_box li:first-child a {
-            float: left;
-        }
-
-    ul.widget_profile_box li:last-child {
-        width: 25%;
-        float: right;
-    }
-
-        ul.widget_profile_box li:last-child a {
-            float: right;
-        }
-
-    ul.widget_profile_box li a {
-        height: 35px;
-        /* 
-        font-size: 22px;
-        text-align: center;
-        width: 35px;
-        display: block;
-        border-radius: 50%;
-        padding: 0px;
-            border: 1px solid rgba(52, 73, 94, 0.44);*/
-    }
+   
 
         ul.widget_profile_box li a:hover {
             color: #1ABB9C !important;
@@ -3400,6 +3373,7 @@ ul.messages {
 
 ul.user_data li {
     margin-bottom: 6px;
+    /* font-size:0.85rem*/
 }
 
     ul.user_data li p {
@@ -3417,6 +3391,17 @@ ul.user_data li {
 
 .projects .list-inline {
     margin: 0;
+}
+.list-inline  {
+    display: flex;
+    justify-content: center; /* Centers items horizontally */
+    align-items: center; /* Centers items vertically */
+    list-style: none; /* Optional */
+    padding: 0; /* Optional */
+}
+
+li {
+    /* ... other styles like width, padding, etc. */
 }
 
 .profile_title {

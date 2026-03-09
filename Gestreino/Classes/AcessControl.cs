@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
@@ -196,6 +197,30 @@ namespace Gestreino.Classes
                 group=(int.Parse(i.Value));
             }
             return group;
+        }
+        public static string getLoginInfo(string claim)
+        {
+            var claimsIdentity = System.Web.HttpContext.Current.User.Identity as ClaimsIdentity;
+            var ApplicationId = claimsIdentity.FindFirst(ClaimTypes.Sid) != null ? claimsIdentity.FindFirst(ClaimTypes.Sid).Value : string.Empty;
+            var ApplicationName = claimsIdentity.FindFirst(ClaimTypes.GivenName) != null ? claimsIdentity.FindFirst(ClaimTypes.GivenName).Value : string.Empty;
+            var ProfileImage = claimsIdentity.FindFirst(ClaimTypes.UserData) != null ? claimsIdentity.FindFirst(ClaimTypes.UserData).Value : string.Empty;
+
+            switch (claim)
+            {
+                case "Sid":
+                    claim = ApplicationId;
+                    break;
+                case "GivenName":
+                    claim = ApplicationName;
+                    break;
+                case "UserData":
+                    claim = ProfileImage;
+                    break;
+                default:
+                    break;
+            }
+
+            return claim;
         }
     }
 }

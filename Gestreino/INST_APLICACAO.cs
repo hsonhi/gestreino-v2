@@ -17,11 +17,11 @@ namespace Gestreino
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public INST_APLICACAO()
         {
-            this.INST_APLICACAO_ENDERECOS = new HashSet<INST_APLICACAO_ENDERECOS>();
             this.INST_APLICACAO_CONTACTOS = new HashSet<INST_APLICACAO_CONTACTOS>();
             this.INST_APLICACAO_ARQUIVOS = new HashSet<INST_APLICACAO_ARQUIVOS>();
             this.GT_FaseTreino = new HashSet<GT_FaseTreino>();
             this.UTILIZADORES = new HashSet<UTILIZADORES>();
+            this.INST_APLICACAO_ENDERECOS = new HashSet<INST_APLICACAO_ENDERECOS>();
         }
     
         public int ID { get; set; }
@@ -36,8 +36,6 @@ namespace Gestreino
         public Nullable<System.DateTime> DATA_REMOCAO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INST_APLICACAO_ENDERECOS> INST_APLICACAO_ENDERECOS { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INST_APLICACAO_CONTACTOS> INST_APLICACAO_CONTACTOS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INST_APLICACAO_ARQUIVOS> INST_APLICACAO_ARQUIVOS { get; set; }
@@ -45,5 +43,7 @@ namespace Gestreino
         public virtual ICollection<GT_FaseTreino> GT_FaseTreino { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UTILIZADORES> UTILIZADORES { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INST_APLICACAO_ENDERECOS> INST_APLICACAO_ENDERECOS { get; set; }
     }
 }

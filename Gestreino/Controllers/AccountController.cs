@@ -444,9 +444,11 @@ namespace Gestreino.Controllers
                         List<int> lst_subgrupos = null;//subgrupos.OfType<int>().ToList(); // this isn't going to be fast.
                         List<int> lst_atomos = atomos.OfType<int>().ToList(); // this isn't going to be fast.
                         // Fetch User Details
-                        var ProfilePhoto = databaseManager.PES_PESSOAS.Where(x => x.UTILIZADORES_ID == logindetails.ID).Select(x => x.FOTOGRAFIA).SingleOrDefault();
+                        var ProfilePhoto = databaseManager.PES_PESSOAS.Where(x => x.UTILIZADORES_ID == logindetails.ID).Select(x => x.FOTOGRAFIA).FirstOrDefault();
+                        // Fetch company details
+                        var InstitutionName = logindetails.INST_APLICACAO_ID!=null? databaseManager.INST_APLICACAO.Where(x => x.ID == logindetails.INST_APLICACAO_ID).Select(x => x.NOME).FirstOrDefault():string.Empty;
                         // SignInUser   
-                        this.SignInUser(logindetails.LOGIN, logindetails.ID.ToString(), true, lst_grupos, lst_subgrupos, lst_atomos, logindetails.ID, ProfilePhoto, returnUrl);
+                        this.SignInUser(logindetails.LOGIN, logindetails.ID.ToString(), true, lst_grupos, lst_subgrupos, lst_atomos, logindetails.ID, ProfilePhoto, logindetails.INST_APLICACAO_ID, InstitutionName,returnUrl);
                         // Redirect if Needed    
                         return this.RedirectToLocal(returnUrl);
                     }
@@ -472,7 +474,7 @@ namespace Gestreino.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private void SignInUser(string username, string id, bool isPersistent, List<int> grupos, List<int> subgrupos, List<int> atomos, int UserId, string ProfilePhoto, string returnUrl)
+        private void SignInUser(string username, string id, bool isPersistent, List<int> grupos, List<int> subgrupos, List<int> atomos, int UserId, string ProfilePhoto, int? AplicacaoId,string ApplicationName, string returnUrl)
         {
             // Initialization.    
             var claims = new List<Claim>();
@@ -494,6 +496,8 @@ namespace Gestreino.Controllers
                 claims.Add(new Claim(ClaimTypes.Name, username));
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, id));
                 if (!string.IsNullOrEmpty(ProfilePhoto)) claims.Add(new Claim(ClaimTypes.UserData, ProfilePhoto));
+                if(AplicacaoId!=null) claims.Add(new Claim(ClaimTypes.GivenName, ApplicationName));
+                if (AplicacaoId != null) claims.Add(new Claim(ClaimTypes.Sid, AplicacaoId.Value.ToString()));
                 var claimIdenties = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
                 var ctx = Request.GetOwinContext();
                 var authenticationManager = ctx.Authentication;
