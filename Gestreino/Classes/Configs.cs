@@ -10,8 +10,8 @@ namespace Gestreino.Classes
         public static string INST_INSTITUICAO_SIGLA ="GEST";
         public static string INST_INSTITUICAO_NOME="Gestreino";
         public static int? INST_INSTITUICAO_USER = 1;
+        public static string INST_INSTITUICAO_URL = "https://app.gestreino.pt/";
         public static string INST_INSTITUICAO_ENDERECO;
-        public static string INST_INSTITUICAO_URL;
         public static string INST_INSTITUICAO_LOGO;
         //
         public static string INST_PER_TEMA_1;
@@ -58,6 +58,7 @@ namespace Gestreino.Classes
         public static bool? API_SMS_ACTIVO;
         public static string API_SMS_SENDER_ID;
         public static int[] TOKENS = { 1 };
+
 
         public void BeginConfig()
         {

@@ -23,6 +23,12 @@ namespace Gestreino.Controllers
         {
             MODEL.Status = 1;
 
+            if (AcessControl.isGROUP_INST())
+            {
+                MODEL.INST_APLICACAO_ID = !string.IsNullOrEmpty(AcessControl.getLoginInfo("Sid")) ? int.Parse(AcessControl.getLoginInfo("Sid")) : 0;
+                MODEL.INST_PERFIL_LIST = databaseManager.UTILIZADORES_ACESSO_PERFIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME + " (" + x.DESCRICAO + ")" });
+            }
+
             if (id > 0)
             {
                 var data = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(id, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
@@ -34,13 +40,8 @@ namespace Gestreino.Controllers
                 MODEL.Id = id;
                 MODEL.PesId = data.First().PES_PESSOAS_ID;
                 MODEL.Name= data.First().NOME;
-            }
-            else
-            {
-                if (AcessControl.isGROUP_ADM())
-                    MODEL.INST_APLICACAO_LIST = databaseManager.INST_APLICACAO.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-                else if (AcessControl.isGROUP_INST())
-                    MODEL.INST_APLICACAO_ID = !string.IsNullOrEmpty(AcessControl.getLoginInfo("Sid")) ? int.Parse(AcessControl.getLoginInfo("Sid")) : 0;
+                if (AcessControl.isGROUP_INST())
+                    MODEL.PERFIL_ID = databaseManager.UTILIZADORES_ACESSO_UTIL_PERFIS.Where(x => x.UTILIZADORES_ID == id).Select(x => x.UTILIZADORES_ACESSO_PERFIS_ID).FirstOrDefault();
             }
 
             ViewBag.Action = action;

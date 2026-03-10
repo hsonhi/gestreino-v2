@@ -71,6 +71,7 @@ namespace Gestreino.Classes
             content = content.Replace("{Description}", body);
             content = content.Replace("{inst_nome}", Configs.INST_INSTITUICAO_NOME);
             content = content.Replace("{inst_sigla}", Configs.INST_INSTITUICAO_SIGLA);
+            content = content.Replace("{inst_url}", Configs.INST_INSTITUICAO_URL);
 
             MailMessage message = new MailMessage();
             message.To.Add(to);

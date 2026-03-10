@@ -38,7 +38,7 @@ namespace Gestreino.Models
 
         //[Required(ErrorMessage = "{0} é um campo obrigatório!")]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirmação da senha")]
+        [Display(Name = "Confirmação")]
         [Compare("Password", ErrorMessage = "A senha de acesso não é idêntica a confirmação.")]
         public string ConfirmPassword { get; set; }
 
@@ -70,7 +70,9 @@ namespace Gestreino.Models
         public int? PesId { get; set; }
         [Display(Name = "Instituição")]
         public int? INST_APLICACAO_ID { get; set; }
-        public IEnumerable<System.Web.Mvc.SelectListItem> INST_APLICACAO_LIST { get; set; }
+        [Display(Name = "Acesso")]
+        public int? PERFIL_ID { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> INST_PERFIL_LIST { get; set; }
     }
     public class AccessAppendItems
     {

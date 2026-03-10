@@ -142,8 +142,7 @@ namespace Gestreino.Controllers
                 var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.UserID, null, null, null, null, null, null, Password, Salt, null, null, null, null, int.Parse(User.Identity.GetUserId()), Convert.ToChar('P').ToString()).ToArray();
 
                 // Send Email
-                string url = "http://gestreino.pt/";
-                Mailer.SendEmailMVC(4, MODEL.Email, MODEL.Login, null, url, null, null); // Email template - 3
+                Mailer.SendEmailMVC(4, MODEL.Email, MODEL.Login, null, Configs.INST_INSTITUICAO_URL, null, null); // Email template - 3
 
                 ModelState.Clear();
             }
@@ -206,7 +205,7 @@ namespace Gestreino.Controllers
             var tokenUrlEncode = HttpUtility.UrlEncode(token);
 
             // Send Email
-            string url = "http://gestreino.pt/account/passwordrecoverytoken?token=" + token;
+            string url = Configs.INST_INSTITUICAO_URL+"account/passwordrecoverytoken?token=" + token;
             Mailer.SendEmailMVC(3, MODEL.Email, pesname, tokenUrlEncode, url, null, null); // Email template - 3
 
             if (!string.IsNullOrEmpty(ExportEmail.StatusReport.result) && ExportEmail.StatusReport.result != "Success")
@@ -387,8 +386,7 @@ namespace Gestreino.Controllers
                             ctx.SaveChanges();
                         }
                         // Send Email
-                        string url = "http://gestreino.pt/";
-                        Mailer.SendEmailMVC(4, MODEL.Email, pesname, MODEL.Password, url, null, null); // Email template - 4
+                        Mailer.SendEmailMVC(4, MODEL.Email, pesname, MODEL.Password, Configs.INST_INSTITUICAO_URL, null, null); // Email template - 4
 
                         if (!string.IsNullOrEmpty(ExportEmail.StatusReport.result) && ExportEmail.StatusReport.result != "Success")
                             return Json(new { result = false, error = ExportEmail.StatusReport.result });
@@ -550,8 +548,7 @@ namespace Gestreino.Controllers
                 databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES_PERFIS(null, AcessControl.PROFILE_ADM, UserId, Configs.INST_INSTITUICAO_USER, "C").ToList();
 
                 // Send Email
-                string url = "http://gestreino.pt/";
-                Mailer.SendEmailMVC(1, MODEL.Email, MODEL.Nome, Login, MODEL.Password.Trim(), url, null); // Email template - 3
+                Mailer.SendEmailMVC(1, MODEL.Email, MODEL.Nome, Login, MODEL.Password.Trim(), Configs.INST_INSTITUICAO_URL, null); // Email template - 3
 
             }
             return Json(new { result = true, success = "Subscrição efetuada com successo, por favor verifique o seu email!", resetForm = true });

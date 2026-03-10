@@ -804,7 +804,6 @@
     <Content Include="Assets\lib\select2\select2.full.min.js" />
     <Content Include="Assets\lib\select2\select2.min.css" />
     <Content Include="favicon.ico" />
-    <Content Include="GestreinoERD.jpg" />
     <Content Include="Global.asax" />
     <Content Include="ORM.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -996,6 +995,7 @@
     <Content Include="Views\Administration\Institutions\ViewInstitutions.cshtml" />
     <Content Include="Views\Administration\Settings\Phases.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Administration\Users\ProfilePhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

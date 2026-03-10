@@ -195,6 +195,25 @@ namespace Gestreino.Controllers
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_User;
             return View("Users/ViewUsers");
         }
+        [HttpGet]
+        public ActionResult ProfilePhoto(int? Id, Athlete MODEL)
+        {
+            if (AcessControl.isGROUP_ADM()) { }
+            else if (AcessControl.isGROUP_INST() && AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) { }
+            else return View("Lockout");
+            if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
+            var item = databaseManager.SP_PES_ENT_PESSOAS(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
+            ViewBag.item = item;
+            if (item.Count == 0) return RedirectToAction("", "home");
+            if (item.First().INST_APLICACAO_ID != int.Parse(AcessControl.getLoginInfo("Sid"))) return RedirectToAction("", "home");
+
+            MODEL.UserID = item.FirstOrDefault().UTILIZADORES_ID;
+            MODEL.ID = item.FirstOrDefault().ID;
+
+            ViewBag.imgSrc = (string.IsNullOrEmpty(item[0].FOTOGRAFIA)) ? "/Assets/images/user-avatar.png" : "/" + item[0].FOTOGRAFIA;
+            ViewBag.LeftBarLinkActive = _MenuLeftBarLink_User;
+            return View("../GTManagement/Athletes/ProfilePhoto", MODEL);
+        }
         [HttpPost]
         public ActionResult GetUser(int? GroupId, int? ProfileId)
         {
@@ -353,12 +372,15 @@ namespace Gestreino.Controllers
                 var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.INST_APLICACAO_ID, null, null, MODEL.Login.Trim(), MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, Status, DateIni, DateEnd, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
                 var UserId = create.First().ID;
                 //Add to group
-                var UserGroup = MODEL.INST_APLICACAO_ID == null ? AcessControl.GROUP_ADM : AcessControl.GROUP_INST;
+                var UserGroup = MODEL.INST_APLICACAO_ID == null && AcessControl.isGROUP_ADM() ? AcessControl.GROUP_ADM : AcessControl.GROUP_INST;
                 databaseManager.SP_UTILIZADORES_ENT_GRUPOS_UTILIZADORES(null, UserGroup, UserId, int.Parse(User.Identity.GetUserId()), "C").ToList();
 
+                //Add to profile
+                if(UserGroup== AcessControl.GROUP_INST)
+                    databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES_PERFIS(null, MODEL.PERFIL_ID, UserId, Configs.INST_INSTITUICAO_USER, "C").ToList();
+
                 // Send Email
-                string url = "http://gestreino.pt/";
-                Mailer.SendEmailMVC(1, MODEL.Email, MODEL.Name, MODEL.Login.Trim(), MODEL.Password.Trim(), url, null); // Email template - 3
+                Mailer.SendEmailMVC(1, MODEL.Email, MODEL.Name, MODEL.Login.Trim(), MODEL.Password.Trim(), Configs.INST_INSTITUICAO_URL, null); // Email template - 3
 
                 ModelState.Clear();
             }
@@ -397,6 +419,18 @@ namespace Gestreino.Controllers
                 }
                 // Update
                 var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.Id, null, null, MODEL.Login.Trim(), MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), null, null, Status, null, null, true, int.Parse(User.Identity.GetUserId()), "U").ToList();
+
+                //Add to profile
+                if (AcessControl.isGROUP_INST() && MODEL.PERFIL_ID != null)
+                {
+                    var profileid = (from c in databaseManager.UTILIZADORES_ACESSO_UTIL_PERFIS
+                                  where c.UTILIZADORES_ID == MODEL.Id
+                                   select c);
+                    databaseManager.UTILIZADORES_ACESSO_UTIL_PERFIS.RemoveRange(profileid);
+                    databaseManager.SaveChanges();
+
+                    databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES_PERFIS(null, MODEL.PERFIL_ID, MODEL.Id, Configs.INST_INSTITUICAO_USER, "C").ToList();
+                }
                 ModelState.Clear();
             }
             catch (Exception ex)
@@ -454,8 +488,7 @@ namespace Gestreino.Controllers
                 var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.Id, null, null, null, null, null, null, Password, Salt, null, null, null, null, int.Parse(User.Identity.GetUserId()), Convert.ToChar('P').ToString()).ToArray();
 
                 // Send Email
-                string url = "http://gestreino.pt/";
-                Mailer.SendEmailMVC(2, MODEL.Email, MODEL.Login, MODEL.Password.Trim(), url, null, null); // Email template - 3
+                Mailer.SendEmailMVC(2, MODEL.Email, MODEL.Login, MODEL.Password.Trim(), Configs.INST_INSTITUICAO_URL, null, null); // Email template - 3
 
                 ModelState.Clear();
             }

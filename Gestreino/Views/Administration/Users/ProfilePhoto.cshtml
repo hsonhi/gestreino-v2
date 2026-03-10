@@ -40,14 +40,7 @@
                 <div class="bg-white border-r">
                     <center>
                         <label class="label mb-24pt p-3 btn-group">
-                            @if (ViewBag.LeftBarLinkActive == 101)
-                            {
-                                <a class="btn btn-light" href="@Url.Action("viewusers", "administration", new {Id=Model.UserID})"><i class="fa fa-backward fa-2x"></i></a>
-                            }
-                            @if (ViewBag.LeftBarLinkActive == 201)
-                            {
-                                <a class="btn btn-light" href="@Url.Action("viewathletes", "gtmanagement", new {Id=Model.ID})"><i class="fa fa-backward fa-2x"></i></a>
-                            }
+                            <a class="btn btn-light" href="@Url.Action("viewathletes", "gtmanagement", new {Id=Model.ID})"><i class="fa fa-backward fa-2x"></i></a>
                             <input type="file" class="sr-only" id="input" name="file" accept="image/*">
                             <a class="btn btn-light" style="color:#333" id="input" title="Carregar foto"><i class="fa fa-upload fa-2x"></i></a>
                             <button type="button" class="btn btn-light" onclick="setPictureWebcamBtn(@ViewBag.item[0].UTILIZADORES_ID,@ViewBag.item[0].ID)" title="Capturar rosto"><i class="fa fa-camera fa-2x"></i></button>

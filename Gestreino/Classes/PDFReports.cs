@@ -279,7 +279,7 @@ namespace Gestreino.Classes
                 var caract = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == PEsId).ToList();
 
                 //pageone
-                Html += "<div class=mt-1><center><h1><img src=https://gestreino.pt/Assets/images/logo_cropped.png></h1></center></div><p class=mt-1><div class=mt-1><center><h1>Bem vindo ao seu relatorio pessoal</h1></center></div><div class=mt-1><center><h1><img src=\"https://assets.discours.io/unsafe/1600x/production/image/c7717d80-90ee-11e8-acc9-1177899fe735.jpeg\" width=\"400px\"></h1></center></div><div><table><tr><td>Idade: 21<tr><td>Peso: 21<tr><td>Altura: 21</table></div>";
+                Html += "<div class=mt-1><center><h1><img src="+Configs.INST_INSTITUICAO_URL+"Assets/images/logo_cropped.png></h1></center></div><p class=mt-1><div class=mt-1><center><h1>Bem vindo ao seu relatorio pessoal</h1></center></div><div class=mt-1><center><h1><img src=\"https://assets.discours.io/unsafe/1600x/production/image/c7717d80-90ee-11e8-acc9-1177899fe735.jpeg\" width=\"400px\"></h1></center></div><div><table><tr><td>Idade: 21<tr><td>Peso: 21<tr><td>Altura: 21</table></div>";
                 Html += "<div style=\"page-break-before: always;\"></div>";
            
 

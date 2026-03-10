@@ -82,6 +82,7 @@ namespace Gestreino.Controllers
             var data = databaseManager.SP_PES_ENT_PESSOAS(Id, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
             if (!data.Any()) return RedirectToAction("", "home");
             if(data.First().INST_APLICACAO_ID!=int.Parse(AcessControl.getLoginInfo("Sid"))) return RedirectToAction("", "home");
+            if (data.First().GT_SOCIO_ID <= 0) return RedirectToAction("", "home");
 
             var dataCaract = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == Id).ToList();
             var nacionalidade = databaseManager.PES_NACIONALIDADE.Where(x => x.PES_PESSOAS_ID == Id).Select(x => x.GRL_ENDERECO_PAIS_ID).ToArray();
@@ -190,6 +191,8 @@ namespace Gestreino.Controllers
             var data = databaseManager.SP_PES_ENT_PESSOAS(Id, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
             if (!data.Any()) return RedirectToAction("", "home");
             if (data.First().INST_APLICACAO_ID != int.Parse(AcessControl.getLoginInfo("Sid"))) return RedirectToAction("", "home");
+
+            if(data.First().GT_SOCIO_ID<=0) return RedirectToAction("", "home");
 
             var dataCaract = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == Id).ToList();
             var dataEnd = databaseManager.SP_PES_ENT_PESSOAS_ENDERECO(Id, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "R").ToList();
@@ -548,6 +551,7 @@ namespace Gestreino.Controllers
 
 
         // Get
+        [HttpGet]
         public ActionResult ProfilePhoto(int? Id, Athlete MODEL)
         {
             if (!AcessControl.Authorized(AcessControl.GT_ATHLETES_ALTER_IMG)) return View("Lockout");
@@ -568,7 +572,8 @@ namespace Gestreino.Controllers
         [HttpGet]
         public ActionResult WebCam()
         {
-            if (!AcessControl.Authorized(AcessControl.GT_ATHLETES_ALTER_IMG)) return View("Lockout");
+            if (AcessControl.Authorized(AcessControl.GT_ATHLETES_ALTER_IMG) || AcessControl.Authorized(AcessControl.GT_ADM_CONFIGURATIONS)) { } else
+            return View("Lockout");
             ViewBag.LeftBarLinkActive = 0;
             return View("Athletes/WebCam");
         }
@@ -675,7 +680,7 @@ namespace Gestreino.Controllers
                     }
 
                     // Return to Url
-                    returnUrl = "/gpmanagement/viewusers/" + PES_PESSOA_ID;
+                    returnUrl = string.Empty;
                     ModelState.Clear();
                 }
                 else
