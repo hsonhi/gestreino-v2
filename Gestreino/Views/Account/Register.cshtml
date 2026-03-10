@@ -1,0 +1,104 @@
+﻿@using Gestreino.Models
+@model NewAccountViewModel
+@{
+    ViewBag.Title = "Subscrever ao Gestreino";
+}
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+                @using (Ajax.BeginForm("../account/NewAccount", null, new AjaxOptions { HttpMethod = "POST", LoadingElementId = "", LoadingElementDuration = 2000, OnBegin = "loadIn", OnComplete = "loadOut", OnSuccess = "handleSuccess", OnFailure = "handleFailure", UpdateTargetId = "" }, new { id = "" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(m => m.Password, new { required = "", Id = "GenPassword" })
+                    <h1><img src="~/Assets/images/logo.png" width="160" class="navImg" /></h1>
+                    <h2>Subscrever ao Gestreino</h2>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="handle-error alert alert-accent mb-2"
+                                 role="alert" style="display: none;">
+                                <div class="d-flex flex-wrap align-items-start">
+                                    <div class="mr-8pt">
+                                        <i class="fa-solid fa-shield-halved mr-12pt"></i> <strong>Atenção!</strong>
+                                    </div>
+                                    <div class="flex"
+                                         style="min-width: 180px">
+                                        <span class="text-black-100">
+                                            &nbsp;<span class="handle-error-message"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="handle-success alert alert-soft-success"
+                                 role="alert" style="display:none;">
+                                <div class="d-flex flex-wrap align-items-start">
+                                    <div class="mr-8pt">
+                                        <i class="fa fa-check-circle mr-12pt"></i> <strong>Successo!</strong>
+                                    </div>
+                                    <div class="flex"
+                                         style="min-width: 180px">
+                                        <span class="text-black-100">
+                                            &nbsp;<span class="handle-success-message"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.ValidationSummary(true, "", new { @class = "ValidationSummary text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.Nome, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Nome, new { @class = "form-control", required = "" })
+                            @Html.ValidationMessageFor(m => m.Nome, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.Institution, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Institution, new { @class = "form-control", required = "" })
+                            @Html.ValidationMessageFor(m => m.Institution, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", required = "", type = "email" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", required = "", type = "number" })
+                            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <label class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <input type="submit" class="btn btn-secondary submit" value="Criar conta">
+                        </div>
+                    </div>
+                    <div class="row mb-4 mt-3">
+                        <label class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            @Html.ActionLink("Iniciar sessão", "login", new { }, new { @class = "" })
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        generatePassword();
+    });
+    </script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

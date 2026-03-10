@@ -181,17 +181,17 @@
         <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR331508" />
         <AssociationConnector Association="GESTREINO_ORM.FKUTILIZADOR769774" />
         <AssociationConnector Association="GESTREINO_ORM.UTILIZADORES_LOGIN_PASSWORD_TENT_UTILIZADORES_ID" />
-        <EntityTypeShape EntityType="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Width="1.5" PointX="16.5" PointY="27.5" />
-        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC331316" />
-        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC69096" />
-        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC939798" />
-        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC348700" />
         <EntityTypeShape EntityType="GESTREINO_ORM.GT_Treino" Width="1.5" PointX="24.75" PointY="37" />
         <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreino_GT_Treino_ID" />
         <AssociationConnector Association="GESTREINO_ORM.GT_ExercicioTreinoCardio_GT_Treino_ID" />
         <AssociationConnector Association="GESTREINO_ORM.GT_Treino_GT_GT_FaseTreino_ID" />
         <AssociationConnector Association="GESTREINO_ORM.GT_Treino_GT_TipoTreino_ID" />
         <AssociationConnector Association="GESTREINO_ORM.GT_TreinosPessoa_GT_Treino_ID" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Width="1.5" PointX="16.5" PointY="27.5" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC331316" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC69096" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC939798" />
+        <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC348700" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

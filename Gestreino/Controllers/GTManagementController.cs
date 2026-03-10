@@ -206,7 +206,7 @@ namespace Gestreino.Controllers
 
             //SetValoresEvolucoes
 
-            ViewBag.imgSrc = (string.IsNullOrEmpty(data.First().FOTOGRAFIA)) ? "/Assets/images/user-avatar.jpg" : "/" + data.First().FOTOGRAFIA;
+            ViewBag.imgSrc = (string.IsNullOrEmpty(data.First().FOTOGRAFIA)) ? "/Assets/images/user-avatar.png" : "/" + data.First().FOTOGRAFIA;
             ViewBag.data = data;
             ViewBag.dataCaract = dataCaract;
             ViewBag.dataEnd = dataEnd;
@@ -313,7 +313,7 @@ namespace Gestreino.Controllers
                     NOME = x.NOME,
                     USER = x.LOGIN,
                     SOCIO = x.PES_NUMERO,
-                    FOTOGRAFIA = (string.IsNullOrEmpty(x.FOTOGRAFIA)) ? "/Assets/images/user-avatar.jpg" : "/" + x.FOTOGRAFIA,
+                    FOTOGRAFIA = (string.IsNullOrEmpty(x.FOTOGRAFIA)) ? "/Assets/images/user-avatar.png" : "/" + x.FOTOGRAFIA,
                     TELEFONE = x.TELEFONE,
                     EMAIL = x.EMAIL,
                     //UTILIZADOR = x.GRUPO_UTILIZADORES,
@@ -560,7 +560,7 @@ namespace Gestreino.Controllers
             MODEL.UserID = item.FirstOrDefault().UTILIZADORES_ID;
             MODEL.ID = item.FirstOrDefault().ID;
 
-            ViewBag.imgSrc = (string.IsNullOrEmpty(item[0].FOTOGRAFIA)) ? "/Assets/images/user-avatar.jpg" : "/" + item[0].FOTOGRAFIA;
+            ViewBag.imgSrc = (string.IsNullOrEmpty(item[0].FOTOGRAFIA)) ? "/Assets/images/user-avatar.png" : "/" + item[0].FOTOGRAFIA;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Athletes;
             return View("Athletes/ProfilePhoto", MODEL);
         }

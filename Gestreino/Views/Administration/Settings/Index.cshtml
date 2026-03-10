@@ -57,10 +57,13 @@
                                         @ViewBag.data[0].URL
                                     </li>
                                 }
-                                <li>
-                                    <i class="fa fa-map-location-dot fa-fw user-profile-icon"></i>   @ViewBag.data[0].NUMERO  @ViewBag.data[0].RUA  @ViewBag.data[0].MORADA  @ViewBag.data[0].MUN_NOME @ViewBag.data[0].CIDADE_NOME @ViewBag.data[0].PAIS_NOME
-                                </li>
-                            </ul>
+                                @if (!string.IsNullOrEmpty(ViewBag.data[0].PAIS_NOME))
+                                {
+                                    <li>
+                                        <i class="fa fa-map-location-dot fa-fw user-profile-icon"></i>   @ViewBag.data[0].NUMERO  @ViewBag.data[0].RUA  @ViewBag.data[0].MORADA  @ViewBag.data[0].MUN_NOME @ViewBag.data[0].CIDADE_NOME @ViewBag.data[0].PAIS_NOME
+                                    </li>
+                                }
+                                </ul>
                         </div>
                     </div>
                 </div>
@@ -72,23 +75,8 @@
                                     <i class="fa fa-folder-open"></i>
                                 </div>
                                 <h3 class="p-2">Documentos</h3>
-                                <div class="alert alert-primary-light mb-1 mt-4"
-                                     role="alert" style="border-radius:0 !important">
-                                    <div class="d-flex flex-wrap align-items-start">
-                                        <div class="mr-8pt">
-                                            <i class="fa fa-folder-o"></i>&nbsp;
-                                        </div>
-                                        <div class="flex"
-                                             style="min-width: 180px">
-                                            <span class="text-black-100">
-                                                <strong>Documentos!</strong> <small class="text-muted">
-                                                    Faça a gestão documental de ficheiros e arquivos institucionais (Eg. Logotipo)
-                                                </small><br />
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card mb-32pt">
+                            
+                                <div class="card mb-32pt mt-5" style="border-top-left-radius: initial !important; border-top-right-radius: initial !important;">
                                     <div class="card-header">
                                         <div id="doctablebuttons">
                                             <div class="form-inline">

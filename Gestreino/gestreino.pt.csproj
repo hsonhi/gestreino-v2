@@ -785,9 +785,8 @@
     <Content Include="Assets\images\printer.png" />
     <Content Include="Assets\images\save.png" />
     <Content Include="Assets\images\search.png" />
-    <Content Include="Assets\images\user-avatar.jpg" />
     <Content Include="Assets\images\home.jpg" />
-    <Content Include="Assets\images\icon.jpg" />
+    <Content Include="Assets\images\user-avatar.png" />
     <Content Include="Assets\images\user.png" />
     <Content Include="Assets\javascript\app.js" />
     <Content Include="Assets\javascript\bootstrap.bundle.min.js" />
@@ -995,9 +994,8 @@
     <Content Include="Views\Help\GESTREINO.pdf" />
     <Content Include="Views\Administration\Institutions\Index.cshtml" />
     <Content Include="Views\Administration\Institutions\ViewInstitutions.cshtml" />
-    <Content Include="Views\Administration\Institutions\NewInstitution.cshtml" />
-    <Content Include="Views\Administration\Institutions\UpdateInstitution.cshtml" />
     <Content Include="Views\Administration\Settings\Phases.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

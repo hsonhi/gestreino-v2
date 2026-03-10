@@ -19,14 +19,14 @@
                     <div class="row">
                         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", required = "" })
                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
                         @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
                         <div class="col-md-10">
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", required = "" })
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -39,7 +39,8 @@
                     <div class="row mb-4 mt-3">
                         <label class="col-md-2 col-form-label"></label>
                         <div class="col-md-10">
-                            @Html.ActionLink("Recuperar senha de acesso", "passwordrecovery", new { }, new { @class = "" })
+                            <p>@Html.ActionLink("Recuperar senha de acesso", "passwordrecovery", new { }, new { @class = "" })<br/>
+                            @Html.ActionLink("Subscrever ao Gestreino", "register", new { }, new { @class = "" })</p>
                         </div>
                     </div>
                 }

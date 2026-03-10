@@ -9,6 +9,7 @@ namespace Gestreino.Classes
         public static int? INST_INSTITUICAO_ID = 1;  
         public static string INST_INSTITUICAO_SIGLA ="GEST";
         public static string INST_INSTITUICAO_NOME="Gestreino";
+        public static int? INST_INSTITUICAO_USER = 1;
         public static string INST_INSTITUICAO_ENDERECO;
         public static string INST_INSTITUICAO_URL;
         public static string INST_INSTITUICAO_LOGO;

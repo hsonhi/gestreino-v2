@@ -33,6 +33,7 @@ namespace Gestreino.Controllers
                 MODEL.Email = data.First().EMAIL;
                 MODEL.Id = id;
                 MODEL.PesId = data.First().PES_PESSOAS_ID;
+                MODEL.Name= data.First().NOME;
             }
             else
             {

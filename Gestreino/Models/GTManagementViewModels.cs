@@ -25,7 +25,7 @@ namespace Gestreino.Models
         public string Email { get; set; }
 
         //[Required(ErrorMessage = "{0} é um campo obrigatório!")]
-        [DataType(DataType.Password)]
+        [DataType(DataType.Text)]
         [Display(Name = "Telefone")]
         public string Phone { get; set; }
 

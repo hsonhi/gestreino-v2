@@ -63,7 +63,7 @@ namespace Gestreino.Controllers
                         select new { j3.CAMINHO_URL });
 
             Configs.INST_INSTITUICAO_LOGO = path.Any() ? path.FirstOrDefault().CAMINHO_URL : string.Empty;
-            ViewBag.imgSrc = (string.IsNullOrEmpty(Configs.INST_INSTITUICAO_LOGO)) ? "/Assets/images/user-avatar.jpg" : "/" + Configs.INST_INSTITUICAO_LOGO;
+            ViewBag.imgSrc = (string.IsNullOrEmpty(Configs.INST_INSTITUICAO_LOGO)) ? "/Assets/images/user-avatar.png" : "/" + Configs.INST_INSTITUICAO_LOGO;
             ViewBag.data = data;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Institution;
             return View("Institutions/ViewInstitutions");
@@ -168,127 +168,6 @@ namespace Gestreino.Controllers
                 sortColumnDir = sortColumnDir,
             }, JsonRequestBehavior.AllowGet);
         }
-        [HttpGet]
-        public ActionResult NewInstitution(SettingsInst MODEL)
-        {
-            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
-
-            MODEL.PAIS_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.CIDADE_LIST = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null && x.ID==0).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.MUN_LIST = databaseManager.GRL_ENDERECO_MUN_DISTR.Where(x => x.DATA_REMOCAO == null && x.ID == 0).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Institution;
-            return View("Institutions/NewInstitution", MODEL);
-        }
-        [HttpGet]
-        public ActionResult UpdateInstitution(int? Id,SettingsInst MODEL)
-        {
-            if (!AcessControl.isGROUP_ADM()) return View("Lockout");
-            if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
-            var data = databaseManager.SP_INST_APLICACAO(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
-            if (!data.Any()) { return RedirectToAction("", "home"); }
-
-            MODEL.ID = data.First().ID;
-            MODEL.Sigla = data.First().SIGLA;
-            MODEL.Nome = data.First().NOME;
-            MODEL.NIF = data.First().NIF;
-
-            MODEL.Telephone = (!string.IsNullOrEmpty(data.First().TELEFONE.ToString())) ? data.First().TELEFONE.ToString() : null;
-            MODEL.TelephoneAlternativo = (!string.IsNullOrEmpty(data.First().TELEFONE_ALTERNATIVO.ToString())) ? data.First().TELEFONE_ALTERNATIVO.ToString() : null;
-            MODEL.Fax = (!string.IsNullOrEmpty(data.First().FAX.ToString())) ? data.First().FAX.ToString() : null;
-            MODEL.Email = data.First().EMAIL;
-            MODEL.CodigoPostal = data.First().CODIGO_POSTAL;
-            MODEL.URL = data.First().URL;
-            MODEL.Numero = data.First().NUMERO;
-            MODEL.Rua = data.First().RUA;
-            MODEL.Morada = data.First().MORADA;
-            MODEL.ENDERECO_PAIS_ID = data.First().ENDERECO_PAIS_ID;
-            MODEL.ENDERECO_CIDADE_ID = data.First().GRL_ENDERECO_CIDADE_ID;
-            MODEL.ENDERECO_MUN_ID = data.First().ENDERECO_MUN_DISTR_ID;
-            MODEL.PAIS_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.CIDADE_LIST = databaseManager.GRL_ENDERECO_CIDADE.Where(x => x.DATA_REMOCAO == null && x.ENDERECO_PAIS_ID==MODEL.ENDERECO_PAIS_ID).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.MUN_LIST = databaseManager.GRL_ENDERECO_MUN_DISTR.Where(x => x.DATA_REMOCAO == null && x.ENDERECO_CIDADE_ID==MODEL.ENDERECO_CIDADE_ID).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Settings;
-            return View("Institutions/UpdateInstitution", MODEL);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult NewInstitution(SettingsInst MODEL, string returnUrl)
-        {
-            try
-            {
-                //  VALIDATE FORM FIRST
-                if (!ModelState.IsValid)
-                {
-                    string errors = string.Empty;
-                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
-                    return Json(new { result = false, error = errors });
-                }
-                Decimal Telephone = (!string.IsNullOrEmpty(MODEL.Telephone)) ? Convert.ToDecimal(MODEL.Telephone) : 0;
-                Decimal TelephoneAlternativo = (!string.IsNullOrEmpty(MODEL.TelephoneAlternativo)) ? Convert.ToDecimal(MODEL.TelephoneAlternativo) : 0;
-                Decimal Fax = (!string.IsNullOrEmpty(MODEL.Fax)) ? Convert.ToDecimal(MODEL.Fax) : 0;
-
-                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.EMAIL == MODEL.Email).Any())
-                    return Json(new { result = false, error = "Endereço de email já se encontra registado, por favor verifique a seleção!" });
-
-                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.TELEFONE == Telephone).Any())
-                    return Json(new { result = false, error = "Telefone já se encontra registado, por favor verifique a seleção!" });
-
-                if (databaseManager.INST_APLICACAO.Where(x => x.SIGLA == MODEL.Sigla || x.NOME == MODEL.Nome).Any())
-                    return Json(new { result = false, error = "Sigla e/ou Nome desta instituição já se encontra registada, por favor verifique a seleção!" });
-
-                // New
-                var create = databaseManager.SP_INST_APLICACAO(null, MODEL.Sigla, MODEL.Nome, MODEL.NIF, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, MODEL.Rua, MODEL.Morada, MODEL.ENDERECO_PAIS_ID, MODEL.ENDERECO_CIDADE_ID, MODEL.ENDERECO_MUN_ID, int.Parse(User.Identity.GetUserId()), "C").ToList();
-                var Id = create.First().ID;
-                ModelState.Clear();
-
-                returnUrl = "/administration/viewinstitutions/" + Id;
-            }
-            catch (Exception ex)
-            {
-                return Json(new { result = false, error = ex.Message });
-            }
-            return Json(new { result = true, error = string.Empty, url = returnUrl, showToastr = true, toastrMessage = "Submetido com sucesso!" });
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateInstitution(SettingsInst MODEL, string returnUrl)
-        {
-            try
-            {
-                //  VALIDATE FORM FIRST
-                if (!ModelState.IsValid)
-                {
-                    string errors = string.Empty;
-                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
-                    return Json(new { result = false, error = errors });
-                }
-
-                Decimal Telephone = (!string.IsNullOrEmpty(MODEL.Telephone)) ? Convert.ToDecimal(MODEL.Telephone) : 0;
-                Decimal TelephoneAlternativo = (!string.IsNullOrEmpty(MODEL.TelephoneAlternativo)) ? Convert.ToDecimal(MODEL.TelephoneAlternativo) : 0;
-                Decimal Fax = (!string.IsNullOrEmpty(MODEL.Fax)) ? Convert.ToDecimal(MODEL.Fax) : 0;
-
-                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.EMAIL == MODEL.Email && x.INST_APLICACAO_ID != MODEL.ID).Any())
-                    return Json(new { result = false, error = "Endereço de email já se encontra registado, por favor verifique a seleção!" });
-
-                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.TELEFONE == Telephone && x.INST_APLICACAO_ID != MODEL.ID).Any())
-                    return Json(new { result = false, error = "Telefone já se encontra registado, por favor verifique a seleção!" });
-
-                if (databaseManager.INST_APLICACAO.Where(x => x.SIGLA == MODEL.Sigla && x.ID != MODEL.ID || x.NOME == MODEL.Nome && x.ID != MODEL.ID).Any())
-                    return Json(new { result = false, error = "Sigla e/ou Nome desta instituição já se encontra registada, por favor verifique a seleção!" });
-
-                // Update
-                var update = databaseManager.SP_INST_APLICACAO(MODEL.ID, MODEL.Sigla, MODEL.Nome, MODEL.NIF, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, MODEL.Rua, MODEL.Morada, MODEL.ENDERECO_PAIS_ID, MODEL.ENDERECO_CIDADE_ID, MODEL.ENDERECO_MUN_ID, int.Parse(User.Identity.GetUserId()), "U").ToList();
-                ModelState.Clear();
-
-                returnUrl = "/administration/viewinstitutions/" + MODEL.ID;
-            }
-            catch (Exception ex)
-            {
-                return Json(new { result = false, error = ex.Message });
-            }
-            return Json(new { result = true, error = string.Empty, url = returnUrl, showToastr = true, toastrMessage = "Submetido com sucesso!" });
-        }
-
 
         //Users
         public ActionResult Users()
@@ -310,7 +189,7 @@ namespace Gestreino.Controllers
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
             var data = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
             if (!data.Any()) { return RedirectToAction("", "home"); }
-            ViewBag.imgSrc = (string.IsNullOrEmpty(data.First().FOTOGRAFIA)) ? "/Assets/images/user-avatar.jpg" : "/" + data.First().FOTOGRAFIA;
+            ViewBag.imgSrc = (string.IsNullOrEmpty(data.First().FOTOGRAFIA)) ? "/Assets/images/user-avatar.png" : "/" + data.First().FOTOGRAFIA;
 
             ViewBag.data = data;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_User;
@@ -452,10 +331,10 @@ namespace Gestreino.Controllers
                 {
                     return Json(new { result = false, error = "Data Inicial deve ser inferior a Data Final!" });
                 }
-                if (databaseManager.UTILIZADORES.Where(x => x.LOGIN == MODEL.Login).Any())
+                if (databaseManager.UTILIZADORES.Where(x => x.LOGIN == MODEL.Login.Trim()).Any())
                     return Json(new { result = false, error = "Utilizador já se encontra registado, por favor verifique a seleção!" });
 
-                if (databaseManager.PES_CONTACTOS.Where(x => x.EMAIL == MODEL.Email).Any())
+                if (databaseManager.PES_CONTACTOS.Where(x => x.EMAIL == MODEL.Email.Trim()).Any())
                     return Json(new { result = false, error = "Endereço de email já se encontra registado, por favor verifique a seleção!" });
 
                 if (Converters.WordCount(MODEL.Name) <= 1)
@@ -471,7 +350,7 @@ namespace Gestreino.Controllers
                 // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
 
                 // Create
-                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.INST_APLICACAO_ID, null, null, MODEL.Login, MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, Status, DateIni, DateEnd, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.INST_APLICACAO_ID, null, null, MODEL.Login.Trim(), MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, Status, DateIni, DateEnd, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
                 var UserId = create.First().ID;
                 //Add to group
                 var UserGroup = MODEL.INST_APLICACAO_ID == null ? AcessControl.GROUP_ADM : AcessControl.GROUP_INST;
@@ -479,7 +358,7 @@ namespace Gestreino.Controllers
 
                 // Send Email
                 string url = "http://gestreino.pt/";
-                Mailer.SendEmailMVC(1, MODEL.Email, MODEL.Name, MODEL.Login, MODEL.Password.Trim(), url, null); // Email template - 3
+                Mailer.SendEmailMVC(1, MODEL.Email, MODEL.Name, MODEL.Login.Trim(), MODEL.Password.Trim(), url, null); // Email template - 3
 
                 ModelState.Clear();
             }
@@ -503,8 +382,11 @@ namespace Gestreino.Controllers
                     return Json(new { result = false, error = errors });
                 }
 
-                if (databaseManager.UTILIZADORES.Where(x => x.LOGIN == MODEL.Login && x.ID != MODEL.Id).Any())
+                if (databaseManager.UTILIZADORES.Where(x => x.LOGIN == MODEL.Login.Trim() && x.ID != MODEL.Id).Any())
                     return Json(new { result = false, error = "Utilizador já se encontra registado, por favor verifique a seleção!" });
+
+                if (Converters.WordCount(MODEL.Name) <= 1)
+                    return Json(new { result = false, error = "Nome completo deve conter mais de uma palavra!" });
 
                 var Status = MODEL.Status == 1 ? true : false;
 
@@ -514,7 +396,7 @@ namespace Gestreino.Controllers
 
                 }
                 // Update
-                var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.Id, null, null, MODEL.Login, null, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), null, null, Status, null, null, true, int.Parse(User.Identity.GetUserId()), "U").ToList();
+                var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.Id, null, null, MODEL.Login.Trim(), MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), null, null, Status, null, null, true, int.Parse(User.Identity.GetUserId()), "U").ToList();
                 ModelState.Clear();
             }
             catch (Exception ex)
@@ -962,6 +844,8 @@ namespace Gestreino.Controllers
                 // Delete
                 foreach (var i in ids)
                 {
+                    if(i==AcessControl.PROFILE_ADM)
+                        return Json(new { result = false, error = "Não pode remover o perfil de administração por estar sujeito a configuração de novas subscrições!" });
                     databaseManager.SP_UTILIZADORES_ENT_PERFIS(i, null, null, null, null, int.Parse(User.Identity.GetUserId()), "D").ToList();
                 }
                 ModelState.Clear();
@@ -5315,7 +5199,7 @@ namespace Gestreino.Controllers
                                              select new { j3.CAMINHO_URL });
 
             Configs.INST_INSTITUICAO_LOGO=path.Any()?path.FirstOrDefault().CAMINHO_URL:string.Empty;
-            ViewBag.imgSrc = (string.IsNullOrEmpty(Configs.INST_INSTITUICAO_LOGO)) ? "/Assets/images/user-avatar.jpg" : "/" + Configs.INST_INSTITUICAO_LOGO;
+            ViewBag.imgSrc = (string.IsNullOrEmpty(Configs.INST_INSTITUICAO_LOGO)) ? "/Assets/images/user-avatar.png" : "/" + Configs.INST_INSTITUICAO_LOGO;
 
 
             MODEL.MOEDA_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME + " - " + x.CODIGO.ToString() });

@@ -109,4 +109,30 @@ namespace Gestreino.Models
         [DataType(DataType.Text)]
         public string Login { get; set; }
     }
+
+    public class NewAccountViewModel
+    {
+        [Required(ErrorMessage = "{0} é um campo obrigatório!")]
+        [Display(Name = "Nome")]
+        [DataType(DataType.Text)]
+        public string Nome { get; set; }
+
+        [Required(ErrorMessage = "{0} é um campo obrigatório!")]
+        [Display(Name = "Instituição")]
+        [DataType(DataType.Text)]
+        public string Institution { get; set; }
+
+        [Required(ErrorMessage = "{0} é um campo obrigatório!")]
+        [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Endereço de email inválido!")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "{0} é um campo obrigatório!")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Telefone")]
+        public string Phone { get; set; }
+
+        public string Password { get; set; }
+    }
 }

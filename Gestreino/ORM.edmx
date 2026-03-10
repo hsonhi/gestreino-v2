@@ -932,10 +932,10 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="INST_APLICACAO_ID" Type="int" Nullable="false" />
           <Property Name="NUMERO" Type="int" />
-          <Property Name="RUA" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="MORADA" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="ENDERECO_PAIS_ID" Type="int" Nullable="false" />
-          <Property Name="GRL_ENDERECO_CIDADE_ID" Type="int" Nullable="false" />
+          <Property Name="RUA" Type="varchar" MaxLength="64" />
+          <Property Name="MORADA" Type="varchar" MaxLength="255" />
+          <Property Name="ENDERECO_PAIS_ID" Type="int" />
+          <Property Name="GRL_ENDERECO_CIDADE_ID" Type="int" />
           <Property Name="ENDERECO_MUN_DISTR_ID" Type="int" />
           <Property Name="INSERIDO_POR" Type="int" Nullable="false" />
           <Property Name="ACTUALIZADO_POR" Type="int" />
@@ -1553,7 +1553,7 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           </ReferentialConstraint>
         </Association>
         <Association Name="FKINST_APLIC331316">
-          <End Role="GRL_ENDERECO_CIDADE" Type="Self.GRL_ENDERECO_CIDADE" Multiplicity="1" />
+          <End Role="GRL_ENDERECO_CIDADE" Type="Self.GRL_ENDERECO_CIDADE" Multiplicity="0..1" />
           <End Role="INST_APLICACAO_ENDERECOS" Type="Self.INST_APLICACAO_ENDERECOS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GRL_ENDERECO_CIDADE">
@@ -1613,7 +1613,7 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           </ReferentialConstraint>
         </Association>
         <Association Name="FKINST_APLIC939798">
-          <End Role="GRL_ENDERECO_PAIS" Type="Self.GRL_ENDERECO_PAIS" Multiplicity="1" />
+          <End Role="GRL_ENDERECO_PAIS" Type="Self.GRL_ENDERECO_PAIS" Multiplicity="0..1" />
           <End Role="INST_APLICACAO_ENDERECOS" Type="Self.INST_APLICACAO_ENDERECOS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GRL_ENDERECO_PAIS">
@@ -5424,43 +5424,6 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
             <Parameter Name="UserInsercaoId" Mode="In" Type="Int32" />
             <Parameter Name="Action" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="SP_INST_APLICACAO" ReturnType="Collection(GESTREINO_ORM.SP_INST_APLICACAO_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
-            <Parameter Name="Sigla" Mode="In" Type="String" />
-            <Parameter Name="Nome" Mode="In" Type="String" />
-            <Parameter Name="NIF" Mode="In" Type="String" />
-            <Parameter Name="Telefone" Mode="In" Type="Decimal" />
-            <Parameter Name="TelefoneAlternativo" Mode="In" Type="Decimal" />
-            <Parameter Name="Fax" Mode="In" Type="Decimal" />
-            <Parameter Name="Email" Mode="In" Type="String" />
-            <Parameter Name="CodigoPostal" Mode="In" Type="String" />
-            <Parameter Name="URL" Mode="In" Type="String" />
-            <Parameter Name="Numero" Mode="In" Type="Int32" />
-            <Parameter Name="Rua" Mode="In" Type="String" />
-            <Parameter Name="Morada" Mode="In" Type="String" />
-            <Parameter Name="PaisId" Mode="In" Type="Int32" />
-            <Parameter Name="CidadeId" Mode="In" Type="Int32" />
-            <Parameter Name="MunId" Mode="In" Type="Int32" />
-            <Parameter Name="UserInsercaoId" Mode="In" Type="Int32" />
-            <Parameter Name="Action" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="INST_APLICACAO_ENDERECOS" EntityType="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" />
-          <AssociationSet Name="FKINST_APLIC331316" Association="GESTREINO_ORM.FKINST_APLIC331316">
-            <End Role="GRL_ENDERECO_CIDADE" EntitySet="GRL_ENDERECO_CIDADE" />
-            <End Role="INST_APLICACAO_ENDERECOS" EntitySet="INST_APLICACAO_ENDERECOS" />
-          </AssociationSet>
-          <AssociationSet Name="FKINST_APLIC69096" Association="GESTREINO_ORM.FKINST_APLIC69096">
-            <End Role="GRL_ENDERECO_MUN_DISTR" EntitySet="GRL_ENDERECO_MUN_DISTR" />
-            <End Role="INST_APLICACAO_ENDERECOS" EntitySet="INST_APLICACAO_ENDERECOS" />
-          </AssociationSet>
-          <AssociationSet Name="FKINST_APLIC939798" Association="GESTREINO_ORM.FKINST_APLIC939798">
-            <End Role="GRL_ENDERECO_PAIS" EntitySet="GRL_ENDERECO_PAIS" />
-            <End Role="INST_APLICACAO_ENDERECOS" EntitySet="INST_APLICACAO_ENDERECOS" />
-          </AssociationSet>
-          <AssociationSet Name="FKINST_APLIC348700" Association="GESTREINO_ORM.FKINST_APLIC348700">
-            <End Role="INST_APLICACAO" EntitySet="INST_APLICACAO" />
-            <End Role="INST_APLICACAO_ENDERECOS" EntitySet="INST_APLICACAO_ENDERECOS" />
-          </AssociationSet>
           <FunctionImport Name="SP_PES_ENT_PESSOAS" ReturnType="Collection(GESTREINO_ORM.SP_PES_ENT_PESSOAS_Result)">
             <Parameter Name="ID" Mode="In" Type="Int32" />
             <Parameter Name="AplicationId" Mode="In" Type="Int32" />
@@ -5559,6 +5522,43 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           <FunctionImport Name="SP_GT_GRAPH_Forca1RMBraco" ReturnType="Collection(GESTREINO_ORM.SP_GT_GRAPH_Forca1RMBraco_Result)">
             <Parameter Name="Id" Mode="In" Type="Int32" />
             <Parameter Name="ApplicationId" Mode="In" Type="Int32" />
+            <Parameter Name="Action" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="INST_APLICACAO_ENDERECOS" EntityType="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" />
+          <AssociationSet Name="FKINST_APLIC331316" Association="GESTREINO_ORM.FKINST_APLIC331316">
+            <End Role="GRL_ENDERECO_CIDADE" EntitySet="GRL_ENDERECO_CIDADE" />
+            <End Role="INST_APLICACAO_ENDERECOS" EntitySet="INST_APLICACAO_ENDERECOS" />
+          </AssociationSet>
+          <AssociationSet Name="FKINST_APLIC69096" Association="GESTREINO_ORM.FKINST_APLIC69096">
+            <End Role="GRL_ENDERECO_MUN_DISTR" EntitySet="GRL_ENDERECO_MUN_DISTR" />
+            <End Role="INST_APLICACAO_ENDERECOS" EntitySet="INST_APLICACAO_ENDERECOS" />
+          </AssociationSet>
+          <AssociationSet Name="FKINST_APLIC939798" Association="GESTREINO_ORM.FKINST_APLIC939798">
+            <End Role="GRL_ENDERECO_PAIS" EntitySet="GRL_ENDERECO_PAIS" />
+            <End Role="INST_APLICACAO_ENDERECOS" EntitySet="INST_APLICACAO_ENDERECOS" />
+          </AssociationSet>
+          <AssociationSet Name="FKINST_APLIC348700" Association="GESTREINO_ORM.FKINST_APLIC348700">
+            <End Role="INST_APLICACAO" EntitySet="INST_APLICACAO" />
+            <End Role="INST_APLICACAO_ENDERECOS" EntitySet="INST_APLICACAO_ENDERECOS" />
+          </AssociationSet>
+          <FunctionImport Name="SP_INST_APLICACAO" ReturnType="Collection(GESTREINO_ORM.SP_INST_APLICACAO_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Sigla" Mode="In" Type="String" />
+            <Parameter Name="Nome" Mode="In" Type="String" />
+            <Parameter Name="NIF" Mode="In" Type="String" />
+            <Parameter Name="Telefone" Mode="In" Type="Decimal" />
+            <Parameter Name="TelefoneAlternativo" Mode="In" Type="Decimal" />
+            <Parameter Name="Fax" Mode="In" Type="Decimal" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="CodigoPostal" Mode="In" Type="String" />
+            <Parameter Name="URL" Mode="In" Type="String" />
+            <Parameter Name="Numero" Mode="In" Type="Int32" />
+            <Parameter Name="Rua" Mode="In" Type="String" />
+            <Parameter Name="Morada" Mode="In" Type="String" />
+            <Parameter Name="PaisId" Mode="In" Type="Int32" />
+            <Parameter Name="CidadeId" Mode="In" Type="Int32" />
+            <Parameter Name="MunId" Mode="In" Type="Int32" />
+            <Parameter Name="UserInsercaoId" Mode="In" Type="Int32" />
             <Parameter Name="Action" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
@@ -8027,105 +8027,6 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           <Property Type="String" Name="DATA_INSERCAO" Nullable="true" MaxLength="19" />
           <Property Type="String" Name="DATA_ACTUALIZACAO" Nullable="true" MaxLength="19" />
         </ComplexType>
-        <ComplexType Name="SP_INST_APLICACAO_Result">
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="SIGLA" Nullable="false" MaxLength="30" />
-          <Property Type="String" Name="NOME" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="NIF" Nullable="true" MaxLength="15" />
-          <Property Type="Decimal" Name="TELEFONE" Nullable="false" Precision="13" Scale="0" />
-          <Property Type="Decimal" Name="TELEFONE_ALTERNATIVO" Nullable="true" Precision="13" Scale="0" />
-          <Property Type="Decimal" Name="FAX" Nullable="true" Precision="13" Scale="0" />
-          <Property Type="String" Name="EMAIL" Nullable="false" MaxLength="64" />
-          <Property Type="String" Name="CODIGO_POSTAL" Nullable="true" MaxLength="48" />
-          <Property Type="String" Name="URL" Nullable="true" MaxLength="255" />
-          <Property Type="Int32" Name="NUMERO" Nullable="true" />
-          <Property Type="String" Name="RUA" Nullable="false" MaxLength="64" />
-          <Property Type="String" Name="MORADA" Nullable="false" MaxLength="255" />
-          <Property Type="Int32" Name="ENDERECO_PAIS_ID" Nullable="false" />
-          <Property Type="Int32" Name="GRL_ENDERECO_CIDADE_ID" Nullable="false" />
-          <Property Type="Int32" Name="ENDERECO_MUN_DISTR_ID" Nullable="false" />
-          <Property Type="String" Name="PAIS_SIGLA" Nullable="true" MaxLength="30" />
-          <Property Type="String" Name="PAIS_NOME" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="CIDADE_SIGLA" Nullable="true" MaxLength="30" />
-          <Property Type="String" Name="CIDADE_NOME" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="MUN_SIGLA" Nullable="true" MaxLength="30" />
-          <Property Type="String" Name="MUN_NOME" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="INSERCAO" Nullable="true" MaxLength="32" />
-          <Property Type="String" Name="ACTUALIZACAO" Nullable="true" MaxLength="32" />
-          <Property Type="String" Name="DATA_INSERCAO" Nullable="true" MaxLength="19" />
-          <Property Type="String" Name="DATA_ACTUALIZACAO" Nullable="true" MaxLength="19" />
-        </ComplexType>
-        <EntityType Name="INST_APLICACAO_ENDERECOS">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="INST_APLICACAO_ID" Type="Int32" Nullable="false" />
-          <Property Name="NUMERO" Type="Int32" />
-          <Property Name="RUA" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="MORADA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ENDERECO_PAIS_ID" Type="Int32" Nullable="false" />
-          <Property Name="GRL_ENDERECO_CIDADE_ID" Type="Int32" Nullable="false" />
-          <Property Name="ENDERECO_MUN_DISTR_ID" Type="Int32" />
-          <Property Name="INSERIDO_POR" Type="Int32" Nullable="false" />
-          <Property Name="ACTUALIZADO_POR" Type="Int32" />
-          <Property Name="REMOVIDO_POR" Type="Int32" />
-          <Property Name="DATA_INSERCAO" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DATA_ACTUALIZACAO" Type="DateTime" Precision="3" />
-          <Property Name="DATA_REMOCAO" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="GRL_ENDERECO_CIDADE" Relationship="GESTREINO_ORM.FKINST_APLIC331316" FromRole="INST_APLICACAO_ENDERECOS" ToRole="GRL_ENDERECO_CIDADE" />
-          <NavigationProperty Name="GRL_ENDERECO_MUN_DISTR" Relationship="GESTREINO_ORM.FKINST_APLIC69096" FromRole="INST_APLICACAO_ENDERECOS" ToRole="GRL_ENDERECO_MUN_DISTR" />
-          <NavigationProperty Name="GRL_ENDERECO_PAIS" Relationship="GESTREINO_ORM.FKINST_APLIC939798" FromRole="INST_APLICACAO_ENDERECOS" ToRole="GRL_ENDERECO_PAIS" />
-          <NavigationProperty Name="INST_APLICACAO" Relationship="GESTREINO_ORM.FKINST_APLIC348700" FromRole="INST_APLICACAO_ENDERECOS" ToRole="INST_APLICACAO" />
-        </EntityType>
-        <Association Name="FKINST_APLIC331316">
-          <End Type="GESTREINO_ORM.GRL_ENDERECO_CIDADE" Role="GRL_ENDERECO_CIDADE" Multiplicity="1" />
-          <End Type="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Role="INST_APLICACAO_ENDERECOS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GRL_ENDERECO_CIDADE">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="INST_APLICACAO_ENDERECOS">
-              <PropertyRef Name="GRL_ENDERECO_CIDADE_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FKINST_APLIC69096">
-          <End Type="GESTREINO_ORM.GRL_ENDERECO_MUN_DISTR" Role="GRL_ENDERECO_MUN_DISTR" Multiplicity="0..1" />
-          <End Type="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Role="INST_APLICACAO_ENDERECOS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GRL_ENDERECO_MUN_DISTR">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="INST_APLICACAO_ENDERECOS">
-              <PropertyRef Name="ENDERECO_MUN_DISTR_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FKINST_APLIC939798">
-          <End Type="GESTREINO_ORM.GRL_ENDERECO_PAIS" Role="GRL_ENDERECO_PAIS" Multiplicity="1" />
-          <End Type="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Role="INST_APLICACAO_ENDERECOS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GRL_ENDERECO_PAIS">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="INST_APLICACAO_ENDERECOS">
-              <PropertyRef Name="ENDERECO_PAIS_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FKINST_APLIC348700">
-          <End Type="GESTREINO_ORM.INST_APLICACAO" Role="INST_APLICACAO" Multiplicity="1" />
-          <End Type="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Role="INST_APLICACAO_ENDERECOS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="INST_APLICACAO">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="INST_APLICACAO_ENDERECOS">
-              <PropertyRef Name="INST_APLICACAO_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <ComplexType Name="SP_PES_ENT_PESSOAS_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="Int32" Name="UTILIZADORES_ID" Nullable="false" />
@@ -8306,6 +8207,105 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           <Property Type="Double" Name="PercentagemMulheres" Nullable="true" />
           <Property Type="Int32" Name="TotalAtletas" Nullable="true" />
           <Property Type="Double" Name="PercentagemAtletas" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="INST_APLICACAO_ENDERECOS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="INST_APLICACAO_ID" Type="Int32" Nullable="false" />
+          <Property Name="NUMERO" Type="Int32" />
+          <Property Name="RUA" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="MORADA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ENDERECO_PAIS_ID" Type="Int32" />
+          <Property Name="GRL_ENDERECO_CIDADE_ID" Type="Int32" />
+          <Property Name="ENDERECO_MUN_DISTR_ID" Type="Int32" />
+          <Property Name="INSERIDO_POR" Type="Int32" Nullable="false" />
+          <Property Name="ACTUALIZADO_POR" Type="Int32" />
+          <Property Name="REMOVIDO_POR" Type="Int32" />
+          <Property Name="DATA_INSERCAO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DATA_ACTUALIZACAO" Type="DateTime" Precision="3" />
+          <Property Name="DATA_REMOCAO" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GRL_ENDERECO_CIDADE" Relationship="GESTREINO_ORM.FKINST_APLIC331316" FromRole="INST_APLICACAO_ENDERECOS" ToRole="GRL_ENDERECO_CIDADE" />
+          <NavigationProperty Name="GRL_ENDERECO_MUN_DISTR" Relationship="GESTREINO_ORM.FKINST_APLIC69096" FromRole="INST_APLICACAO_ENDERECOS" ToRole="GRL_ENDERECO_MUN_DISTR" />
+          <NavigationProperty Name="GRL_ENDERECO_PAIS" Relationship="GESTREINO_ORM.FKINST_APLIC939798" FromRole="INST_APLICACAO_ENDERECOS" ToRole="GRL_ENDERECO_PAIS" />
+          <NavigationProperty Name="INST_APLICACAO" Relationship="GESTREINO_ORM.FKINST_APLIC348700" FromRole="INST_APLICACAO_ENDERECOS" ToRole="INST_APLICACAO" />
+        </EntityType>
+        <Association Name="FKINST_APLIC331316">
+          <End Type="GESTREINO_ORM.GRL_ENDERECO_CIDADE" Role="GRL_ENDERECO_CIDADE" Multiplicity="0..1" />
+          <End Type="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Role="INST_APLICACAO_ENDERECOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRL_ENDERECO_CIDADE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="INST_APLICACAO_ENDERECOS">
+              <PropertyRef Name="GRL_ENDERECO_CIDADE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKINST_APLIC69096">
+          <End Type="GESTREINO_ORM.GRL_ENDERECO_MUN_DISTR" Role="GRL_ENDERECO_MUN_DISTR" Multiplicity="0..1" />
+          <End Type="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Role="INST_APLICACAO_ENDERECOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRL_ENDERECO_MUN_DISTR">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="INST_APLICACAO_ENDERECOS">
+              <PropertyRef Name="ENDERECO_MUN_DISTR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKINST_APLIC939798">
+          <End Type="GESTREINO_ORM.GRL_ENDERECO_PAIS" Role="GRL_ENDERECO_PAIS" Multiplicity="0..1" />
+          <End Type="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Role="INST_APLICACAO_ENDERECOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRL_ENDERECO_PAIS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="INST_APLICACAO_ENDERECOS">
+              <PropertyRef Name="ENDERECO_PAIS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKINST_APLIC348700">
+          <End Type="GESTREINO_ORM.INST_APLICACAO" Role="INST_APLICACAO" Multiplicity="1" />
+          <End Type="GESTREINO_ORM.INST_APLICACAO_ENDERECOS" Role="INST_APLICACAO_ENDERECOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="INST_APLICACAO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="INST_APLICACAO_ENDERECOS">
+              <PropertyRef Name="INST_APLICACAO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="SP_INST_APLICACAO_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="SIGLA" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="NOME" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="NIF" Nullable="true" MaxLength="15" />
+          <Property Type="Decimal" Name="TELEFONE" Nullable="false" Precision="13" Scale="0" />
+          <Property Type="Decimal" Name="TELEFONE_ALTERNATIVO" Nullable="true" Precision="13" Scale="0" />
+          <Property Type="Decimal" Name="FAX" Nullable="true" Precision="13" Scale="0" />
+          <Property Type="String" Name="EMAIL" Nullable="false" MaxLength="64" />
+          <Property Type="String" Name="CODIGO_POSTAL" Nullable="true" MaxLength="48" />
+          <Property Type="String" Name="URL" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="NUMERO" Nullable="true" />
+          <Property Type="String" Name="RUA" Nullable="true" MaxLength="64" />
+          <Property Type="String" Name="MORADA" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="ENDERECO_PAIS_ID" Nullable="false" />
+          <Property Type="Int32" Name="GRL_ENDERECO_CIDADE_ID" Nullable="false" />
+          <Property Type="Int32" Name="ENDERECO_MUN_DISTR_ID" Nullable="false" />
+          <Property Type="String" Name="PAIS_SIGLA" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="PAIS_NOME" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="CIDADE_SIGLA" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="CIDADE_NOME" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="MUN_SIGLA" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="MUN_NOME" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="INSERCAO" Nullable="true" MaxLength="32" />
+          <Property Type="String" Name="ACTUALIZACAO" Nullable="true" MaxLength="32" />
+          <Property Type="String" Name="DATA_INSERCAO" Nullable="true" MaxLength="19" />
+          <Property Type="String" Name="DATA_ACTUALIZACAO" Nullable="true" MaxLength="19" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -10515,58 +10515,6 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SP_INST_APLICACAO" FunctionName="GESTREINO_ORM.Store.SP_INST_APLICACAO">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="GESTREINO_ORM.SP_INST_APLICACAO_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="SIGLA" ColumnName="SIGLA" />
-                <ScalarProperty Name="NOME" ColumnName="NOME" />
-                <ScalarProperty Name="NIF" ColumnName="NIF" />
-                <ScalarProperty Name="TELEFONE" ColumnName="TELEFONE" />
-                <ScalarProperty Name="TELEFONE_ALTERNATIVO" ColumnName="TELEFONE_ALTERNATIVO" />
-                <ScalarProperty Name="FAX" ColumnName="FAX" />
-                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
-                <ScalarProperty Name="CODIGO_POSTAL" ColumnName="CODIGO_POSTAL" />
-                <ScalarProperty Name="URL" ColumnName="URL" />
-                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
-                <ScalarProperty Name="RUA" ColumnName="RUA" />
-                <ScalarProperty Name="MORADA" ColumnName="MORADA" />
-                <ScalarProperty Name="ENDERECO_PAIS_ID" ColumnName="ENDERECO_PAIS_ID" />
-                <ScalarProperty Name="GRL_ENDERECO_CIDADE_ID" ColumnName="GRL_ENDERECO_CIDADE_ID" />
-                <ScalarProperty Name="ENDERECO_MUN_DISTR_ID" ColumnName="ENDERECO_MUN_DISTR_ID" />
-                <ScalarProperty Name="PAIS_SIGLA" ColumnName="PAIS_SIGLA" />
-                <ScalarProperty Name="PAIS_NOME" ColumnName="PAIS_NOME" />
-                <ScalarProperty Name="CIDADE_SIGLA" ColumnName="CIDADE_SIGLA" />
-                <ScalarProperty Name="CIDADE_NOME" ColumnName="CIDADE_NOME" />
-                <ScalarProperty Name="MUN_SIGLA" ColumnName="MUN_SIGLA" />
-                <ScalarProperty Name="MUN_NOME" ColumnName="MUN_NOME" />
-                <ScalarProperty Name="INSERCAO" ColumnName="INSERCAO" />
-                <ScalarProperty Name="ACTUALIZACAO" ColumnName="ACTUALIZACAO" />
-                <ScalarProperty Name="DATA_INSERCAO" ColumnName="DATA_INSERCAO" />
-                <ScalarProperty Name="DATA_ACTUALIZACAO" ColumnName="DATA_ACTUALIZACAO" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="INST_APLICACAO_ENDERECOS">
-            <EntityTypeMapping TypeName="GESTREINO_ORM.INST_APLICACAO_ENDERECOS">
-              <MappingFragment StoreEntitySet="INST_APLICACAO_ENDERECOS">
-                <ScalarProperty Name="DATA_REMOCAO" ColumnName="DATA_REMOCAO" />
-                <ScalarProperty Name="DATA_ACTUALIZACAO" ColumnName="DATA_ACTUALIZACAO" />
-                <ScalarProperty Name="DATA_INSERCAO" ColumnName="DATA_INSERCAO" />
-                <ScalarProperty Name="REMOVIDO_POR" ColumnName="REMOVIDO_POR" />
-                <ScalarProperty Name="ACTUALIZADO_POR" ColumnName="ACTUALIZADO_POR" />
-                <ScalarProperty Name="INSERIDO_POR" ColumnName="INSERIDO_POR" />
-                <ScalarProperty Name="ENDERECO_MUN_DISTR_ID" ColumnName="ENDERECO_MUN_DISTR_ID" />
-                <ScalarProperty Name="GRL_ENDERECO_CIDADE_ID" ColumnName="GRL_ENDERECO_CIDADE_ID" />
-                <ScalarProperty Name="ENDERECO_PAIS_ID" ColumnName="ENDERECO_PAIS_ID" />
-                <ScalarProperty Name="MORADA" ColumnName="MORADA" />
-                <ScalarProperty Name="RUA" ColumnName="RUA" />
-                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
-                <ScalarProperty Name="INST_APLICACAO_ID" ColumnName="INST_APLICACAO_ID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="SP_PES_ENT_PESSOAS" FunctionName="GESTREINO_ORM.Store.SP_PES_ENT_PESSOAS">
             <ResultMapping>
               <ComplexTypeMapping TypeName="GESTREINO_ORM.SP_PES_ENT_PESSOAS_Result">
@@ -10701,6 +10649,58 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
                 <ScalarProperty Name="PercentagemMulheres" ColumnName="PercentagemMulheres" />
                 <ScalarProperty Name="TotalAtletas" ColumnName="TotalAtletas" />
                 <ScalarProperty Name="PercentagemAtletas" ColumnName="PercentagemAtletas" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="INST_APLICACAO_ENDERECOS">
+            <EntityTypeMapping TypeName="GESTREINO_ORM.INST_APLICACAO_ENDERECOS">
+              <MappingFragment StoreEntitySet="INST_APLICACAO_ENDERECOS">
+                <ScalarProperty Name="DATA_REMOCAO" ColumnName="DATA_REMOCAO" />
+                <ScalarProperty Name="DATA_ACTUALIZACAO" ColumnName="DATA_ACTUALIZACAO" />
+                <ScalarProperty Name="DATA_INSERCAO" ColumnName="DATA_INSERCAO" />
+                <ScalarProperty Name="REMOVIDO_POR" ColumnName="REMOVIDO_POR" />
+                <ScalarProperty Name="ACTUALIZADO_POR" ColumnName="ACTUALIZADO_POR" />
+                <ScalarProperty Name="INSERIDO_POR" ColumnName="INSERIDO_POR" />
+                <ScalarProperty Name="ENDERECO_MUN_DISTR_ID" ColumnName="ENDERECO_MUN_DISTR_ID" />
+                <ScalarProperty Name="GRL_ENDERECO_CIDADE_ID" ColumnName="GRL_ENDERECO_CIDADE_ID" />
+                <ScalarProperty Name="ENDERECO_PAIS_ID" ColumnName="ENDERECO_PAIS_ID" />
+                <ScalarProperty Name="MORADA" ColumnName="MORADA" />
+                <ScalarProperty Name="RUA" ColumnName="RUA" />
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="INST_APLICACAO_ID" ColumnName="INST_APLICACAO_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_INST_APLICACAO" FunctionName="GESTREINO_ORM.Store.SP_INST_APLICACAO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GESTREINO_ORM.SP_INST_APLICACAO_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SIGLA" ColumnName="SIGLA" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="NIF" ColumnName="NIF" />
+                <ScalarProperty Name="TELEFONE" ColumnName="TELEFONE" />
+                <ScalarProperty Name="TELEFONE_ALTERNATIVO" ColumnName="TELEFONE_ALTERNATIVO" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="CODIGO_POSTAL" ColumnName="CODIGO_POSTAL" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="RUA" ColumnName="RUA" />
+                <ScalarProperty Name="MORADA" ColumnName="MORADA" />
+                <ScalarProperty Name="ENDERECO_PAIS_ID" ColumnName="ENDERECO_PAIS_ID" />
+                <ScalarProperty Name="GRL_ENDERECO_CIDADE_ID" ColumnName="GRL_ENDERECO_CIDADE_ID" />
+                <ScalarProperty Name="ENDERECO_MUN_DISTR_ID" ColumnName="ENDERECO_MUN_DISTR_ID" />
+                <ScalarProperty Name="PAIS_SIGLA" ColumnName="PAIS_SIGLA" />
+                <ScalarProperty Name="PAIS_NOME" ColumnName="PAIS_NOME" />
+                <ScalarProperty Name="CIDADE_SIGLA" ColumnName="CIDADE_SIGLA" />
+                <ScalarProperty Name="CIDADE_NOME" ColumnName="CIDADE_NOME" />
+                <ScalarProperty Name="MUN_SIGLA" ColumnName="MUN_SIGLA" />
+                <ScalarProperty Name="MUN_NOME" ColumnName="MUN_NOME" />
+                <ScalarProperty Name="INSERCAO" ColumnName="INSERCAO" />
+                <ScalarProperty Name="ACTUALIZACAO" ColumnName="ACTUALIZACAO" />
+                <ScalarProperty Name="DATA_INSERCAO" ColumnName="DATA_INSERCAO" />
+                <ScalarProperty Name="DATA_ACTUALIZACAO" ColumnName="DATA_ACTUALIZACAO" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

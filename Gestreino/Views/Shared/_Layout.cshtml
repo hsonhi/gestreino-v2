@@ -92,7 +92,7 @@
                                 <ul class=" navbar-right">
                                     <li class="nav-item dropdown open" style="padding-left: 15px;">
                                         <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                            <img src="@(!string.IsNullOrEmpty(AcessControl.getLoginInfo("UserData")) ? "/" + AcessControl.getLoginInfo("UserData") :  "/Assets/images/user-avatar.jpg")" alt="@User.Identity.GetUserName()">@User.Identity.GetUserName()
+                                            <img src="@(!string.IsNullOrEmpty(AcessControl.getLoginInfo("UserData")) ? "/" + AcessControl.getLoginInfo("UserData") :  "/Assets/images/user-avatar.png")" alt="@User.Identity.GetUserName()">@User.Identity.GetUserName()
                                         </a>
                                         <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="@Url.Action("profile","account")"> Perfil</a>

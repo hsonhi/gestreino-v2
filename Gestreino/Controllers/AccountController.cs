@@ -1,20 +1,21 @@
-﻿using System;
-using System.Globalization;
+﻿using DocumentFormat.OpenXml.EMMA;
+using Gestreino.Classes;
+using Gestreino.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Gestreino.Models;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Net;
-using Gestreino.Classes;
 
 namespace Gestreino.Controllers
 {
@@ -40,6 +41,17 @@ namespace Gestreino.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+        [AllowAnonymous]
+        public ActionResult Register(string returnUrl)
+        {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
 
         [Authorize]
         public ActionResult Profile(ProfileViewModel MODEL)
@@ -50,7 +62,7 @@ namespace Gestreino.Controllers
             }
             var claimsIdentity = User.Identity as ClaimsIdentity;
             var existingClaim = claimsIdentity.FindFirst(ClaimTypes.UserData);
-            ViewBag.imgSrc = (existingClaim != null && !string.IsNullOrEmpty(claimsIdentity.FindFirst(ClaimTypes.UserData).Value) ? "/" + claimsIdentity.FindFirst(ClaimTypes.UserData).Value : "/Assets/images/user-avatar.jpg");
+            ViewBag.imgSrc = (existingClaim != null && !string.IsNullOrEmpty(claimsIdentity.FindFirst(ClaimTypes.UserData).Value) ? "/" + claimsIdentity.FindFirst(ClaimTypes.UserData).Value : "/Assets/images/user-avatar.png");
             MODEL.Login = User.Identity.GetUserName();
             var PesId = (from j1 in databaseManager.UTILIZADORES
                          join j2 in databaseManager.PES_PESSOAS on j1.ID equals j2.UTILIZADORES_ID
@@ -465,6 +477,86 @@ namespace Gestreino.Controllers
             }
             return View(model);
         }
+
+
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> NewAccount(NewAccountViewModel MODEL, string returnUrl)
+        {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                string errors = string.Empty;
+                //var errors = ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList();
+                ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                return Json(new { result = false, error = errors });
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                Decimal Telephone = (!string.IsNullOrEmpty(MODEL.Phone)) ? Convert.ToDecimal(MODEL.Phone) : 0;
+                string SIGLA = !string.IsNullOrEmpty(MODEL.Institution) && MODEL.Institution.Length >= 3 ? MODEL.Institution.Substring(0, 3) : string.Empty;
+
+                if (Converters.WordCount(MODEL.Nome) <= 1)
+                    return Json(new { result = false, error = "Nome completo deve conter mais de uma palavra!" });
+            
+                if (MODEL.Institution.Length < 3)
+                    return Json(new { result = false, error = "Nome da instituição curto demais para continuar!" });
+              
+                if (databaseManager.PES_CONTACTOS.Where(x => x.EMAIL == MODEL.Email.Trim()).Any())
+                    return Json(new { result = false, error = "Este endereço de email já encontra-se em uso!" });
+               
+                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.EMAIL == MODEL.Email.Trim()).Any())
+                    return Json(new { result = false, error = "Este endereço de email já encontra-se em uso!" });
+
+                if (databaseManager.INST_APLICACAO_CONTACTOS.Where(x => x.TELEFONE == Telephone).Any())
+                    return Json(new { result = false, error = "Telefone já se encontra registado, por favor verifique a seleção!" });
+              
+                if (databaseManager.INST_APLICACAO.Where(x => x.NOME == MODEL.Institution).Any())
+                    return Json(new { result = false, error = "Nome da instituição não se encontra disponível!" });
+
+                //New institution
+                if (databaseManager.INST_APLICACAO.Where(x => x.SIGLA == SIGLA).Any())
+                    SIGLA = SIGLA + "" + databaseManager.INST_APLICACAO.Count();
+
+                var create = databaseManager.SP_INST_APLICACAO(null, SIGLA, MODEL.Institution, null, Telephone, null, null, MODEL.Email.Trim(), null, null, null, null, null, null, null, null, Configs.INST_INSTITUICAO_USER, "C").ToList();
+                var InstitutionId = create.First().ID;
+
+                //New User
+                var Login = Converters.GetFirstAndLastName(MODEL.Nome).Replace(" ", "").ToLower();
+
+                if (databaseManager.UTILIZADORES.Where(x => x.LOGIN == Login).Any())
+                    Login = Login + "" + (databaseManager.UTILIZADORES.Count() + 1);
+
+                // Create Salted Password
+                var Salt = Crypto.GenerateSalt(64);
+                var Password = Crypto.Hash(MODEL.Password.Trim() + Salt);
+                // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
+
+                // Create
+                var createUser = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(InstitutionId, null, null, Login, MODEL.Nome, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, true, null, null, true, Configs.INST_INSTITUICAO_USER, "C").ToList();
+                var UserId = createUser.First().ID;
+                //Add to group
+                databaseManager.SP_UTILIZADORES_ENT_GRUPOS_UTILIZADORES(null, AcessControl.GROUP_INST, UserId, Configs.INST_INSTITUICAO_USER, "C").ToList();
+                //Add to profile
+                databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES_PERFIS(null, AcessControl.PROFILE_ADM, UserId, Configs.INST_INSTITUICAO_USER, "C").ToList();
+
+                // Send Email
+                string url = "http://gestreino.pt/";
+                Mailer.SendEmailMVC(1, MODEL.Email, MODEL.Nome, Login, MODEL.Password.Trim(), url, null); // Email template - 3
+
+            }
+            return Json(new { result = true, success = "Subscrição efetuada com successo, por favor verifique o seu email!", resetForm = true });
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
