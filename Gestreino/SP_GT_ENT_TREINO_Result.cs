@@ -14,6 +14,7 @@ namespace Gestreino
     public partial class SP_GT_ENT_TREINO_Result
     {
         public int ID { get; set; }
+        public int INST_APLICACAO_ID { get; set; }
         public int GT_TipoTreino_ID { get; set; }
         public string GT_TipoTreino_NOME { get; set; }
         public string nome { get; set; }

@@ -17,7 +17,7 @@ namespace Gestreino.Classes
             using (GESTREINO_Entities databaseManager = new GESTREINO_Entities())
             {
                 var tipotreinoID = treino.First().GT_TipoTreino_ID;
-                var treinosp = databaseManager.SP_GT_ENT_TREINO(Id, null, tipotreinoID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+                var treinosp = databaseManager.SP_GT_ENT_TREINO(Id, int.Parse(AcessControl.getLoginInfo("Sid")), null, tipotreinoID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
                 var pesId = treinosp.Select(x => x.pes_id).FirstOrDefault();
                 var caract = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == pesId).ToList();
                 var DuracaoPlanoId = caract.Select(x => x.GT_DuracaoPlano_ID).FirstOrDefault();
@@ -175,7 +175,7 @@ namespace Gestreino.Classes
             using (GESTREINO_Entities databaseManager = new GESTREINO_Entities())
             {
                 var tipotreinoID = treino.First().GT_TipoTreino_ID;
-                var treinosp = databaseManager.SP_GT_ENT_TREINO(Id, null, tipotreinoID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+                var treinosp = databaseManager.SP_GT_ENT_TREINO(Id, int.Parse(AcessControl.getLoginInfo("Sid")),null, tipotreinoID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
                 var pesId = treinosp.Select(x => x.pes_id).FirstOrDefault();
                 var caract = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == pesId).ToList();
                 var TreinoPessoa = databaseManager.GT_TreinosPessoa.Where(x => x.GT_Treino_ID == Id);

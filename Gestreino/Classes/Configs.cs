@@ -7,8 +7,8 @@ namespace Gestreino.Classes
         private GESTREINO_Entities databaseManager = new GESTREINO_Entities();
 
         public static int? INST_INSTITUICAO_ID = 1;  
-        public static string INST_INSTITUICAO_SIGLA ;
-        public static string INST_INSTITUICAO_NOME;
+        public static string INST_INSTITUICAO_SIGLA ="GEST";
+        public static string INST_INSTITUICAO_NOME="Gestreino";
         public static string INST_INSTITUICAO_ENDERECO;
         public static string INST_INSTITUICAO_URL;
         public static string INST_INSTITUICAO_LOGO;
@@ -60,13 +60,11 @@ namespace Gestreino.Classes
 
         public void BeginConfig()
         {
-            if (string.IsNullOrEmpty(Configs.INST_INSTITUICAO_SIGLA))
+            if (string.IsNullOrEmpty(Configs.INST_PER_TEMA_1))
             {
                 var configvalues = databaseManager.GRL_DEFINICOES.FirstOrDefault();
                                    //databaseManager.GRL_DEFINICOES.Join(databaseManager.INST_APLICACAO,x => x.INST_APLICACAO_ID, y => y.ID,(x, y) => new { x, y }).Where(y => y.y.ID == INST_INSTITUICAO_ID).ToList();
                 
-                //INST_INSTITUICAO_SIGLA = configvalues[0].y.SIGLA;
-                //INST_INSTITUICAO_NOME = configvalues[0].y.NOME;
                 INST_PER_TEMA_1 = configvalues.INST_PER_TEMA_1;
                 INST_PER_TEMA_1_SIDEBAR = configvalues.INST_PER_TEMA_1_SIDEBAR;
                 INST_PER_TEMA_2 = configvalues.INST_PER_TEMA_2;

@@ -778,6 +778,8 @@
     <Content Include="Assets\images\imagesfunc\func73.jpg" />
     <Content Include="Assets\images\loading.gif" />
     <Content Include="Assets\images\login.jpeg" />
+    <Content Include="Assets\images\logo.png" />
+    <Content Include="Assets\images\logo_cropped.png" />
     <Content Include="Assets\images\new.png" />
     <Content Include="Assets\images\pencil.png" />
     <Content Include="Assets\images\printer.png" />

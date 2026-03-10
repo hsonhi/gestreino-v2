@@ -1822,13 +1822,15 @@ namespace Gestreino.Controllers
         public ActionResult BodyMassPlans(Gestreino.Models.GT_TreinoBodyMass MODEL, int? Id, string predefined)
         {
             if (!AcessControl.Authorized(AcessControl.GT_PLANS_BODYMASS_LIST_VIEW_SEARCH)) return View("Lockout");
-          
+
+            var ApplicationId = int.Parse(AcessControl.getLoginInfo("Sid"));
             MODEL.GT_Series_List = databaseManager.GT_Series.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.SERIES.ToString() });
             MODEL.GT_Repeticoes_List = databaseManager.GT_Repeticoes.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.REPETICOES.ToString() });
             MODEL.GT_Carga_List = databaseManager.GT_Carga.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.CARGA.ToString() });
             MODEL.GT_TempoDescanso_List = databaseManager.GT_TempoDescanso.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.TEMPO_DESCANSO });
-            MODEL.FaseTreinoList = databaseManager.GT_FaseTreino.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.SIGLA });
-            MODEL.GTTreinoList = databaseManager.GT_Treino.Where(x => x.DATA_REMOCAO == null && !string.IsNullOrEmpty(x.NOME) && x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.FaseTreinoList = databaseManager.GT_FaseTreino.Where(x=>x.DATA_REMOCAO==null && x.INST_APLICACAO_ID== ApplicationId).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.SIGLA });
+            var GtTreino = databaseManager.GT_Treino.Where(x => x.DATA_REMOCAO == null && !string.IsNullOrEmpty(x.NOME) && x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS && x.INST_APLICACAO_ID== ApplicationId);
+            MODEL.GTTreinoList = GtTreino.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.RepList = databaseManager.GT_CoeficienteRepeticao.OrderBy(x =>x.ID).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.ID.ToString() });
             MODEL.DateIni = DateTime.Parse(DateTime.Now.ToString()).ToString("dd-MM-yyyy");
 
@@ -1858,7 +1860,7 @@ namespace Gestreino.Controllers
                     return RedirectToAction("bodymassplans", "gtmanagement", new { Id = string.Empty });
 
                 MODEL.ID = Id;
-                var treino = databaseManager.SP_GT_ENT_TREINO(Id, null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+                var treino = databaseManager.SP_GT_ENT_TREINO(Id, ApplicationId,null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
                 MODEL.lblDataInsercao = treino.First().DATA_INSERCAO;
                 MODEL.ExerciseArqListTreino = (from j1 in databaseManager.GT_ExercicioTreino
                                                join j2 in databaseManager.GT_Exercicio on j1.GT_Exercicio_ID equals j2.ID
@@ -1879,6 +1881,8 @@ namespace Gestreino.Controllers
                     Boolean n = false;
                     if (!Boolean.TryParse(predefined, out n))
                         return RedirectToAction("", "home");
+                    if(treino.FirstOrDefault().INST_APLICACAO_ID!= ApplicationId)
+                        return RedirectToAction("", "home");
                     MODEL.predefined = Convert.ToBoolean(predefined);
                     MODEL.DateIni = DateTime.Parse(DateTime.Now.ToString()).ToString("dd-MM-yyyy");
                     MODEL.GTTreinoId = Id;
@@ -1892,9 +1896,12 @@ namespace Gestreino.Controllers
         public ActionResult CardioPlans(Gestreino.Models.GT_TreinoBodyMass MODEL, int? Id, string predefined)
         {
             if (!AcessControl.Authorized(AcessControl.GT_PLANS_CARDIO_LIST_VIEW_SEARCH)) return View("Lockout");
-            
+
+            var ApplicationId = int.Parse(AcessControl.getLoginInfo("Sid"));
             MODEL.GT_DuracaoTreinoCardioList = databaseManager.GT_DuracaoTreinoCardio.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.DURACAO.ToString() + "'" });
-            MODEL.GTTreinoList = databaseManager.GT_Treino.Where(x => x.DATA_REMOCAO == null && !string.IsNullOrEmpty(x.NOME) && x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_CARDIO).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+
+            var GtTreino = databaseManager.GT_Treino.Where(x => x.DATA_REMOCAO == null && !string.IsNullOrEmpty(x.NOME) && x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_CARDIO && x.INST_APLICACAO_ID == ApplicationId);
+            MODEL.GTTreinoList = GtTreino.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.DateIni = DateTime.Parse(DateTime.Now.ToString()).ToString("dd-MM-yyyy");
 
             MODEL.GTTipoTreinoId = Configs.GT_EXERCISE_TYPE_CARDIO;
@@ -1923,7 +1930,7 @@ namespace Gestreino.Controllers
                     return RedirectToAction("cardioplans", "gtmanagement", new { Id = string.Empty });
 
                 MODEL.ID = Id;
-                var treino = databaseManager.SP_GT_ENT_TREINO(Id, null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+                var treino = databaseManager.SP_GT_ENT_TREINO(Id, ApplicationId,null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
                 MODEL.lblDataInsercao = treino.First().DATA_INSERCAO;
                 MODEL.ExerciseArqListTreino = (from j1 in databaseManager.GT_ExercicioTreinoCardio
                                                join j2 in databaseManager.GT_Exercicio on j1.GT_Exercicio_ID equals j2.ID
@@ -1949,6 +1956,8 @@ namespace Gestreino.Controllers
                 {
                     Boolean n = false;
                     if (!Boolean.TryParse(predefined, out n))
+                        return RedirectToAction("", "home");
+                    if (treino.FirstOrDefault().INST_APLICACAO_ID != ApplicationId)
                         return RedirectToAction("", "home");
                     MODEL.predefined = Convert.ToBoolean(predefined);
                     MODEL.DateIni = DateTime.Parse(DateTime.Now.ToString()).ToString("dd-MM-yyyy");
@@ -2019,7 +2028,7 @@ namespace Gestreino.Controllers
 
             PesId = PesId > 0 ? PesId : null;
             GTTipoTreinoId = GTTipoTreinoId > 0 ? GTTipoTreinoId : null;
-            var v = (from a in databaseManager.SP_GT_ENT_TREINO(null, PesId, GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
+            var v = (from a in databaseManager.SP_GT_ENT_TREINO(null,int.Parse(AcessControl.getLoginInfo("Sid")), PesId, GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
             TempData["QUERYRESULT_ALL"] = v.ToList();
 
             //SEARCH RESULT SET
@@ -2142,17 +2151,17 @@ namespace Gestreino.Controllers
                 if (MODEL.ID > 0)
                 {
                     //Update
-                    var update = databaseManager.SP_GT_ENT_TREINO(MODEL.ID, null, null, MODEL.Nome, MODEL.FaseTreinoId, MODEL.Periodizacao, DateIni, DateEnd, MODEL.Observacoes, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "U").ToList();
+                    var update = databaseManager.SP_GT_ENT_TREINO(MODEL.ID,null,null, null, MODEL.Nome, MODEL.FaseTreinoId, MODEL.Periodizacao, DateIni, DateEnd, MODEL.Observacoes, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "U").ToList();
                 }
                 else
                 {
                     // Create
-                    var create = databaseManager.SP_GT_ENT_TREINO(null, MODEL.PEsId, MODEL.GTTipoTreinoId, MODEL.Nome, MODEL.FaseTreinoId, MODEL.Periodizacao, DateIni, DateEnd, MODEL.Observacoes, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                    var create = databaseManager.SP_GT_ENT_TREINO(null, int.Parse(AcessControl.getLoginInfo("Sid")),MODEL.PEsId, MODEL.GTTipoTreinoId, MODEL.Nome, MODEL.FaseTreinoId, MODEL.Periodizacao, DateIni, DateEnd, MODEL.Observacoes, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "C").ToList();
                     MODEL.ID = create.First().ID;
                 }
 
                 //Remove first
-                var delete = databaseManager.SP_GT_ENT_TREINO(MODEL.ID, null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), MODEL.GTTipoTreinoId == Configs.GT_EXERCISE_TYPE_BODYMASS ? "DB" : "DC").ToList();
+                var delete = databaseManager.SP_GT_ENT_TREINO(MODEL.ID, null,null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), MODEL.GTTipoTreinoId == Configs.GT_EXERCISE_TYPE_BODYMASS ? "DB" : "DC").ToList();
 
                 Decimal RMs = 0;
                 Decimal CargaUsada = 0;
@@ -2169,7 +2178,7 @@ namespace Gestreino.Controllers
                         if (exCargaUsada != null && !string.IsNullOrEmpty(exCargaUsada[x]))
                             CargaUsada = decimal.Parse(exCargaUsada[x], CultureInfo.InvariantCulture);
 
-                        databaseManager.SP_GT_ENT_TREINO(MODEL.ID, null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, exIds[x], exSeries[x], exRepeticoes[x], exTempo[x], exCarga[x], exReps[x], CargaUsada, RMs, null, null, null, null, x, int.Parse(User.Identity.GetUserId()), MODEL.GTTipoTreinoId == Configs.GT_EXERCISE_TYPE_BODYMASS ? "CB" : "CC").ToList();
+                        databaseManager.SP_GT_ENT_TREINO(MODEL.ID, null, null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, exIds[x], exSeries[x], exRepeticoes[x], exTempo[x], exCarga[x], exReps[x], CargaUsada, RMs, null, null, null, null, x, int.Parse(User.Identity.GetUserId()), MODEL.GTTipoTreinoId == Configs.GT_EXERCISE_TYPE_BODYMASS ? "CB" : "CC").ToList();
                     }
                 }
                 if (MODEL.GTTipoTreinoId == Configs.GT_EXERCISE_TYPE_CARDIO)
@@ -2182,7 +2191,7 @@ namespace Gestreino.Controllers
                         if (exDistancia != null && !string.IsNullOrEmpty(exDistancia[x]))
                             Distancia = decimal.Parse(exDistancia[x], CultureInfo.InvariantCulture);
 
-                        databaseManager.SP_GT_ENT_TREINO(MODEL.ID, null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, exIds[x], null, null, null, null, null, null, null, exDuracao[x], exFC[x], Nivel, Distancia, x, int.Parse(User.Identity.GetUserId()), MODEL.GTTipoTreinoId == Configs.GT_EXERCISE_TYPE_BODYMASS ? "CB" : "CC").ToList();
+                        databaseManager.SP_GT_ENT_TREINO(MODEL.ID, null,null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, exIds[x], null, null, null, null, null, null, null, exDuracao[x], exFC[x], Nivel, Distancia, x, int.Parse(User.Identity.GetUserId()), MODEL.GTTipoTreinoId == Configs.GT_EXERCISE_TYPE_BODYMASS ? "CB" : "CC").ToList();
                     }
                 }
 
@@ -2211,7 +2220,7 @@ namespace Gestreino.Controllers
                 // Delete
                 foreach (var i in ids)
                 {
-                    databaseManager.SP_GT_ENT_TREINO(i, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "D").ToList();
+                    databaseManager.SP_GT_ENT_TREINO(i, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "D").ToList();
                 }
                 ModelState.Clear();
             }
@@ -5142,7 +5151,7 @@ namespace Gestreino.Controllers
             int totalRecords = 0;
 
             //TipoId = TipoId > 0 ? TipoId : null;
-            var v = (from a in databaseManager.SP_GT_ENT_Search(1, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
+            var v = (from a in databaseManager.SP_GT_ENT_Search(1, int.Parse(AcessControl.getLoginInfo("Sid")), null,null, null, null, null, null, null, null, null, "R").ToList() select a);
             TempData["QUERYRESULT_ALL"] = v.ToList();
 
             //SEARCH RESULT SET
@@ -5244,7 +5253,7 @@ namespace Gestreino.Controllers
             int totalRecords = 0;
 
             //TipoId = TipoId > 0 ? TipoId : null;
-            var v = (from a in databaseManager.SP_GT_ENT_Search(2, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
+            var v = (from a in databaseManager.SP_GT_ENT_Search(2, int.Parse(AcessControl.getLoginInfo("Sid")), null, null, null, null, null, null, null, null, null, "R").ToList() select a);
             TempData["QUERYRESULT_ALL"] = v.ToList();
 
             //SEARCH RESULT SET
@@ -5362,7 +5371,7 @@ namespace Gestreino.Controllers
             peraval.Add("Funcional");
 
             //TipoId = TipoId > 0 ? TipoId : null;
-            var v = (from a in databaseManager.SP_GT_ENT_Search(3, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
+            var v = (from a in databaseManager.SP_GT_ENT_Search(3, int.Parse(AcessControl.getLoginInfo("Sid")), null, null, null, null, null, null, null, null, null, "R").ToList() select a);
             TempData["QUERYRESULT_ALL"] = v.ToList();
 
             v = v.Where(x => !peraval.Contains(x.TIPO_PLANO));
@@ -5455,13 +5464,13 @@ namespace Gestreino.Controllers
 
             MODEL.PEsId = !string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) ? int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) : 0;
 
-            var data1 = databaseManager.SP_GT_GRAPH_ComposicaoCorporal(null, null).ToList();
-            var data2 = databaseManager.SP_GT_GRAPH_Cardio(null, null).ToList();
-            var data3 = databaseManager.SP_GT_GRAPH_Flexibilidade(null, null).ToList();
-            var data4 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(1, null).ToList();
-            var data5 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(2, null).ToList();
-            var data6 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(4, null).ToList();
-            var data7 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(3, null).ToList();
+            var data1 = databaseManager.SP_GT_GRAPH_ComposicaoCorporal(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
+            var data2 = databaseManager.SP_GT_GRAPH_Cardio(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
+            var data3 = databaseManager.SP_GT_GRAPH_Flexibilidade(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
+            var data4 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(1, int.Parse(AcessControl.getLoginInfo("Sid")),null).ToList();
+            var data5 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(2, int.Parse(AcessControl.getLoginInfo("Sid")),null).ToList();
+            var data6 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(4, int.Parse(AcessControl.getLoginInfo("Sid")),null).ToList();
+            var data7 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(3, int.Parse(AcessControl.getLoginInfo("Sid")),null).ToList();
 
             MODEL.ComptotalAtletas = data1.Any() ? data1.Select(x => x.TotalAtletas).FirstOrDefault() : 0;
             MODEL.CompPercAtletas = data1.Any() ? data1.Select(x => x.PercentagemAtletas).FirstOrDefault() : 0;
@@ -5524,7 +5533,7 @@ namespace Gestreino.Controllers
         }
         public ActionResult GetAnaliseBodyComposition(OthersGraph MODEL)
         {
-            var data1 = databaseManager.SP_GT_GRAPH_ComposicaoCorporal(null, null).ToList();
+            var data1 = databaseManager.SP_GT_GRAPH_ComposicaoCorporal(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
             List<Dictionary<string, object>> allSeries = new List<Dictionary<string, object>>();
 
             foreach (var item in data1)
@@ -5549,7 +5558,7 @@ namespace Gestreino.Controllers
         }
         public ActionResult GetAnaliseCardio(OthersGraph MODEL)
         {
-            var data1 = databaseManager.SP_GT_GRAPH_Cardio(null, null).ToList();
+            var data1 = databaseManager.SP_GT_GRAPH_Cardio(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
             List<Dictionary<string, object>> allSeries = new List<Dictionary<string, object>>();
 
             foreach (var item in data1)
@@ -5574,7 +5583,7 @@ namespace Gestreino.Controllers
         }
         public ActionResult GetAnaliseFlexibility(OthersGraph MODEL)
         {
-            var data1 = databaseManager.SP_GT_GRAPH_Flexibilidade(null, null).ToList();
+            var data1 = databaseManager.SP_GT_GRAPH_Flexibilidade(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
             List<Dictionary<string, object>> allSeries = new List<Dictionary<string, object>>();
 
             foreach (var item in data1)
@@ -5599,7 +5608,7 @@ namespace Gestreino.Controllers
         }
         public ActionResult GetAnaliseForce(int? Id,OthersGraph MODEL)
         {
-            var data1 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(Id, null).ToList();
+            var data1 = databaseManager.SP_GT_GRAPH_Forca1RMBraco(Id, int.Parse(AcessControl.getLoginInfo("Sid")),null).ToList();
             List<Dictionary<string, object>> allSeries = new List<Dictionary<string, object>>();
 
             foreach (var item in data1)
@@ -5630,9 +5639,9 @@ namespace Gestreino.Controllers
 
             MODEL.PEsId = !string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) ? int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) : 0;
 
-            var data1 = databaseManager.SP_GT_GRAPH_RespAnsiedadeDepressao(null,null).ToList();
-            var data2 = databaseManager.SP_GT_GRAPH_RespAutoConceito_(null, null).ToList();
-            var data3 = databaseManager.SP_GT_GRAPH_RespRisco(null, null).ToList();
+            var data1 = databaseManager.SP_GT_GRAPH_RespAnsiedadeDepressao(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
+            var data2 = databaseManager.SP_GT_GRAPH_RespAutoConceito_(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
+            var data3 = databaseManager.SP_GT_GRAPH_RespRisco(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
 
                 MODEL.AnsiedadeDepressaototalAtletas = data1.Any() ? data1.Select(x => x.TotalAtletas).FirstOrDefault() : 0;
                 MODEL.AnsiedadeDepressaoPercAtletas = data1.Any() ? data1.Select(x => x.PercentagemAtletas).FirstOrDefault() : 0;
@@ -5665,7 +5674,7 @@ namespace Gestreino.Controllers
         }
         public ActionResult GetOthersAnsiedadeDepressao(OthersGraph MODEL)
         {
-            var data1 = databaseManager.SP_GT_GRAPH_RespAnsiedadeDepressao(null, null).ToList();
+            var data1 = databaseManager.SP_GT_GRAPH_RespAnsiedadeDepressao(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
 
             List<Dictionary<string, object>> allSeries = new List<Dictionary<string, object>>();
             foreach (var item in data1)
@@ -5709,7 +5718,7 @@ namespace Gestreino.Controllers
         }
         public ActionResult GetOthersAutoConceito(OthersGraph MODEL)
         {
-            var data1 = databaseManager.SP_GT_GRAPH_RespAutoConceito_(null, null).ToList();
+            var data1 = databaseManager.SP_GT_GRAPH_RespAutoConceito_(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
             List<Dictionary<string, object>> allSeries = new List<Dictionary<string, object>>();
 
             foreach (var item in data1)
@@ -5734,7 +5743,7 @@ namespace Gestreino.Controllers
         }
         public ActionResult GetOthersRisco(OthersGraph MODEL)
         {
-            var data1 = databaseManager.SP_GT_GRAPH_RespRisco(null, null).ToList();
+            var data1 = databaseManager.SP_GT_GRAPH_RespRisco(int.Parse(AcessControl.getLoginInfo("Sid")), null).ToList();
             List<Dictionary<string, object>> allSeries = new List<Dictionary<string, object>>();
 
             foreach (var item in data1)

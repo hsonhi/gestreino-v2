@@ -657,11 +657,9 @@ namespace Gestreino.Controllers
 
             try
             {
-                if (Configs.INST_INSTITUICAO_SIGLA == "UJPA")
-                    Host = AccountController.IsLanIP(System.Net.IPAddress.Parse(GetIPAddress()))
-                         ? Dns.GetHostEntry(Request.UserHostAddress).HostName.ToString()
-                         : AccountController.GetHostMachine();
-                else
+                //    Host = AccountController.IsLanIP(System.Net.IPAddress.Parse(GetIPAddress()))
+                //         ? Dns.GetHostEntry(Request.UserHostAddress).HostName.ToString()
+                //         : AccountController.GetHostMachine();
                     Host = AccountController.GetHostMachine();
             }
             catch (Exception e)

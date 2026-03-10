@@ -14,6 +14,7 @@ namespace Gestreino
     public partial class SP_GT_ENT_FaseTreino_Result
     {
         public int ID { get; set; }
+        public int INST_APLICACAO_ID { get; set; }
         public string SIGLA { get; set; }
         public int GT_Series_ID { get; set; }
         public int GT_Repeticoes_ID { get; set; }

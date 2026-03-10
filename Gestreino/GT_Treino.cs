@@ -17,12 +17,13 @@ namespace Gestreino
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public GT_Treino()
         {
-            this.GT_TreinosPessoa = new HashSet<GT_TreinosPessoa>();
             this.GT_ExercicioTreino = new HashSet<GT_ExercicioTreino>();
             this.GT_ExercicioTreinoCardio = new HashSet<GT_ExercicioTreinoCardio>();
+            this.GT_TreinosPessoa = new HashSet<GT_TreinosPessoa>();
         }
     
         public int ID { get; set; }
+        public int INST_APLICACAO_ID { get; set; }
         public int GT_TipoTreino_ID { get; set; }
         public string NOME { get; set; }
         public Nullable<int> GT_FaseTreino_ID { get; set; }
@@ -34,13 +35,13 @@ namespace Gestreino
         public Nullable<System.DateTime> DATA_ACTUALIZACAO { get; set; }
         public Nullable<System.DateTime> DATA_REMOCAO { get; set; }
     
-        public virtual GT_TipoTreino GT_TipoTreino { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GT_TreinosPessoa> GT_TreinosPessoa { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GT_ExercicioTreino> GT_ExercicioTreino { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GT_ExercicioTreinoCardio> GT_ExercicioTreinoCardio { get; set; }
         public virtual GT_FaseTreino GT_FaseTreino { get; set; }
+        public virtual GT_TipoTreino GT_TipoTreino { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GT_TreinosPessoa> GT_TreinosPessoa { get; set; }
     }
 }

@@ -4959,7 +4959,7 @@ namespace Gestreino.Controllers
             int skip = start != null ? Convert.ToInt32(start) : 0;
             int totalRecords = 0;
 
-            var v = (from a in databaseManager.SP_GT_ENT_FaseTreino(null, null, null, null, null, null, null, "R").ToList() select a);
+            var v = (from a in databaseManager.SP_GT_ENT_FaseTreino(null, int.Parse(AcessControl.getLoginInfo("Sid")), null, null, null, null, null, null, "R").ToList() select a);
             TempData["QUERYRESULT_ALL"] = v.ToList();
 
             //SEARCH RESULT SET
@@ -5053,7 +5053,7 @@ namespace Gestreino.Controllers
                     return Json(new { result = false, error = "Sigla da entidade já se encontra registada, por favor verifique a seleção!" });
 
                 // Create
-                var create = databaseManager.SP_GT_ENT_FaseTreino(null, MODEL.SIGLA, MODEL.GT_Series_ID, MODEL.GT_Repeticoes_ID, MODEL.GT_Carga_ID, MODEL.GT_TempoDescanso_ID, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                var create = databaseManager.SP_GT_ENT_FaseTreino(null, int.Parse(AcessControl.getLoginInfo("Sid")), MODEL.SIGLA, MODEL.GT_Series_ID, MODEL.GT_Repeticoes_ID, MODEL.GT_Carga_ID, MODEL.GT_TempoDescanso_ID, int.Parse(User.Identity.GetUserId()), "C").ToList();
                 ModelState.Clear();
             }
             catch (Exception ex)
@@ -5079,7 +5079,7 @@ namespace Gestreino.Controllers
                     return Json(new { result = false, error = "Sigla da entidade já se encontra registada, por favor verifique a seleção!" });
 
                 // Update
-                var update = databaseManager.SP_GT_ENT_FaseTreino(MODEL.ID, MODEL.SIGLA,MODEL.GT_Series_ID,MODEL.GT_Repeticoes_ID,MODEL.GT_Carga_ID,MODEL.GT_TempoDescanso_ID, int.Parse(User.Identity.GetUserId()), "U").ToList();
+                var update = databaseManager.SP_GT_ENT_FaseTreino(MODEL.ID, null,MODEL.SIGLA,MODEL.GT_Series_ID,MODEL.GT_Repeticoes_ID,MODEL.GT_Carga_ID,MODEL.GT_TempoDescanso_ID, int.Parse(User.Identity.GetUserId()), "U").ToList();
                 ModelState.Clear();
             }
             catch (Exception ex)
@@ -5105,7 +5105,7 @@ namespace Gestreino.Controllers
                 // Delete
                 foreach (var i in ids)
                 {
-                    databaseManager.SP_GT_ENT_FaseTreino(i, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "D").ToList();
+                    databaseManager.SP_GT_ENT_FaseTreino(i, null,null, null, null, null, null, int.Parse(User.Identity.GetUserId()), "D").ToList();
                 }
                 ModelState.Clear();
             }
@@ -5375,11 +5375,6 @@ namespace Gestreino.Controllers
                 var update = databaseManager.SP_INST_APLICACAO(MODEL.ID, MODEL.Sigla, MODEL.Nome, MODEL.NIF, Telephone, TelephoneAlternativo, Fax, MODEL.Email, MODEL.CodigoPostal, MODEL.URL, MODEL.Numero, MODEL.Rua, MODEL.Morada, MODEL.ENDERECO_PAIS_ID, MODEL.ENDERECO_CIDADE_ID, MODEL.ENDERECO_MUN_ID, int.Parse(User.Identity.GetUserId()), "U").ToList();
                 ModelState.Clear();
 
-                //Update Config files
-                Configs.INST_INSTITUICAO_SIGLA = string.Empty;
-                Configs c = new Configs();
-                c.BeginConfig();
-
                 returnUrl = "/administration/settings";
             }
             catch (Exception ex)
@@ -5417,7 +5412,7 @@ namespace Gestreino.Controllers
                 ModelState.Clear();
 
                 //Update Config files
-                Configs.INST_INSTITUICAO_SIGLA = string.Empty;
+                Configs.INST_PER_TEMA_1 = string.Empty;
                 Configs c = new Configs();
                 c.BeginConfig();
             }
@@ -5455,7 +5450,7 @@ namespace Gestreino.Controllers
                 ModelState.Clear();
 
                 //Update Config files
-                Configs.INST_INSTITUICAO_SIGLA = string.Empty;
+                Configs.INST_PER_TEMA_1 = string.Empty;
                 Configs c = new Configs();
                 c.BeginConfig();
             }
@@ -5494,7 +5489,7 @@ namespace Gestreino.Controllers
                 ModelState.Clear();
 
                 //Update Config files
-                Configs.INST_INSTITUICAO_SIGLA = string.Empty;
+                Configs.INST_PER_TEMA_1 = string.Empty;
                 Configs c = new Configs();
                 c.BeginConfig();
             }
@@ -5534,7 +5529,7 @@ namespace Gestreino.Controllers
                 ModelState.Clear();
 
                 //Update Config files
-                Configs.INST_INSTITUICAO_SIGLA = string.Empty;
+                Configs.INST_PER_TEMA_1 = string.Empty;
                 Configs c = new Configs();
                 c.BeginConfig();
             }
