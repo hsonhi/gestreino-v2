@@ -187,8 +187,15 @@ namespace Gestreino.Controllers
             else return View("Lockout");
 
             if (Id == null || Id <= 0) { return RedirectToAction("", "home"); }
-            var data = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+            var data = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
             if (!data.Any()) { return RedirectToAction("", "home"); }
+
+            if (AcessControl.isGROUP_ADM() && data.First().INST_APLICACAO_ID!=null)
+                return RedirectToAction("", "home");
+
+            if (AcessControl.isGROUP_INST() && data.First().INST_APLICACAO_ID != int.Parse(AcessControl.getLoginInfo("Sid")))
+                return RedirectToAction("", "home");
+
             ViewBag.imgSrc = (string.IsNullOrEmpty(data.First().FOTOGRAFIA)) ? "/Assets/images/user-avatar.png" : "/" + data.First().FOTOGRAFIA;
 
             ViewBag.data = data;
@@ -205,7 +212,8 @@ namespace Gestreino.Controllers
             var item = databaseManager.SP_PES_ENT_PESSOAS(Id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).ToList();
             ViewBag.item = item;
             if (item.Count == 0) return RedirectToAction("", "home");
-            if (item.First().INST_APLICACAO_ID != int.Parse(AcessControl.getLoginInfo("Sid"))) return RedirectToAction("", "home");
+            var ApplicationId = string.IsNullOrEmpty(AcessControl.getLoginInfo("Sid")) ? 0 : int.Parse(AcessControl.getLoginInfo("Sid"));
+            if (item.First().INST_APLICACAO_ID != ApplicationId) return RedirectToAction("", "home");
 
             MODEL.UserID = item.FirstOrDefault().UTILIZADORES_ID;
             MODEL.ID = item.FirstOrDefault().ID;
@@ -215,7 +223,7 @@ namespace Gestreino.Controllers
             return View("../GTManagement/Athletes/ProfilePhoto", MODEL);
         }
         [HttpPost]
-        public ActionResult GetUser(int? GroupId, int? ProfileId)
+        public ActionResult GetUser(int? GroupId, int? ProfileId, int? ApplicationId)
         {
             //UI DATATABLE PAGINATION BUTTONS
             var draw = Request.Form.GetValues("draw").FirstOrDefault();
@@ -231,13 +239,12 @@ namespace Gestreino.Controllers
             var Nome = Request.Form.GetValues("columns[1][search][value]").FirstOrDefault();
             var Telefone = Request.Form.GetValues("columns[2][search][value]").FirstOrDefault();
             var Email = Request.Form.GetValues("columns[3][search][value]").FirstOrDefault();
-            var Grupos = Request.Form.GetValues("columns[4][search][value]").FirstOrDefault();
-            var Perfis = Request.Form.GetValues("columns[5][search][value]").FirstOrDefault();
-            var Estado = Request.Form.GetValues("columns[6][search][value]").FirstOrDefault();
-            var Insercao = Request.Form.GetValues("columns[7][search][value]").FirstOrDefault();
-            var DataInsercao = Request.Form.GetValues("columns[8][search][value]").FirstOrDefault();
-            var Actualizacao = Request.Form.GetValues("columns[9][search][value]").FirstOrDefault();
-            var DataActualizacao = Request.Form.GetValues("columns[10][search][value]").FirstOrDefault();
+            var Acesso = Request.Form.GetValues("columns[4][search][value]").FirstOrDefault();
+            var Estado = Request.Form.GetValues("columns[5][search][value]").FirstOrDefault();
+            var Insercao = Request.Form.GetValues("columns[6][search][value]").FirstOrDefault();
+            var DataInsercao = Request.Form.GetValues("columns[7][search][value]").FirstOrDefault();
+            var Actualizacao = Request.Form.GetValues("columns[8][search][value]").FirstOrDefault();
+            var DataActualizacao = Request.Form.GetValues("columns[9][search][value]").FirstOrDefault();
 
             //DECLARE PAGINATION VARIABLES
             int pageSize = length != null ? Convert.ToInt32(length) : 0;
@@ -246,8 +253,9 @@ namespace Gestreino.Controllers
 
             GroupId = GroupId == null ? null : GroupId;
             ProfileId = ProfileId == null ? null : ProfileId;
+            ApplicationId = string.IsNullOrEmpty(AcessControl.getLoginInfo("Sid")) ? null : (int?) int.Parse(AcessControl.getLoginInfo("Sid"));
 
-            var v = (from a in databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, GroupId, ProfileId, AcessControl.getUserGroup().ToString(), null, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
+            var v = (from a in databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, ApplicationId, GroupId, ProfileId, AcessControl.getUserGroup().ToString(), null, null, null, null, null, null, null, null, null, null, "R").ToList() select a);
             TempData["QUERYRESULT_ALL"] = v.ToList();
 
             //SEARCH RESULT SET
@@ -255,8 +263,7 @@ namespace Gestreino.Controllers
             if (!string.IsNullOrEmpty(Nome)) v = v.Where(a => a.NOME != null && a.NOME.ToUpper().Contains(Nome.ToUpper()));
             if (!string.IsNullOrEmpty(Telefone)) v = v.Where(a => a.TELEFONE != null && a.TELEFONE.ToString().Contains(Telefone.ToUpper()));
             if (!string.IsNullOrEmpty(Email)) v = v.Where(a => a.EMAIL != null && a.EMAIL.ToUpper().Contains(Email.ToUpper()));
-            if (!string.IsNullOrEmpty(Grupos)) v = v.Where(a => a.TOTALGROUPS != null && a.TOTALGROUPS.ToString() == Grupos);
-            if (!string.IsNullOrEmpty(Perfis)) v = v.Where(a => a.TOTALPERFIS != null && a.TOTALPERFIS.ToString() == Perfis);
+            if (!string.IsNullOrEmpty(Acesso)) v = v.Where(a => a.ACESSO != null && a.ACESSO.ToUpper().Contains(Acesso));
             if (!string.IsNullOrEmpty(Estado)) v = v.Where(a => a.ACTIVO != null && a.ACTIVO == (Estado == "1" ? "Activo" : "Inactivo"));
             if (!string.IsNullOrEmpty(Insercao)) v = v.Where(a => a.INSERCAO != null && a.INSERCAO.ToUpper().Contains(Insercao.ToUpper()));
             if (!string.IsNullOrEmpty(DataInsercao)) v = v.Where(a => a.DATA_INSERCAO != null && a.DATA_INSERCAO.ToUpper().Contains(DataInsercao.Replace("-", "/").ToUpper())); // Simply replace no need for DateTime Parse
@@ -275,8 +282,7 @@ namespace Gestreino.Controllers
                         case "NOME": v = v.OrderBy(s => s.NOME); break;
                         case "TELEFONE": v = v.OrderBy(s => s.NOME); break;
                         case "EMAIL": v = v.OrderBy(s => s.NOME); break;
-                        case "GRUPOS": v = v.OrderBy(s => s.TOTALGROUPS); break;
-                        case "PERFIS": v = v.OrderBy(s => s.TOTALPERFIS); break;
+                        case "ACESSO": v = v.OrderBy(s => s.ACESSO); break;
                         case "ESTADO": v = v.OrderBy(s => s.ACTIVO); break;
                         case "INSERCAO": v = v.OrderBy(s => s.INSERCAO); break;
                         case "DATAINSERCAO": v = v.OrderBy(s => s.DATA_INSERCAO); break;
@@ -292,8 +298,7 @@ namespace Gestreino.Controllers
                         case "NOME": v = v.OrderByDescending(s => s.NOME); break;
                         case "TELEFONE": v = v.OrderByDescending(s => s.NOME); break;
                         case "EMAIL": v = v.OrderByDescending(s => s.NOME); break;
-                        case "GRUPOS": v = v.OrderByDescending(s => s.TOTALGROUPS); break;
-                        case "PERFIS": v = v.OrderByDescending(s => s.TOTALPERFIS); break;
+                        case "ACESSO": v = v.OrderByDescending(s => s.ACESSO); break;
                         case "ESTADO": v = v.OrderByDescending(s => s.ACTIVO); break;
                         case "INSERCAO": v = v.OrderByDescending(s => s.INSERCAO); break;
                         case "DATAINSERCAO": v = v.OrderByDescending(s => s.DATA_INSERCAO); break;
@@ -320,8 +325,7 @@ namespace Gestreino.Controllers
                     NOME = x.NOME_PROPIO + " " + x.APELIDO,
                     TELEFONE=x.TELEFONE,
                     EMAIL=x.EMAIL,
-                    GRUPOS = x.TOTALGROUPS,
-                    PERFIS = x.TOTALPERFIS,
+                    ACESSO = x.ACESSO,
                     ESTADO = x.ACTIVO,
                     INSERCAO = x.INSERCAO,
                     DATAINSERCAO = x.DATA_INSERCAO,
@@ -369,7 +373,7 @@ namespace Gestreino.Controllers
                 // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
 
                 // Create
-                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.INST_APLICACAO_ID, null, null, MODEL.Login.Trim(), MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, Status, DateIni, DateEnd, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, MODEL.INST_APLICACAO_ID,null, null, MODEL.Login.Trim(), MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, Status, DateIni, DateEnd, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
                 var UserId = create.First().ID;
                 //Add to group
                 var UserGroup = MODEL.INST_APLICACAO_ID == null && AcessControl.isGROUP_ADM() ? AcessControl.GROUP_ADM : AcessControl.GROUP_INST;
@@ -418,7 +422,7 @@ namespace Gestreino.Controllers
 
                 }
                 // Update
-                var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.Id, null, null, MODEL.Login.Trim(), MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), null, null, Status, null, null, true, int.Parse(User.Identity.GetUserId()), "U").ToList();
+                var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.Id, null,null, null, MODEL.Login.Trim(), MODEL.Name, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), null, null, Status, null, null, true, int.Parse(User.Identity.GetUserId()), "U").ToList();
 
                 //Add to profile
                 if (AcessControl.isGROUP_INST() && MODEL.PERFIL_ID != null)
@@ -485,7 +489,7 @@ namespace Gestreino.Controllers
                 var Salt = Crypto.GenerateSalt(64);
                 var Password = Crypto.Hash(MODEL.Password.Trim() + Salt);
                 // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
-                var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.Id, null, null, null, null, null, null, Password, Salt, null, null, null, null, int.Parse(User.Identity.GetUserId()), Convert.ToChar('P').ToString()).ToArray();
+                var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.Id, null, null, null, null, null, null, null, Password, Salt, null, null, null, null, int.Parse(User.Identity.GetUserId()), Convert.ToChar('P').ToString()).ToArray();
 
                 // Send Email
                 Mailer.SendEmailMVC(2, MODEL.Email, MODEL.Login, MODEL.Password.Trim(), Configs.INST_INSTITUICAO_URL, null, null); // Email template - 3

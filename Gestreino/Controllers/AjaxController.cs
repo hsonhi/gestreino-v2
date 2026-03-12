@@ -31,7 +31,7 @@ namespace Gestreino.Controllers
 
             if (id > 0)
             {
-                var data = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(id, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
+                var data = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
 
                 MODEL.Login = data.First().LOGIN;
                 MODEL.Status = data.First().ACTIVO == "Activo" ? 1 : 0;

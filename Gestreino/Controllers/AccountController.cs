@@ -139,7 +139,7 @@ namespace Gestreino.Controllers
                 var Salt = Crypto.GenerateSalt(64);
                 var Password = Crypto.Hash(MODEL.Password.Trim() + Salt);
                 // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
-                var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.UserID, null, null, null, null, null, null, Password, Salt, null, null, null, null, int.Parse(User.Identity.GetUserId()), Convert.ToChar('P').ToString()).ToArray();
+                var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(MODEL.UserID, null, null, null, null, null, null, null, Password, Salt, null, null, null, null, int.Parse(User.Identity.GetUserId()), Convert.ToChar('P').ToString()).ToArray();
 
                 // Send Email
                 Mailer.SendEmailMVC(4, MODEL.Email, MODEL.Login, null, Configs.INST_INSTITUICAO_URL, null, null); // Email template - 3
@@ -370,7 +370,7 @@ namespace Gestreino.Controllers
                     var Salt = Crypto.GenerateSalt(64);
                     var Password = Crypto.Hash(MODEL.Password.Trim() + Salt);
                     // Remove whitespaces and parse datetime strings
-                    var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(userid, null, null, null, null, null, null, Password, Salt, null, null, null, null, null, Convert.ToChar('P').ToString()).ToArray();
+                    var update = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(userid, null, null, null, null, null, null, null, Password, Salt, null, null, null, null, null, Convert.ToChar('P').ToString()).ToArray();
                     // Get UserId
                     int Id = int.Parse(update[0].ID.ToString());
                     if (Id > 0)
@@ -540,7 +540,7 @@ namespace Gestreino.Controllers
                 // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
 
                 // Create
-                var createUser = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(InstitutionId, null, null, Login, MODEL.Nome, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, true, null, null, true, Configs.INST_INSTITUICAO_USER, "C").ToList();
+                var createUser = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null,InstitutionId, null, null, Login, MODEL.Nome, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, true, null, null, true, Configs.INST_INSTITUICAO_USER, "C").ToList();
                 var UserId = createUser.First().ID;
                 //Add to group
                 databaseManager.SP_UTILIZADORES_ENT_GRUPOS_UTILIZADORES(null, AcessControl.GROUP_INST, UserId, Configs.INST_INSTITUICAO_USER, "C").ToList();

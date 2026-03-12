@@ -1,7 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Net.Http;
 using System.Web.Mvc;
 
 namespace Gestreino.Classes
@@ -209,5 +210,43 @@ namespace Gestreino.Classes
             }
             return monthname;
         }
+    }
+
+    class FileDownloader
+    {
+        /*
+        static async Task Main()
+        {
+            // Replace with the actual file URL and desired local path
+            string fileUrl = "https://example.com";
+            string fileName = Path.Combine(Environment.CurrentDirectory, "downloaded_file.zip");
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    // Send GET request to fetch the file stream
+                    using (HttpResponseMessage response = await client.GetAsync(fileUrl, HttpCompletionOption.ResponseHeadersRead))
+                    {
+                        response.EnsureSuccessStatusCode(); // Throw exception if the status code is an error
+
+                        // Get the file stream from the response
+                        using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync())
+                        {
+                            // Create a new file stream to write to the local file
+                            using (FileStream streamToWriteTo = File.Create(fileName))
+                            {
+                                await streamToReadFrom.CopyToAsync(streamToWriteTo); // Copy the stream
+                            }
+                        }
+                    }
+                    Console.WriteLine($"File downloaded successfully to: {fileName}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+            }
+        }*/
     }
 }

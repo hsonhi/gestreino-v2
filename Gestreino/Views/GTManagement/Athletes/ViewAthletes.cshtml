@@ -16,14 +16,15 @@
             </div>
         </div>
     </div>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="@Url.Action("athletes","gtmanagement")">Atletas</a></li>
-            <li class="breadcrumb-item active" aria-current="page">@ViewBag.data[0].NOME</li>
-        </ol>
-    </nav>
+    @*
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("athletes","gtmanagement")">Atletas</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@ViewBag.data[0].NOME</li>
+            </ol>
+        </nav>*@
     <div class="row">
-        <div class="col-md-4 col-sm-12 ">
+        <div class="col-md-3 col-sm-12 ">
             <div class="x_panel">
                 <div class="x_content">
                     <div class="profile_img">
@@ -37,64 +38,75 @@
                     </center>
                     <div class="btn-group-vertical btn-toolbar">
                         @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_NEW))
-                        {<a title="Atualizar informação" href="@Url.Action("updateathlete", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm btn-block btn-secondary w-100"><i class="fa fa-pencil user-profile-icon"></i> Atualizar informação</a>}
+                        {<a title="Atualizar informação" href="@Url.Action("updateathlete", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm btn-block btn-light w-100"><img src="~/Assets/images/pencil.png" width="19" /> Atualizar informação</a>}
                         @*if (AcessControl.Authorized(AcessControl.ADM_USERS_USERS_LIST_VIEW_SEARCH))
-                        {<a title="Perfil do utilizador" href="@Url.Action("viewusers", "administration", new { Id = ViewBag.data[0].UTILIZADORES_ID })" class="btn  btn-block btn-sm btn-secondary w-100"><i class="fa fa-user user-profile-icon"></i> Utilizador</a>}*@
+                            {<a title="Perfil do utilizador" href="@Url.Action("viewusers", "administration", new { Id = ViewBag.data[0].UTILIZADORES_ID })" class="btn  btn-block btn-sm btn-secondary w-100"><i class="fa fa-user user-profile-icon"></i> Utilizador</a>}*@
                         @if (AcessControl.Authorized(AcessControl.GT_ATHLETES_ALTER_IMG))
-                        {<a title="Carregar foto" href="@Url.Action("profilephoto", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm  btn-block btn-secondary w-100"><i class="fa fa-camera user-profile-icon"></i> Carregar foto</a>}
+                        {<a title="Carregar foto" href="@Url.Action("profilephoto", "gtmanagement", new { Id = ViewBag.data[0].ID })" class="btn btn-sm  btn-block btn-light w-100"><img src="~/Assets/images/camera.png" width="19" /> Carregar foto</a>}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-8 col-sm-12 ">
+        <div class="col-md-9 col-sm-12 ">
             <div class="x_panel">
                 <div class="x_content">
                     <h6 class="mt-1"><span><i class="fa fa-medkit"></i> Características</span></h6>
                     <div class="card p-1 bg-light mb-2">
-                        <table style="width:45% !important">
-                            <tr>
-                                <td>Altura (cm):</td>
-                                <td>@ViewBag.dataCaract[0].ALTURA.ToString("G29")</td>
-                            </tr>
-                            <tr>
-                                <td>Peso (kg):</td>
-                                <td>
-                                    @ViewBag.dataCaract[0].PESO.ToString("G29")
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>IMC:</td>
-                                <td>@ViewBag.dataCaract[0].IMC</td>
-                            </tr>
-                            <tr>
-                                <td>FC Repouso:</td>
-                                <td>@ViewBag.dataCaract[0].FCREPOUSO</td>
-                            </tr>
-                            <tr>
-                                <td>FC M&#225;ximo:</td>
-                                <td>@ViewBag.dataCaract[0].FCMAXIMO</td>
-                            </tr>
-                            <tr>
-                                <td>TA Sist&#243;lica:</td>
-                                <td>@ViewBag.dataCaract[0].TASISTOLICA</td>
-                            </tr>
-                            <tr>
-                                <td>TA Dist&#243;lica:</td>
-                                <td>@ViewBag.dataCaract[0].TADISTOLICA</td>
-                            </tr>
-                            <tr>
-                                <td>VO2:</td>
-                                <td>@ViewBag.dataCaract[0].VO2</td>
-                            </tr>
-                            <tr>
-                                <td>Massa Gorda (%):</td>
-                                <td>@ViewBag.dataCaract[0].MASSAGORDA</td>
-                            </tr>
-                            <tr>
-                                <td>Dura&#231;&#227;o do plano:</td>
-                                <td>@ViewBag.dataCaract[0].GT_DuracaoPlano_ID</td>
-                            </tr>
-                        </table>
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <table class="w-50">
+                                    <tr>
+                                        <td>FC Repouso:</td>
+                                        <td>@ViewBag.dataCaract[0].FCREPOUSO</td>
+                                    </tr>
+                                    <tr>
+                                        <td>FC M&#225;ximo:</td>
+                                        <td>@ViewBag.dataCaract[0].FCMAXIMO</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TA Sist&#243;lica:</td>
+                                        <td>@ViewBag.dataCaract[0].TASISTOLICA</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TA Dist&#243;lica:</td>
+                                        <td>@ViewBag.dataCaract[0].TADISTOLICA</td>
+                                    </tr>
+                                    <tr>
+                                        <td>VO2:</td>
+                                        <td>@ViewBag.dataCaract[0].VO2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Massa Gorda (%):</td>
+                                        <td>@ViewBag.dataCaract[0].MASSAGORDA</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dura&#231;&#227;o do plano:</td>
+                                        <td>@ViewBag.dataCaract[0].GT_DuracaoPlano_ID</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+
+                                <table class="w-25">
+                                    <tr>
+                                        <td>Altura (cm):</td>
+                                        <td>@ViewBag.dataCaract[0].ALTURA.ToString("G29")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Peso (kg):</td>
+                                        <td>
+                                            @ViewBag.dataCaract[0].PESO.ToString("G29")
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>IMC:</td>
+                                        <td>@ViewBag.dataCaract[0].IMC</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="card" role="tabpanel" data-example-id="togglable-tabs">
                         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
@@ -231,7 +243,7 @@
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="">
-                                <div class="p-3 ">
+                                <div class="p-2">
                                     <div class="row">
                                         @if (ViewBag.dataCaract[0].FR_HT)
                                         {
@@ -293,7 +305,7 @@
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="">
-                                <div class="p-3 ">
+                                <div class="p-2">
                                     <div class="row">
                                         @if (ViewBag.dataCaract[0].OB_AC)
                                         {

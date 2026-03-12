@@ -1456,71 +1456,6 @@ namespace Gestreino
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GT_GRAPH_Flexibilidade_Result>("SP_GT_GRAPH_Flexibilidade", idParameter, actionParameter);
         }
     
-        public virtual ObjectResult<SP_UTILIZADORES_ENT_UTILIZADORES_Result> SP_UTILIZADORES_ENT_UTILIZADORES(Nullable<int> id, Nullable<int> subGroupId, Nullable<int> profileId, string login, string nome, Nullable<decimal> telefone, string email, string senha, string salt, Nullable<bool> activo, Nullable<System.DateTime> dataAct, Nullable<System.DateTime> dataDesact, Nullable<bool> validada, Nullable<int> userInsercaoId, string action)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("Id", id) :
-                new ObjectParameter("Id", typeof(int));
-    
-            var subGroupIdParameter = subGroupId.HasValue ?
-                new ObjectParameter("SubGroupId", subGroupId) :
-                new ObjectParameter("SubGroupId", typeof(int));
-    
-            var profileIdParameter = profileId.HasValue ?
-                new ObjectParameter("ProfileId", profileId) :
-                new ObjectParameter("ProfileId", typeof(int));
-    
-            var loginParameter = login != null ?
-                new ObjectParameter("login", login) :
-                new ObjectParameter("login", typeof(string));
-    
-            var nomeParameter = nome != null ?
-                new ObjectParameter("Nome", nome) :
-                new ObjectParameter("Nome", typeof(string));
-    
-            var telefoneParameter = telefone.HasValue ?
-                new ObjectParameter("Telefone", telefone) :
-                new ObjectParameter("Telefone", typeof(decimal));
-    
-            var emailParameter = email != null ?
-                new ObjectParameter("Email", email) :
-                new ObjectParameter("Email", typeof(string));
-    
-            var senhaParameter = senha != null ?
-                new ObjectParameter("Senha", senha) :
-                new ObjectParameter("Senha", typeof(string));
-    
-            var saltParameter = salt != null ?
-                new ObjectParameter("Salt", salt) :
-                new ObjectParameter("Salt", typeof(string));
-    
-            var activoParameter = activo.HasValue ?
-                new ObjectParameter("Activo", activo) :
-                new ObjectParameter("Activo", typeof(bool));
-    
-            var dataActParameter = dataAct.HasValue ?
-                new ObjectParameter("DataAct", dataAct) :
-                new ObjectParameter("DataAct", typeof(System.DateTime));
-    
-            var dataDesactParameter = dataDesact.HasValue ?
-                new ObjectParameter("DataDesact", dataDesact) :
-                new ObjectParameter("DataDesact", typeof(System.DateTime));
-    
-            var validadaParameter = validada.HasValue ?
-                new ObjectParameter("Validada", validada) :
-                new ObjectParameter("Validada", typeof(bool));
-    
-            var userInsercaoIdParameter = userInsercaoId.HasValue ?
-                new ObjectParameter("UserInsercaoId", userInsercaoId) :
-                new ObjectParameter("UserInsercaoId", typeof(int));
-    
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_UTILIZADORES_ENT_UTILIZADORES_Result>("SP_UTILIZADORES_ENT_UTILIZADORES", idParameter, subGroupIdParameter, profileIdParameter, loginParameter, nomeParameter, telefoneParameter, emailParameter, senhaParameter, saltParameter, activoParameter, dataActParameter, dataDesactParameter, validadaParameter, userInsercaoIdParameter, actionParameter);
-        }
-    
         public virtual ObjectResult<SP_PES_ENT_PESSOAS_Result> SP_PES_ENT_PESSOAS(Nullable<int> iD, Nullable<int> aplicationId, string nome, string sexo, Nullable<System.DateTime> dataNascimento, Nullable<int> estadoCivilId, string nIF, string apresentacaoPessoal, Nullable<int> paisId, Nullable<int> cidadeId, Nullable<int> municipioId, Nullable<decimal> telefone, Nullable<decimal> telefoneAlternativo, Nullable<decimal> fax, string email, string codigoPostal, string url, Nullable<int> numero, Nullable<int> userId, string action)
         {
             var iDParameter = iD.HasValue ?
@@ -1897,6 +1832,75 @@ namespace Gestreino
                 new ObjectParameter("Action", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_INST_APLICACAO_Result>("SP_INST_APLICACAO", idParameter, siglaParameter, nomeParameter, nIFParameter, telefoneParameter, telefoneAlternativoParameter, faxParameter, emailParameter, codigoPostalParameter, uRLParameter, numeroParameter, ruaParameter, moradaParameter, paisIdParameter, cidadeIdParameter, munIdParameter, userInsercaoIdParameter, actionParameter);
+        }
+    
+        public virtual ObjectResult<SP_UTILIZADORES_ENT_UTILIZADORES_Result> SP_UTILIZADORES_ENT_UTILIZADORES(Nullable<int> id, Nullable<int> applicationId, Nullable<int> subGroupId, Nullable<int> profileId, string login, string nome, Nullable<decimal> telefone, string email, string senha, string salt, Nullable<bool> activo, Nullable<System.DateTime> dataAct, Nullable<System.DateTime> dataDesact, Nullable<bool> validada, Nullable<int> userInsercaoId, string action)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            var applicationIdParameter = applicationId.HasValue ?
+                new ObjectParameter("ApplicationId", applicationId) :
+                new ObjectParameter("ApplicationId", typeof(int));
+    
+            var subGroupIdParameter = subGroupId.HasValue ?
+                new ObjectParameter("SubGroupId", subGroupId) :
+                new ObjectParameter("SubGroupId", typeof(int));
+    
+            var profileIdParameter = profileId.HasValue ?
+                new ObjectParameter("ProfileId", profileId) :
+                new ObjectParameter("ProfileId", typeof(int));
+    
+            var loginParameter = login != null ?
+                new ObjectParameter("login", login) :
+                new ObjectParameter("login", typeof(string));
+    
+            var nomeParameter = nome != null ?
+                new ObjectParameter("Nome", nome) :
+                new ObjectParameter("Nome", typeof(string));
+    
+            var telefoneParameter = telefone.HasValue ?
+                new ObjectParameter("Telefone", telefone) :
+                new ObjectParameter("Telefone", typeof(decimal));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var senhaParameter = senha != null ?
+                new ObjectParameter("Senha", senha) :
+                new ObjectParameter("Senha", typeof(string));
+    
+            var saltParameter = salt != null ?
+                new ObjectParameter("Salt", salt) :
+                new ObjectParameter("Salt", typeof(string));
+    
+            var activoParameter = activo.HasValue ?
+                new ObjectParameter("Activo", activo) :
+                new ObjectParameter("Activo", typeof(bool));
+    
+            var dataActParameter = dataAct.HasValue ?
+                new ObjectParameter("DataAct", dataAct) :
+                new ObjectParameter("DataAct", typeof(System.DateTime));
+    
+            var dataDesactParameter = dataDesact.HasValue ?
+                new ObjectParameter("DataDesact", dataDesact) :
+                new ObjectParameter("DataDesact", typeof(System.DateTime));
+    
+            var validadaParameter = validada.HasValue ?
+                new ObjectParameter("Validada", validada) :
+                new ObjectParameter("Validada", typeof(bool));
+    
+            var userInsercaoIdParameter = userInsercaoId.HasValue ?
+                new ObjectParameter("UserInsercaoId", userInsercaoId) :
+                new ObjectParameter("UserInsercaoId", typeof(int));
+    
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_UTILIZADORES_ENT_UTILIZADORES_Result>("SP_UTILIZADORES_ENT_UTILIZADORES", idParameter, applicationIdParameter, subGroupIdParameter, profileIdParameter, loginParameter, nomeParameter, telefoneParameter, emailParameter, senhaParameter, saltParameter, activoParameter, dataActParameter, dataDesactParameter, validadaParameter, userInsercaoIdParameter, actionParameter);
         }
     }
 }

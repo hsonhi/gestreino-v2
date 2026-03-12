@@ -38,7 +38,7 @@
                             <i class="fa fa-pen-nib"></i>
                         </div>
                         <h3 class="p-2">Plano de Treino Musculação</h3>
-                        @if (Model.ID > 0 && Model.predefined!=true)
+                        @if (Model.ID > 0 && Model.predefined != true)
                         {
                             <h6 class="p-2 mt-2 text-success"><i class="fa fa-floppy-disk"></i> Questionário registado: @Model.lblDataInsercao</h6>
                         }
@@ -172,7 +172,7 @@
                                             <div class="col-md-12">
                                                 <div class="">
                                                     <ul class="p-2 mb-0" id="list1" style="height: 300px; top: 10px; bottom: 10px; width: 100%;overflow-y:auto;">
-                                                        @foreach (var item in ViewBag.exercises)
+                                                       @foreach (var item in ViewBag.exercises)
                                                         {
                                                             var dis = string.Empty;
                                                             if (Model.ExerciseArqListTreino != null)
@@ -193,6 +193,22 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--
+                                    NEW    
+                                    -->
+                                    @* @Model.ExerciseDbAPI.Count()
+ <input type="text" class="form-control form-control-sm" id="searchInput" onkeyup="filterItems()" placeholder="Pesquisar..">
+ <div id="itemList">
+     @foreach (var item in Model.ExerciseDbAPI.Where(x => ViewBag.list.Contains(x.exerciseId)).Take(50))
+     {
+         <div class="item">
+             <img src="@item.gifUrl" /><button type="button" data-id="" class="addlistplan1 btn btn-sm btn-success  btn-sm"><i class="fa fa-plus-circle"></i></button>
+             @item.name
+         </div>
+         
+     }
+ </div>*@
+
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mt-4">
@@ -208,7 +224,7 @@
                                                 <a href="@Url.Action("bodymass", "pdfreports", new { Id = Model.ID })" class="btn btn-light btn-block" title="Imprimir"><img src="~/Assets/images/printer.png" width="19" /> Imprimir</a>
                                             }
                                             <button type="button" class="btn btn-light btn-block" onclick="openHelpWindow('Prescricoes')" title="Ajuda"><img src="~/Assets/images/help.png" width="19" /> Ajuda</button>
-                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
@@ -283,11 +299,11 @@
                             @if (AcessControl.Authorized(AcessControl.GT_PLANS_BODYMASS_DELETE))
                             {<button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="gttreinos" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
                             }   <button title="Pesquisar" class="btnSearch btn btn-default" data-id="GTTreinoTable"><i class="fa fa-search"></i></button>
-                                <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="GTTreinoTable"><i class="fa fa-eraser"></i></button>
-                                <!--Separator-->
-                                <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gttreino", applyFilter = "true" })" target="_blank" data-id="GTTreinoTable"><i class="fa fa-filter"></i></a>
-                                <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gttreino", applyFilter = "false" })" target="_blank" data-id="GTTreinoTable"><i class="fa fa-file-excel"></i></a>
-                            </div>
+                            <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="GTTreinoTable"><i class="fa fa-eraser"></i></button>
+                            <!--Separator-->
+                            <a title="Exportar filtro (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gttreino", applyFilter = "true" })" target="_blank" data-id="GTTreinoTable"><i class="fa fa-filter"></i></a>
+                            <a title="Exportar todos (.xlsx)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gttreino", applyFilter = "false" })" target="_blank" data-id="GTTreinoTable"><i class="fa fa-file-excel"></i></a>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -332,7 +348,7 @@
                 <div class="card-header card-reader-radius bg-primary-pickled-bluewood">
                     <h3 class="text-white mb-0">Alterar dados do exercício</h3>
                 </div>
-                <input type="hidden" id="setGTTreinoInputId" value=""/>
+                <input type="hidden" id="setGTTreinoInputId" value="" />
                 <div class="modal-body">
                     <div class="row">
                         @Html.LabelFor(m => m.GT_Series_ID, new { @class = "col-md-4 col-form-label" })
@@ -376,7 +392,7 @@
                     </div>
                     <div>
                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary btn-sm" onclick="setGTTreinoInputs()"  data-dismiss="modal">Submeter</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="setGTTreinoInputs()" data-dismiss="modal">Submeter</button>
                     </div>
                 </div>
             </div>
@@ -388,9 +404,29 @@
 </div>
     <!-- /page content -->
     <script>
+
+        function filterItems() {
+            // Declare variables
+            var input, filter, parentDiv, items, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            parentDiv = document.getElementById("itemList");
+            items = parentDiv.getElementsByClassName('item'); // Get all elements with class 'item' inside 'itemList'
+
+            // Loop through all list items, and hide those who don't match the search query
+            for (var i = 0; i < items.length; i++) {
+                txtValue = items[i].textContent || items[i].innerText; // Get the text content
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    items[i].style.display = ""; // Show the item
+                } else {
+                    items[i].style.display = "none"; // Hide the item
+                }
+            }
+        }
         document.addEventListener("DOMContentLoaded", function (event) {
             handleDataGTTreinoTable();
             initSortable();
+
         });
     </script>
 }

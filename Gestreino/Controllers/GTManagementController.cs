@@ -2,20 +2,25 @@
 using Gestreino.Classes;
 using Gestreino.Models;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Reflection;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
-using Newtonsoft.Json.Linq;
-using System.Reflection;
-using System.Data;
+using System.Web.UI.WebControls;
 
 namespace Gestreino.Controllers
 {
@@ -352,9 +357,9 @@ namespace Gestreino.Controllers
                 {
                     MODEL.Age = Converters.CalculateAge(DateofBirth.Value);
                     if (MODEL.Age < 15)
-                        return Json(new { result = false, error = "Não pode ter uma idade inferior a 15 anos!" });
-                    if (MODEL.Age > 69)
-                        return Json(new { result = false, error = "Não pode ter uma idade superior a 69 anos!" });
+                        return Json(new { result = false, error = "Não pode efetuar o registo de idade inferior a 15 anos!" });
+                    if (MODEL.Age > 94)
+                        return Json(new { result = false, error = "Não pode efetuar o registo de idade superior a 94 anos!" });
                 }
 
                 if (databaseManager.PES_CONTACTOS.Where(a => a.EMAIL == MODEL.Email).ToList().Count() > 0)
@@ -403,7 +408,7 @@ namespace Gestreino.Controllers
                 // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
 
                 // Create
-                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(int.Parse(AcessControl.getLoginInfo("Sid")), null, null, Login, MODEL.Nome, Telephone, !string.IsNullOrEmpty(MODEL.Email) ? MODEL.Email.Trim() : null, Password, Salt, Status, null, null, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                var create = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null, int.Parse(AcessControl.getLoginInfo("Sid")), null, null, Login, MODEL.Nome, Telephone, !string.IsNullOrEmpty(MODEL.Email) ? MODEL.Email.Trim() : null, Password, Salt, Status, null, null, true, int.Parse(User.Identity.GetUserId()), "C").ToList();
                 // Get PesId
                 var UserId = create.First().ID;
                 var PesId = databaseManager.PES_PESSOAS.Where(x => x.UTILIZADORES_ID == UserId).Select(x => x.ID).FirstOrDefault();
@@ -473,9 +478,9 @@ namespace Gestreino.Controllers
                 {
                     MODEL.Age = Converters.CalculateAge(DateofBirth.Value);
                     if (MODEL.Age < 15)
-                        return Json(new { result = false, error = "Não pode ter uma idade inferior a 15 anos!" });
-                    if (MODEL.Age > 69)
-                        return Json(new { result = false, error = "Não pode ter uma idade superior a 69 anos!" });
+                        return Json(new { result = false, error = "Não pode efetuar o registo de idade inferior a 15 anos!" });
+                    if (MODEL.Age > 94)
+                        return Json(new { result = false, error = "Não pode efetuar o registo de idade superior a 94 anos!" });
                 }
                 if (databaseManager.PES_CONTACTOS.Where(a => a.EMAIL == MODEL.Email && a.PES_PESSOAS_ID != MODEL.ID).ToList().Count() > 0)
                 {
@@ -1824,7 +1829,7 @@ namespace Gestreino.Controllers
   
 
         //PLANOS
-        public ActionResult BodyMassPlans(Gestreino.Models.GT_TreinoBodyMass MODEL, int? Id, string predefined)
+        public async Task<ActionResult> BodyMassPlans(Gestreino.Models.GT_TreinoBodyMass MODEL, int? Id, string predefined)
         {
             if (!AcessControl.Authorized(AcessControl.GT_PLANS_BODYMASS_LIST_VIEW_SEARCH)) return View("Lockout");
 
@@ -1896,6 +1901,37 @@ namespace Gestreino.Controllers
 
             MODEL.ExerciseArqList = ExerciseArqList;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_PlanBodyMass;
+
+            // EXERCISE API
+            /*
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://exercisedb.p.rapidapi.com/exercises?offset=0&limit=0"),
+                Headers = {
+                   { "x-rapidapi-key", "200d855338msh61f497127387ea2p1d9a99jsna7aea8afc9f9" },
+                   { "x-rapidapi-host", "exercisedb.p.rapidapi.com" },
+                  },
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var content = await response.Content.ReadAsStringAsync();
+                MODEL.ExerciseDbAPI  = JsonConvert.DeserializeObject<List<ExerciseDbAPI>>(content);
+            }*/
+
+            //Json File
+            /*
+            string exercisesAPI =  System.IO.File.ReadAllText(Path.Combine(Server.MapPath("~/"), string.Empty)+"Assets/json/dataset.json");
+            MODEL.ExerciseDbAPI = JsonConvert.DeserializeObject<List<ExerciseDbAPI>>(exercisesAPI);
+            // Get all files from the directory (full paths)
+            string[] fullPaths = Directory.GetFiles(Path.Combine(Server.MapPath("~/"), string.Empty) + "Assets/json");
+            // Select only the filename part using LINQ
+            List<string> fileNames = fullPaths.Select(Path.GetFileNameWithoutExtension).ToList();
+            //List<ExerciseDbAPI> dd= MODEL.ExerciseDbAPI.Where(x => !fileNames.Contains(x.exerciseId));
+            ViewBag.list = fileNames;*/
+
             return View("Plans/BodyMass", MODEL);
         }
         public ActionResult CardioPlans(Gestreino.Models.GT_TreinoBodyMass MODEL, int? Id, string predefined)
@@ -6457,7 +6493,7 @@ namespace Gestreino.Controllers
                         aEscolhido = a40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aEscolhido = a50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aEscolhido = a60_69M;
                     break;
                 case "Feminino":
@@ -6469,7 +6505,7 @@ namespace Gestreino.Controllers
                         aEscolhido = a40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aEscolhido = a50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aEscolhido = a60_69F;
                     break;
             }
@@ -6503,7 +6539,7 @@ namespace Gestreino.Controllers
                         aEscolhido = a40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aEscolhido = a50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aEscolhido = a60_69M;
                     break;
                 case "Feminino":
@@ -6515,7 +6551,7 @@ namespace Gestreino.Controllers
                         aEscolhido = a40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aEscolhido = a50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aEscolhido = a60_69F;
                     break;
             }
@@ -6728,7 +6764,7 @@ namespace Gestreino.Controllers
                         aCompEscolhido = aComp40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aCompEscolhido = aComp50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aCompEscolhido = aComp60_69M;
                     break;
                 case "Feminino":
@@ -6740,7 +6776,7 @@ namespace Gestreino.Controllers
                         aCompEscolhido = aComp40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aCompEscolhido = aComp50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aCompEscolhido = aComp60_69F;
                     break;
             }
@@ -6763,7 +6799,7 @@ namespace Gestreino.Controllers
                         aCompEscolhido = aComp40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aCompEscolhido = aComp50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aCompEscolhido = aComp60_69M;
                     break;
                 case "Feminino":
@@ -6775,7 +6811,7 @@ namespace Gestreino.Controllers
                         aCompEscolhido = aComp40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aCompEscolhido = aComp50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aCompEscolhido = aComp60_69F;
                     break;
             }
@@ -6937,7 +6973,7 @@ namespace Gestreino.Controllers
                         aCardioEscolhido = aCardio40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aCardioEscolhido = aCardio50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aCardioEscolhido = aCardio60_69M;
                     break;
                 case "Feminino":
@@ -6949,7 +6985,7 @@ namespace Gestreino.Controllers
                         aCardioEscolhido = aCardio40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aCardioEscolhido = aCardio50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aCardioEscolhido = aCardio60_69F;
                     break;
             }
@@ -7003,7 +7039,7 @@ namespace Gestreino.Controllers
                         aCardioEscolhido = aCardio40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aCardioEscolhido = aCardio50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aCardioEscolhido = aCardio60_69M;
                     break;
                 case "Feminino":
@@ -7015,7 +7051,7 @@ namespace Gestreino.Controllers
                         aCardioEscolhido = aCardio40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aCardioEscolhido = aCardio50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                   else if (Idade > 60) //&& Idade <= 69)
                         aCardioEscolhido = aCardio60_69F;
                     break;
             }
@@ -8993,7 +9029,7 @@ namespace Gestreino.Controllers
                         aBracosEscolhido = aBracos40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aBracosEscolhido = aBracos50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aBracosEscolhido = aBracos60_69M;
                     break;
                 case "Feminino":
@@ -9005,7 +9041,7 @@ namespace Gestreino.Controllers
                         aBracosEscolhido = aBracos40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aBracosEscolhido = aBracos50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aBracosEscolhido = aBracos60_69F;
                     break;
             }
@@ -9059,7 +9095,7 @@ namespace Gestreino.Controllers
                         aBracosEscolhido = aBracos40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aBracosEscolhido = aBracos50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aBracosEscolhido = aBracos60_69M;
                     break;
                 case "Feminino":
@@ -9071,7 +9107,7 @@ namespace Gestreino.Controllers
                         aBracosEscolhido = aBracos40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aBracosEscolhido = aBracos50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aBracosEscolhido = aBracos60_69F;
                     break;
             }
@@ -9177,7 +9213,7 @@ namespace Gestreino.Controllers
                         aPernasEscolhido = aPernas40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aPernasEscolhido = aPernas50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aPernasEscolhido = aPernas60_69M;
                     break;
                 case "Feminino":
@@ -9189,7 +9225,7 @@ namespace Gestreino.Controllers
                         aPernasEscolhido = aPernas40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aPernasEscolhido = aPernas50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aPernasEscolhido = aPernas60_69F;
                     break;
             }
@@ -9288,7 +9324,7 @@ namespace Gestreino.Controllers
                         aPernasEscolhido = aPernas40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aPernasEscolhido = aPernas50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aPernasEscolhido = aPernas60_69M;
                     break;
                 case "Feminino":
@@ -9300,7 +9336,7 @@ namespace Gestreino.Controllers
                         aPernasEscolhido = aPernas40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aPernasEscolhido = aPernas50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aPernasEscolhido = aPernas60_69F;
                     break;
             }
@@ -9366,7 +9402,7 @@ namespace Gestreino.Controllers
                         aAbdominaisEscolhido = aAbdominais40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aAbdominaisEscolhido = aAbdominais50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aAbdominaisEscolhido = aAbdominais60_69M;
                     break;
                 case "Feminino":
@@ -9378,7 +9414,7 @@ namespace Gestreino.Controllers
                         aAbdominaisEscolhido = aAbdominais40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aAbdominaisEscolhido = aAbdominais50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                   else if (Idade > 60) //&& Idade <= 69)
                         aAbdominaisEscolhido = aAbdominais60_69F;
                     break;
             }
@@ -9400,7 +9436,7 @@ namespace Gestreino.Controllers
                         aAbdominaisEscolhido = aAbdominais40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aAbdominaisEscolhido = aAbdominais50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aAbdominaisEscolhido = aAbdominais60_69M;
                     break;
                 case "Feminino":
@@ -9412,7 +9448,7 @@ namespace Gestreino.Controllers
                         aAbdominaisEscolhido = aAbdominais40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aAbdominaisEscolhido = aAbdominais50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aAbdominaisEscolhido = aAbdominais60_69F;
                     break;
             }
@@ -9522,7 +9558,7 @@ namespace Gestreino.Controllers
                         aFlexoesEscolhido = aFlexoes40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aFlexoesEscolhido = aFlexoes50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aFlexoesEscolhido = aFlexoes60_69M;
                     break;
                 case "Feminino":
@@ -9534,7 +9570,7 @@ namespace Gestreino.Controllers
                         aFlexoesEscolhido = aFlexoes40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aFlexoesEscolhido = aFlexoes50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aFlexoesEscolhido = aFlexoes60_69F;
                     break;
             }
@@ -9556,7 +9592,7 @@ namespace Gestreino.Controllers
                         aFlexoesEscolhido = aFlexoes40_49M;
                     else if (Idade >= 50 && Idade <= 59)
                         aFlexoesEscolhido = aFlexoes50_59M;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aFlexoesEscolhido = aFlexoes60_69M;
                     break;
                 case "Feminino":
@@ -9568,7 +9604,7 @@ namespace Gestreino.Controllers
                         aFlexoesEscolhido = aFlexoes40_49F;
                     else if (Idade >= 50 && Idade <= 59)
                         aFlexoesEscolhido = aFlexoes50_59F;
-                    else if (Idade >= 60 && Idade <= 69)
+                    else if (Idade > 60) //&& Idade <= 69)
                         aFlexoesEscolhido = aFlexoes60_69F;
                     break;
             }
@@ -10203,7 +10239,7 @@ namespace Gestreino.Controllers
                             aTentativas.Add(data.Select(y => y.TENTATIVA3).FirstOrDefault());
                             aTentativas.Sort();
 
-                            iFlexi = Convert.ToDecimal(aTentativas[0]);
+                            iFlexi = Convert.ToDecimal(aTentativas[2]);
                         }
                         else if (Type == 9)
                         {

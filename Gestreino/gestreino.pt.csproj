@@ -722,6 +722,7 @@
     <Content Include="Assets\fonts\style\fontawesome.min.css" />
     <Content Include="Assets\fonts\style\solid.css" />
     <Content Include="Assets\images\athlete.png" />
+    <Content Include="Assets\images\camera.png" />
     <Content Include="Assets\images\eraser.png" />
     <Content Include="Assets\images\gt.png" />
     <Content Include="Assets\images\help.png" />
@@ -793,6 +794,7 @@
     <Content Include="Assets\javascript\dataTables.checkboxes.min.js" />
     <Content Include="Assets\javascript\dataTables.min.js" />
     <Content Include="Assets\javascript\daterangepicker.min.js" />
+    <Content Include="Assets\javascript\highcharts.js" />
     <Content Include="Assets\javascript\jquery.min.js" />
     <Content Include="Assets\javascript\jquery.min2-unobtrusive-ajax.min.js" />
     <Content Include="Assets\javascript\moment.min.js" />
@@ -853,6 +855,7 @@
     <Content Include="Assets\fonts\Helvetica\HelveticaNeueThinItalic.otf" />
     <Content Include="Assets\fonts\Helvetica\HelveticaNeueUltraLight.otf" />
     <Content Include="Assets\fonts\Helvetica\HelveticaNeueUltraLightItalic.otf" />
+    <Content Include="Assets\json\dataset.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Properties\PublishProfiles\gestreino.pt - Web Deploy.pubxml" />

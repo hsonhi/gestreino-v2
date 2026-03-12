@@ -30,6 +30,7 @@ namespace Gestreino
         public Nullable<int> TOTALGROUPS { get; set; }
         public Nullable<int> TOTALPERFIS { get; set; }
         public string ULTIMA_SESSAO { get; set; }
+        public string ACESSO { get; set; }
         public string INSERCAO { get; set; }
         public string ACTUALIZACAO { get; set; }
         public string DATA_INSERCAO { get; set; }

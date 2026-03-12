@@ -666,7 +666,8 @@ namespace Gestreino.Models
 
         public List<ExerciseArq> ExerciseArqList { get; set; }
         public List<ExerciseArq> ExerciseArqListTreino { get; set; }
-
+        public List<ExerciseDbAPI> ExerciseDbAPI { get; set; }
+        
         //[Required]
         [Display(Name = "Data de início do plano:")]
         [DataType(DataType.Text)]
@@ -700,6 +701,7 @@ namespace Gestreino.Models
         [Display(Name = "Inclinação:")]
         public string Distancia { get; set; }
         public string lblDataInsercao { get; set; }
+        public string exercisedb_external { get; set; }
     }
 
     public class ExerciseArq
@@ -720,6 +722,18 @@ namespace Gestreino.Models
         public decimal? Nivel { get; set; }
         public decimal? Distancia { get; set; }
         public int? ORDEM { get; set; }
+    }
+
+    public class ExerciseDbAPI
+    {
+        public string exerciseId { get; set; }
+        public string name { get; set; }
+        public string gifUrl { get; set; }
+        public List<String> targetMuscles { get; set; }
+        public List<String> bodyParts { get; set; }
+        public List<String> equipments { get; set; }
+        public List<String> secondaryMuscles { get; set; }
+        public List<String> instructions { get; set; }
     }
 
     public class GT_Quest_Anxient

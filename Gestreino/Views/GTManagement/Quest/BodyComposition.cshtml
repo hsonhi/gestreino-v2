@@ -57,24 +57,50 @@
 
                                     <div class="p4-quest mt-3">
                                         <fieldset class="p-2 border-r">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="row mb-2">
-                                                        @Html.LabelFor(m => m.GT_TipoMetodoComposicao_ID, new { @class = "col-md-3 col-form-label" })
-                                                        <div class="col-md-7">
-                                                            @Html.DropDownListFor(x => Model.GT_TipoMetodoComposicao_ID, Model.GT_TipoMetodoComposicao_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoMetodoComposicao_List(this.value)" })
+                                            @if (Model.ID == null)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="row mb-2">
+                                                            @Html.LabelFor(m => m.GT_TipoMetodoComposicao_ID, new { @class = "col-md-3 col-form-label" })
+                                                            <div class="col-md-7">
+                                                                @Html.DropDownListFor(x => Model.GT_TipoMetodoComposicao_ID, Model.GT_TipoMetodoComposicao_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoMetodoComposicao_List(this.value)" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="row mb-2">
+                                                            @Html.LabelFor(m => m.GT_TipoTesteComposicao_ID, new { @class = "col-md-3 col-form-label" })
+                                                            <div class="col-md-7">
+                                                                @Html.DropDownListFor(x => Model.GT_TipoTesteComposicao_ID, Model.GT_TipoTesteComposicao_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoTesteComposicao_List(this.value)" })
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="row mb-2">
-                                                        @Html.LabelFor(m => m.GT_TipoTesteComposicao_ID, new { @class = "col-md-3 col-form-label" })
-                                                        <div class="col-md-7">
-                                                            @Html.DropDownListFor(x => Model.GT_TipoTesteComposicao_ID, Model.GT_TipoTesteComposicao_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoTesteComposicao_List(this.value)" })
+                                            }
+                                            else
+                                            {
+                                                @Html.HiddenFor(m => m.GT_TipoMetodoComposicao_ID)
+                                                @Html.HiddenFor(m => m.GT_TipoTesteComposicao_ID)
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="row mb-2">
+                                                            @Html.LabelFor(m => m.GT_TipoMetodoComposicao_ID, new { @class = "col-md-3 col-form-label" })
+                                                            <div class="col-md-7">
+                                                                @Html.DropDownListFor(x => Model.GT_TipoMetodoComposicao_ID, Model.GT_TipoMetodoComposicao_List, new { disabled = "", @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoMetodoComposicao_List(this.value)" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="row mb-2">
+                                                            @Html.LabelFor(m => m.GT_TipoTesteComposicao_ID, new { @class = "col-md-3 col-form-label" })
+                                                            <div class="col-md-7">
+                                                                @Html.DropDownListFor(x => Model.GT_TipoTesteComposicao_ID, Model.GT_TipoTesteComposicao_List, new { disabled = "", @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoTesteComposicao_List(this.value)" })
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            }
                                         </fieldset>
                                         <div class="row mt-2">
                                             <div class="col-md-6">

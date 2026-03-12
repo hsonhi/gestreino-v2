@@ -59,12 +59,25 @@
 
                                     <div class="p4-quest mt-3">
                                         <fieldset class="p-2 border-r">
-                                            <div class="row">
-                                                @Html.LabelFor(m => m.GT_TipoTesteForca_ID, new { @class = "col-md-1 col-form-label" })
-                                                <div class="col-md-5">
-                                                    @Html.DropDownListFor(x => Model.GT_TipoTesteForca_ID, Model.GT_TipoTesteForca_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoTesteForca_List(this.value)" })
+                                            @if (Model.ID == null)
+                                            {
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.GT_TipoTesteForca_ID, new { @class = "col-md-1 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.DropDownListFor(x => Model.GT_TipoTesteForca_ID, Model.GT_TipoTesteForca_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoTesteForca_List(this.value)" })
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            }
+                                            else
+                                            {
+                                                @Html.HiddenFor(m => m.GT_TipoTesteForca_ID)
+                                                <div class="row">
+                                                    @Html.LabelFor(m => m.GT_TipoTesteForca_ID, new { @class = "col-md-1 col-form-label" })
+                                                    <div class="col-md-5">
+                                                        @Html.DropDownListFor(x => Model.GT_TipoTesteForca_ID, Model.GT_TipoTesteForca_List, new { disabled = "", @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoTesteForca_List(this.value)" })
+                                                    </div>
+                                                </div>
+                                            }
                                         </fieldset>
 
                                         <div class="mt-4" id="RMBracos" style="display:@(Model.GT_TipoTesteForca_ID == 1 ? "" : "none")">

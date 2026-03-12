@@ -60,14 +60,24 @@
                                     <td>Telefone:</td>
                                     <td>@ViewBag.data[0].TELEFONE</td>
                                 </tr>
-                                <tr>
-                                    <td>Total em Grupos:</td>
-                                    <td>@ViewBag.data[0].TOTALGROUPS</td>
-                                </tr>
-                                <tr>
-                                    <td>Total em Perfis:</td>
-                                    <td>@ViewBag.data[0].TOTALPERFIS</td>
-                                </tr>
+                                @if (AcessControl.isGROUP_ADM())
+                                {
+                                    <tr>
+                                        <td>Total em Grupos:</td>
+                                        <td>@ViewBag.data[0].TOTALGROUPS</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total em Perfis:</td>
+                                        <td>@ViewBag.data[0].TOTALPERFIS</td>
+                                    </tr>
+                                }
+                                @if (AcessControl.isGROUP_INST())
+                                {
+                                    <tr>
+                                        <td>Acesso:</td>
+                                        <td>@ViewBag.data[0].ACESSO</td>
+                                    </tr>
+                                }
                                 <tr>
                                     <td>Estado:</td>
                                     <td>@ViewBag.data[0].ACTIVO</td>

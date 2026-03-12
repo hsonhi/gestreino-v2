@@ -5,7 +5,7 @@
 }
 @if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
 {
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="~/Assets/javascript/highcharts.js"></script>
     @*  <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script src="https://code.highcharts.com/modules/accessibility.js"></script>*@
@@ -62,24 +62,50 @@
                                     }
                                     <div class="p4-quest mt-3">
                                         <fieldset class="p-2 border-r mb-2">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="row mb-2">
-                                                        @Html.LabelFor(m => m.GT_TipoMetodoComposicao_ID, new { @class = "col-md-3 col-form-label" })
-                                                        <div class="col-md-7">
-                                                            @Html.DropDownListFor(x => Model.GT_TipoMetodoComposicao_ID, Model.GT_TipoMetodoComposicao_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoMetodoCardio_List(this.value)" })
+                                            @if (Model.ID == null)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="row mb-2">
+                                                            @Html.LabelFor(m => m.GT_TipoMetodoComposicao_ID, new { @class = "col-md-3 col-form-label" })
+                                                            <div class="col-md-7">
+                                                                @Html.DropDownListFor(x => Model.GT_TipoMetodoComposicao_ID, Model.GT_TipoMetodoComposicao_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoMetodoCardio_List(this.value)" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="row mb-2">
+                                                            @Html.LabelFor(m => m.GT_TipoTesteCardio_ID, new { @class = "col-md-3 col-form-label" })
+                                                            <div class="col-md-7">
+                                                                @Html.DropDownListFor(x => Model.GT_TipoTesteCardio_ID, Model.GT_TipoTesteCardio_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoTesteCardio_List(this.value)" })
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="row mb-2">
-                                                        @Html.LabelFor(m => m.GT_TipoTesteCardio_ID, new { @class = "col-md-3 col-form-label" })
-                                                        <div class="col-md-7">
-                                                            @Html.DropDownListFor(x => Model.GT_TipoTesteCardio_ID, Model.GT_TipoTesteCardio_List, new { @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoTesteCardio_List(this.value)" })
+                                            }
+                                            else
+                                            {
+                                                @Html.HiddenFor(m => m.GT_TipoMetodoComposicao_ID)
+                                                @Html.HiddenFor(m => m.GT_TipoTesteCardio_ID)
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="row mb-2">
+                                                            @Html.LabelFor(m => m.GT_TipoMetodoComposicao_ID, new { @class = "col-md-3 col-form-label" })
+                                                            <div class="col-md-7">
+                                                                @Html.DropDownListFor(x => Model.GT_TipoMetodoComposicao_ID, Model.GT_TipoMetodoComposicao_List, new { disabled = "", @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoMetodoCardio_List(this.value)" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="row mb-2">
+                                                            @Html.LabelFor(m => m.GT_TipoTesteCardio_ID, new { @class = "col-md-3 col-form-label" })
+                                                            <div class="col-md-7">
+                                                                @Html.DropDownListFor(x => Model.GT_TipoTesteCardio_ID, Model.GT_TipoTesteCardio_List, new { disabled = "", @class = "form-control form-control-sm", required = "", onchange = "loadGT_TipoTesteCardio_List(this.value)" })
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            }
                                         </fieldset>
                                         <!--200 metros-->
                                         <div id="200m" style="display:@(Model.GT_TipoTesteCardio_ID == 1?"":"none")">
@@ -392,7 +418,7 @@
                                         <!-- GENERAL PURPOSE -->
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <fieldset class=" p-2 border-r">
+                                                <fieldset class="border-r">
                                                     <div class="row">
                                                         @Html.LabelFor(m => m.V02max, new { @class = "col-md-3 col-form-label" })
                                                         <div class="col-md-4">
@@ -549,7 +575,7 @@
         <h2>&nbsp;</h2>
     </div>
     <!-- /page content -->
-    <script>
+<script>
         document.addEventListener("DOMContentLoaded", function (event) {
             handleDataGTQuestTable();
         });
@@ -584,32 +610,30 @@
                 title: {
                     text: 'Carga'
                 },
-                categories: [1995, 2000, 2005, 2010, 2015, 2020, 2023]
+                categories: [@Model.YMCACarga1, @Model.YMCACarga2, @Model.YMCACarga3, @Model.YMCACarga4]
             },
 
             yAxis: {
-                type: 'logarithmic',
                 title: {
-                    text: 'FC'
-                }
+                    text: 'Frequência Cardíaca'
+                },
+                min: 70, // Set the minimum value of the y-axis
+                max: 220 // Set the maximum value of the y-axis
             },
 
             tooltip: {
                 headerFormat: '<b>{series.name}</b><br />',
-                pointFormat: '{point.y} million(s)'
+                pointFormat: '{point.y}'
             },
 
             series: [{
                 name: '',
                 keys: ['y', 'color'],
                 data: [
-                    [16, '#0000ff'],
-                    [361, '#8d0073'],
-                    [1018, '#ba0046'],
-                    [2025, '#d60028'],
-                    [3192, '#eb0014'],
-                    [4673, '#fb0004'],
-                    [5200, '#ff0000']
+                    [@Model.YMCAFC1, '#0000ff'],
+                    [@Model.YMCAFC2, '#8d0073'],
+                    [@Model.YMCAFC3, '#ba0046'],
+                    [@Model.YMCAFC4, '#d60028']
                 ],
                 color: {
                     linearGradient: {
@@ -625,7 +649,7 @@
                 }
             }]
         });
-    </script>
+</script>
 }
 else
 {

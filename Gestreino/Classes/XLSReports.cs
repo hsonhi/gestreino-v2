@@ -621,7 +621,7 @@ namespace Gestreino.Classes
                         worksheet.Cell(currentRow, 7).Style.Font.Bold = true;
                         worksheet.Cell(currentRow, 8).Value = "DATA DE DESACTIVAÇÃO";
                         worksheet.Cell(currentRow, 8).Style.Font.Bold = true;
-                        worksheet.Cell(currentRow, 9).Value = "GRUPOS";
+                        worksheet.Cell(currentRow, 9).Value = "ACESSO";
                         worksheet.Cell(currentRow, 9).Style.Font.Bold = true;
                         worksheet.Cell(currentRow, 10).Value = "PERFIS";
                         worksheet.Cell(currentRow, 10).Style.Font.Bold = true;
@@ -649,7 +649,7 @@ namespace Gestreino.Classes
                             object DATADESACTIVACAO = query[i].GetType().GetProperty("DATA_DESACT").GetValue(query[i], null);
                             //object ACESSOOAUTH = query[i].GetType().GetProperty("OAUTH2").GetValue(query[i], null);
                             //object ACESSOLADP = query[i].GetType().GetProperty("LADP").GetValue(query[i], null);
-                            object GRUPOS = query[i].GetType().GetProperty("TOTALGROUPS").GetValue(query[i], null);
+                            object ACESSO = query[i].GetType().GetProperty("ACESSO").GetValue(query[i], null);
                             object PERFIS = query[i].GetType().GetProperty("TOTALPERFIS").GetValue(query[i], null);
                             object ULTIMOINICIODESESSAO = query[i].GetType().GetProperty("ULTIMA_SESSAO").GetValue(query[i], null);
                             object INSERCAO = query[i].GetType().GetProperty("INSERCAO").GetValue(query[i], null);
@@ -666,7 +666,7 @@ namespace Gestreino.Classes
                             worksheet.Cell(currentRow, 6).Value = VALIDA != null ? VALIDA.ToString() : string.Empty;
                             worksheet.Cell(currentRow, 7).Value = DATAACTIVACAO != null ? DATAACTIVACAO.ToString() : string.Empty ;
                             worksheet.Cell(currentRow, 8).Value = DATADESACTIVACAO != null ? DATADESACTIVACAO.ToString() : string.Empty; 
-                            worksheet.Cell(currentRow, 9).Value = GRUPOS != null ? GRUPOS.ToString() : string.Empty; 
+                            worksheet.Cell(currentRow, 9).Value = ACESSO != null ? ACESSO.ToString() : string.Empty; 
                             worksheet.Cell(currentRow, 10).Value = PERFIS != null ? PERFIS.ToString() : string.Empty;
                             worksheet.Cell(currentRow, 11).Value = ULTIMOINICIODESESSAO != null ? ULTIMOINICIODESESSAO.ToString() : string.Empty;
                             worksheet.Cell(currentRow, 12).Value = INSERCAO != null ? INSERCAO.ToString() : string.Empty;
@@ -731,6 +731,123 @@ namespace Gestreino.Classes
                             worksheet.Cell(currentRow, 4).Value = ENDERECOMAC != null ? ENDERECOMAC.ToString() : string.Empty; 
                             worksheet.Cell(currentRow, 5).Value = HOST != null ? HOST.ToString() : string.Empty; 
                             worksheet.Cell(currentRow, 6).Value = DISPOSITIVO != null ? DISPOSITIVO.ToString() : string.Empty; 
+                            worksheet.Cell(currentRow, 7).Value = LAT != null ? LAT.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 8).Value = LONG != null ? LONG.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 9).Value = URL != null ? URL.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 10).Value = DATA != null ? DATA.ToString() : string.Empty;
+                        }
+
+                        worksheet.Columns().AdjustToContents();
+                        using (MemoryStream myMemoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(myMemoryStream);
+
+                            // return memory stream as byte array
+                            return myMemoryStream.ToArray();
+                        }
+                    }
+                case "GetInstitutions":
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var worksheet = wb.Worksheets.Add("Sample Sheet");
+                        var currentRow = 1;
+
+                        worksheet.Cell(currentRow, 1).Value = "SIGLA";
+                        worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 2).Value = "NOME";
+                        worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 3).Value = "TELEFONE";
+                        worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 4).Value = "EMAIL";
+                        worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 5).Value = "INSERÇÃO";
+                        worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 6).Value = "DATA INSERÇÃO";
+                        worksheet.Cell(currentRow, 6).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 7).Value = "ACTUALIZAÇÃO";
+                        worksheet.Cell(currentRow, 7).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 8).Value = "DATA ACTUALIZAÇÃO";
+                        worksheet.Cell(currentRow, 8).Style.Font.Bold = true;
+                        worksheet.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                        for (int i = 0; i < query.Count; i++)
+                        {
+                            object SIGLA = query[i].GetType().GetProperty("SIGLA").GetValue(query[i], null);
+                            object NOME = query[i].GetType().GetProperty("NOME").GetValue(query[i], null);
+                            object TELEFONE = query[i].GetType().GetProperty("TELEFONE").GetValue(query[i], null);
+                            object EMAIL = query[i].GetType().GetProperty("EMAIL").GetValue(query[i], null);
+                            object INSERCAO = query[i].GetType().GetProperty("INSERCAO").GetValue(query[i], null);
+                            object DATAINSERCAO = query[i].GetType().GetProperty("DATA_INSERCAO").GetValue(query[i], null);
+                            object ACTUALIZACAO = query[i].GetType().GetProperty("ACTUALIZACAO").GetValue(query[i], null);
+                            object DATAACTUALIZACAO = query[i].GetType().GetProperty("DATA_ACTUALIZACAO").GetValue(query[i], null);
+
+                            currentRow++;
+                            //worksheet.Cell(currentRow, 1).Value = UTILIZADOR;
+                            worksheet.Cell(currentRow, 1).Value = SIGLA != null ? SIGLA.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 2).Value = NOME != null ? NOME.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 3).Value = TELEFONE != null ? TELEFONE.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 4).Value = EMAIL != null ? EMAIL.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 5).Value = INSERCAO != null ? INSERCAO.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 6).Value = DATAINSERCAO != null ? DATAINSERCAO.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 7).Value = ACTUALIZACAO != null ? ACTUALIZACAO.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 8).Value = DATAINSERCAO != null ? DATAINSERCAO.ToString() : string.Empty;
+                        }
+
+                        worksheet.Columns().AdjustToContents();
+                        using (MemoryStream myMemoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(myMemoryStream);
+
+                            // return memory stream as byte array
+                            return myMemoryStream.ToArray();
+                        }
+                    }
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var worksheet = wb.Worksheets.Add("Sample Sheet");
+                        var currentRow = 1;
+                        worksheet.Cell(currentRow, 1).Value = "SIGLA";
+                        worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 2).Value = "NOME";
+                        worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 3).Value = "TELEFONE";
+                        worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 4).Value = "EMAIL";
+                        worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 5).Value = "HOSPEDEIRO HOST";
+                        worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 6).Value = "DISPOSITIVO";
+                        worksheet.Cell(currentRow, 6).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 7).Value = "LATITUDE";
+                        worksheet.Cell(currentRow, 7).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 8).Value = "LONGITUDE";
+                        worksheet.Cell(currentRow, 8).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 9).Value = "URL";
+                        worksheet.Cell(currentRow, 9).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 10).Value = "DATA";
+                        worksheet.Cell(currentRow, 10).Style.Font.Bold = true;
+                        worksheet.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                        for (int i = 0; i < query.Count; i++)
+                        {
+                            object LOGIN = query[i].GetType().GetProperty("LOGIN").GetValue(query[i], null);
+                            //object MODULO = query[i].GetType().GetProperty("MODULO").GetValue(query[i], null);
+                            object ENDERECOIP = query[i].GetType().GetProperty("ENDERECO_IP").GetValue(query[i], null);
+                            object ENDERECOMAC = query[i].GetType().GetProperty("ENDERECO_MAC").GetValue(query[i], null);
+                            object HOST = query[i].GetType().GetProperty("HOSPEDEIRO_HOST").GetValue(query[i], null);
+                            object DISPOSITIVO = query[i].GetType().GetProperty("DISPOSITIVO").GetValue(query[i], null);
+                            object LAT = query[i].GetType().GetProperty("LAT").GetValue(query[i], null);
+                            object LONG = query[i].GetType().GetProperty("LONG").GetValue(query[i], null);
+                            object URL = query[i].GetType().GetProperty("URL").GetValue(query[i], null);
+                            object DATA = query[i].GetType().GetProperty("DATA").GetValue(query[i], null);
+
+                            currentRow++;
+                            worksheet.Cell(currentRow, 1).Value = LOGIN != null ? LOGIN.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 2).Value = "GESTREINO";
+                            worksheet.Cell(currentRow, 3).Value = ENDERECOIP != null ? ENDERECOIP.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 4).Value = ENDERECOMAC != null ? ENDERECOMAC.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 5).Value = HOST != null ? HOST.ToString() : string.Empty;
+                            worksheet.Cell(currentRow, 6).Value = DISPOSITIVO != null ? DISPOSITIVO.ToString() : string.Empty;
                             worksheet.Cell(currentRow, 7).Value = LAT != null ? LAT.ToString() : string.Empty;
                             worksheet.Cell(currentRow, 8).Value = LONG != null ? LONG.ToString() : string.Empty;
                             worksheet.Cell(currentRow, 9).Value = URL != null ? URL.ToString() : string.Empty;
