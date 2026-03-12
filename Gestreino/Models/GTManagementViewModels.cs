@@ -1142,6 +1142,7 @@ namespace Gestreino.Models
     {
         public int? ID { get; set; }
         public int? PEsId { get; set; }
+        public decimal? CARACT_FCMAX { get; set; }
 
         [Display(Name = "Método:")]
         public int? GT_TipoMetodoComposicao_ID { get; set; }
@@ -1213,7 +1214,7 @@ namespace Gestreino.Models
         public decimal? VO2Carga { get; set; }
 
         [Display(Name = "Equação da Recta:")]
-        public decimal? EquacaoRecta { get; set; }
+        public string EquacaoRecta { get; set; }
         public int? iFlexiAct { get; set; }
         public string lblResActualFlexi { get; set; }
         public int? iFlexiAnt { get; set; }

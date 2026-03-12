@@ -108,7 +108,7 @@
                                             }
                                         </fieldset>
                                         <!--200 metros-->
-                                        <div id="200m" style="display:@(Model.GT_TipoTesteCardio_ID == 1?"":"none")">
+                                        <div id="200m" style="display:@(Model.GT_TipoTesteCardio_ID == 1 ? "" : "none")">
                                             <div class="row">
                                                 @Html.LabelFor(m => m.TempoRealizacao200, new { @class = "col-md-3 col-form-label" })
                                                 <div class="col-md-4">
@@ -137,7 +137,7 @@
                                             </div>
                                         </div>
                                         <!--Cooper-->
-                                        <div id="cooper" style="display:@(Model.GT_TipoTesteCardio_ID == 2?"":"none")">
+                                        <div id="cooper" style="display:@(Model.GT_TipoTesteCardio_ID == 2 ? "" : "none")">
                                             <div class="row">
                                                 @Html.LabelFor(m => m.Distancia12m, new { @class = "col-md-3 col-form-label" })
                                                 <div class="col-md-4">
@@ -153,7 +153,7 @@
                                             </div>
                                         </div>
                                         <!--Caminhada de Rockport Institute-->
-                                        <div id="rockport" style="display:@(Model.GT_TipoTesteCardio_ID == 3?"":"none")">
+                                        <div id="rockport" style="display:@(Model.GT_TipoTesteCardio_ID == 3 ? "" : "none")">
                                             <div class="row">
                                                 @Html.LabelFor(m => m.Tempo1600m, new { @class = "col-md-3 col-form-label" })
                                                 <div class="col-md-4">
@@ -217,7 +217,7 @@
                                             </div>
                                         </div>
                                         <!-- Queens College -->
-                                        <div id="queens" style="display:@(Model.GT_TipoTesteCardio_ID == 4?"":"none")">
+                                        <div id="queens" style="display:@(Model.GT_TipoTesteCardio_ID == 4 ? "" : "none")">
                                             <div class="row">
                                                 @Html.LabelFor(m => m.FC15sec, new { @class = "col-md-3 col-form-label" })
                                                 <div class="col-md-4">
@@ -238,7 +238,7 @@
                                             </div>
                                         </div>
                                         <!-- Jogging -->
-                                        <div id="jogging" style="display:@(Model.GT_TipoTesteCardio_ID == 5?"":"none")">
+                                        <div id="jogging" style="display:@(Model.GT_TipoTesteCardio_ID == 5 ? "" : "none")">
                                             <div class="row">
                                                 @Html.LabelFor(m => m.FC3min, new { @class = "col-md-3 col-form-label" })
                                                 <div class="col-md-4">
@@ -281,7 +281,7 @@
                                             </div>
                                         </div>
                                         <!--Astrand-->
-                                        <div id="astrand" style="display:@(Model.GT_TipoTesteCardio_ID == 6?"":"none")">
+                                        <div id="astrand" style="display:@(Model.GT_TipoTesteCardio_ID == 6 ? "" : "none")">
                                             <div class="row">
                                                 @Html.LabelFor(m => m.FactorCorrecao, new { @class = "col-md-3 col-form-label" })
                                                 <div class="col-md-3">
@@ -351,7 +351,7 @@
                                             </div>
                                         </div>
                                         <!--YMCA-->
-                                        <div id="ymca" style="display:@(Model.GT_TipoTesteCardio_ID == 7?"":"none")">
+                                        <div id="ymca" style="display:@(Model.GT_TipoTesteCardio_ID == 7 ? "" : "none")">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="table-responsive">
@@ -401,19 +401,18 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <label class="col-md-3"></label>
+                                                <div class="col-md-9">
+                                                    <div id="container"></div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-1">
                                                 @Html.LabelFor(m => m.EquacaoRecta, new { @class = "col-md-3 col-form-label" })
                                                 <div class="col-md-4">
                                                     @Html.TextBoxFor(m => m.EquacaoRecta, new { @readonly = "", @class = "form-control form-control-sm" })
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <label class="col-md-3"></label>
-                                                <div class="col-md-5">
-                                                    <div id="container"></div>
-                                                </div>
-                                            </div>
                                         </div>
-
 
                                         <!-- GENERAL PURPOSE -->
                                         <div class="row">
@@ -477,7 +476,7 @@
                                                             </div>
                                                             <div class="col-md-10">
                                                                 <div class="progress">
-                                                                    <div id="pgrflexActual" class="progress-bar bg-info" role="progressbar" style="width:@Model.iFlexiAct%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">@Model.iFlexiAct@(Model.iFlexiAct==null?"": "%")</div>
+                                                                    <div id="pgrflexActual" class="progress-bar bg-info" role="progressbar" style="width:@Model.iFlexiAct%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">@Model.iFlexiAct@(Model.iFlexiAct == null ? "" : "%")</div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-2">
@@ -488,7 +487,7 @@
                                                             </div>
                                                             <div class="col-md-10">
                                                                 <div class="progress">
-                                                                    <div id="pgrflexAnterior" class="progress-bar bg-danger" role="progressbar" style="width:@Model.iFlexiAnt%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">@Model.iFlexiAnt@(Model.iFlexiAnt == null?"": "%")</div>
+                                                                    <div id="pgrflexAnterior" class="progress-bar bg-danger" role="progressbar" style="width:@Model.iFlexiAnt%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">@Model.iFlexiAnt@(Model.iFlexiAnt == null ? "" : "%")</div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-2">
@@ -504,7 +503,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-md-3">
                             <!--  DATATABLE START -->
@@ -571,6 +569,10 @@
                 }
             </div>
         </div>
+        @{ string sRecta = "y = m*{0} + {1}";
+            } 
+
+        @string.Format(sRecta, "870", "6")
         <h2>&nbsp;</h2>
         <h2>&nbsp;</h2>
     </div>
@@ -582,17 +584,21 @@
 
         Highcharts.chart('container', {
             chart: {
-                //backgroundColor: 'rgba(0,0,0,.03)',
-                //borderRadius: 5,
-                //borderWidth: 1,
-                //borderColor: 'rgba(0,0,0,.03)',
+                backgroundColor: 'rgba(0,0,0,.03)',
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: 'rgba(0,0,0,.03)',
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
                 type: 'line',
-                height:'320'
+                height: '220',
+                spacingTop: 30
             },
             credits: {
+                enabled: false
+            },
+            legend: {
                 enabled: false
             },
             title: {
@@ -602,10 +608,9 @@
             accessibility: {
                 point: {
                     valueDescriptionFormat:
-                        '{xDescription}{separator}{value} million(s)'
+                        '{xDescription}{separator}{value}'
                 }
             },
-
             xAxis: {
                 title: {
                     text: 'Carga'
@@ -614,39 +619,54 @@
             },
 
             yAxis: {
+                labels: {
+                    enabled: true
+                },
                 title: {
                     text: 'Frequência Cardíaca'
                 },
                 min: 70, // Set the minimum value of the y-axis
-                max: 220 // Set the maximum value of the y-axis
+                max: 210 // Set the maximum value of the y-axis
             },
 
             tooltip: {
                 headerFormat: '<b>{series.name}</b><br />',
-                pointFormat: '{point.y}'
+                pointFormat: '{point.y} Frequência Cardíaca'
             },
-
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: true,
+                        symbol: 'circle', // Options: 'circle', 'square', 'diamond', 'triangle', 'triangle-down'
+                        radius: 5,
+                        fillColor: '#FFFFFF',
+                        lineWidth: 2,
+                        lineColor: null // null or 'auto' means use series color
+                    }
+                }
+            },
             series: [{
                 name: '',
-                keys: ['y', 'color'],
+                keys: ['y'],
                 data: [
-                    [@Model.YMCAFC1, '#0000ff'],
-                    [@Model.YMCAFC2, '#8d0073'],
-                    [@Model.YMCAFC3, '#ba0046'],
-                    [@Model.YMCAFC4, '#d60028']
+                    [@Model.YMCAFC1],
+                    [@Model.YMCAFC2],
+                    [@Model.YMCAFC3],
+                    [@Model.YMCAFC4]
+      
                 ],
-                color: {
-                    linearGradient: {
-                        x1: 0,
-                        x2: 0,
-                        y1: 1,
-                        y2: 0
-                    },
-                    stops: [
-                        [0, '#0000ff'],
-                        [1, '#ff0000']
-                    ]
-                }
+                color: '#FF0000', // Red color for this line
+            },
+            {
+                name: '',
+                keys: ['y'],
+                data: [
+                    [@Model.CARACT_FCMAX],
+                    [@Model.CARACT_FCMAX],
+                    [@Model.CARACT_FCMAX],
+                    [@Model.CARACT_FCMAX]
+                ],
+                color: '#06402B', // Green color for this line
             }]
         });
 </script>

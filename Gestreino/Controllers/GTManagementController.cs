@@ -3762,8 +3762,9 @@ namespace Gestreino.Controllers
             MODEL.GT_TipoMetodoComposicao_List = databaseManager.GT_TipoMetodoCardio.OrderBy(x => x.ID).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.DESCRICAO });
             MODEL.GT_TipoMetodoComposicao_ID = MODEL.GT_TipoMetodoComposicao_List.Any() ? Convert.ToInt32(MODEL.GT_TipoMetodoComposicao_List.Select(X => X.Value).FirstOrDefault()) : 0;
             MODEL.YMCACarga1 = Convert.ToDecimal(0.5);
+            MODEL.CARACT_FCMAX = Convert.ToDecimal(Configs.GESTREINO_AVALIDO_FCMAX);
             MODEL.GT_TipoTesteCardio_ID = 1;
-
+           
             if (Id > 0)
             {
                 var data = databaseManager.GT_RespAptidaoCardio.Where(x => x.ID == Id).ToList();
@@ -3939,6 +3940,7 @@ namespace Gestreino.Controllers
                 int iPerc = 0;
                 decimal iValue = 0;
                 string sRes = string.Empty;
+                MODEL.CARACT_FCMAX = Convert.ToDecimal(Configs.GESTREINO_AVALIDO_FCMAX);
                 DoLoadValuesPercentilCardioResp();
 
                 if (MODEL.GT_TipoTesteCardio_ID == 1) //200m
@@ -7510,15 +7512,60 @@ namespace Gestreino.Controllers
         }
         private void CalculaValoresYMCA(Cardio MODEL)
         {
-            //FC Médio
-            //txtYMCAFCMedio.Text =  Convert.ToString((Convert.ToDecimal(txtYMCAFC4min.Text) + Convert.ToDecimal(txtYMCAFC5min.Text)) / Convert.ToDecimal(2) ); 
-            //if (txtYMCAFCMedio.Text.Length > 5) txtYMCAFCMedio.Text = txtYMCAFCMedio.Text.Substring(0,5); 
+            double TotalX = 0;
+            double TotalY = 0;
+            double Points = 0;
+            double SumPoints = 0;
+            double SumPointsSqr = 0;
+            string sRecta = "y = m*{0} + {1}"; //"m*x + n"
 
-            //VO2 Carga
-            //txtYMCAVO2Carga.Text = Convert.ToString(DoGetVo2CargaYMCA());
+            //FREQUENCIA CARDIACA
+            if (Convert.ToDouble(MODEL.YMCAFC1) > Convert.ToDouble(MAX_FC_RECTA))
+            {
+                Points++;
+                TotalX += Convert.ToDouble(MODEL.YMCAVO21);
+                TotalY += Convert.ToDouble(MODEL.YMCAFC1);
+                SumPoints += Convert.ToDouble(MODEL.YMCAVO21) * Convert.ToDouble(MODEL.YMCAFC1);
+                SumPointsSqr += Math.Sqrt(Convert.ToDouble(MODEL.YMCAVO21));
+            }
+            if (Convert.ToDouble(MODEL.YMCAFC2) > Convert.ToDouble(MAX_FC_RECTA))
+            {
+                Points++;
+                TotalX += Convert.ToDouble(MODEL.YMCAVO22);
+                TotalY += Convert.ToDouble(MODEL.YMCAFC2);
+                SumPoints += Convert.ToDouble(MODEL.YMCAVO22) * Convert.ToDouble(MODEL.YMCAFC2);
+                SumPointsSqr += Math.Sqrt(Convert.ToDouble(MODEL.YMCAVO22));
+            }
+            if (Convert.ToDouble(MODEL.YMCAFC3) > Convert.ToDouble(MAX_FC_RECTA))
+            {
+                Points++;
+                TotalX += Convert.ToDouble(MODEL.YMCAVO23);
+                TotalY += Convert.ToDouble(MODEL.YMCAFC3);
+                SumPoints += Convert.ToDouble(MODEL.YMCAVO23) * Convert.ToDouble(MODEL.YMCAFC3);
+                SumPointsSqr += Math.Sqrt(Convert.ToDouble(MODEL.YMCAVO23));
+            }
+            if (Convert.ToDouble(MODEL.YMCAFC4) > Convert.ToDouble(MAX_FC_RECTA))
+            {
+                Points++;
+                TotalX += Convert.ToDouble(MODEL.YMCAVO24);
+                TotalY += Convert.ToDouble(MODEL.YMCAFC4);
+                SumPoints += Convert.ToDouble(MODEL.YMCAVO24) * Convert.ToDouble(MODEL.YMCAFC4);
+                SumPointsSqr += Math.Sqrt(Convert.ToDouble(MODEL.YMCAVO24));
+            }
 
-            //txtYMCAVO2Max.Text = Convert.ToString(DoGetVo2MaxYMCA());
-            //if (txtYMCAVO2Max.Text.Length > 6) txtYMCAVO2Max.Text = txtYMCAVO2Max.Text.Substring(0,6); 
+            var Den1 = (Points * SumPoints) - (TotalX * TotalY);
+            var Den2 = (Points * SumPointsSqr) - Math.Sqrt(TotalX);
+
+            var M = Den1 / Den2; //slope
+            var N = (TotalY - (M * TotalX)) / Points; //intercept
+
+            //V02max
+            double vo2MAx = 0;
+            vo2MAx = Convert.ToDouble(Configs.GESTREINO_AVALIDO_FCMAX) - Convert.ToDouble(N);
+            vo2MAx = vo2MAx / Convert.ToDouble(M);
+            MODEL.V02max = vo2MAx.ToString().Length > 5 ? Convert.ToDecimal(vo2MAx.ToString().Substring(0, 5)) : Convert.ToDecimal(vo2MAx);
+         
+            MODEL.EquacaoRecta = string.Format(sRecta, M, N);
 
             MODEL.V02Mets = DoGetVo2MetsYMCA(MODEL.V02max);
             MODEL.V02Mets = MODEL.V02Mets.ToString().Length > 6 ? Convert.ToDecimal(MODEL.V02Mets.ToString().Substring(0, 6)) : MODEL.V02Mets;
@@ -7531,6 +7578,156 @@ namespace Gestreino.Controllers
             //CHECK
             txtYMCAFC1_Validating(MODEL);
         }
+
+        //Reference
+        /*
+         private void CriaGraficoRegressao()
+		{
+			 
+			graficocardio.Visible = true;
+			graficocardio.OpenData(COD.Values, 1, 5); 
+
+			//graficocardio.Value[0, 0] = Convert.ToDouble(txtYMCAVO21.Text);
+			graficocardio.Legend[0] = Convert.ToString(txtYMCACarga1.Text);
+			graficocardio.Value[1, 0] = Convert.ToDouble(txtYMCAFC1.Text);
+			
+			//graficocardio.Value[0, 1] = Convert.ToDouble(txtYMCAVO22.Text);
+			graficocardio.Legend[1] = Convert.ToString(txtYMCACarga2.Text);
+			graficocardio.Value[1, 1] = Convert.ToDouble(txtYMCAFC2.Text);
+
+			//graficocardio.Value[0, 2] = Convert.ToDouble(txtYMCAVO23.Text);
+			graficocardio.Legend[2] = Convert.ToString(txtYMCACarga3.Text);
+			graficocardio.Value[1, 2] =  Convert.ToDouble(txtYMCAFC3.Text);
+
+			//graficocardio.Value[0, 3] = Convert.ToDouble(txtYMCAVO24.Text);
+			graficocardio.Legend[3] = Convert.ToString(txtYMCACarga4.Text);
+			graficocardio.Value[1, 3] = Convert.ToDouble(txtYMCAFC4.Text);
+
+			//graficocardio.Value[0, 4] = Convert.ToDouble(txtYMCAVO2Max.Text);
+			//graficocardio.Legend[4] = Convert.ToString(YMCAFCMax);
+			graficocardio.Value[1, 4] = Convert.ToDouble(YMCAFCMax);
+			
+			graficocardio.Value[2, 0] = Convert.ToDouble(YMCAFCMax);
+			graficocardio.Value[2, 1] = Convert.ToDouble(YMCAFCMax);
+			graficocardio.Value[2, 2] = Convert.ToDouble(YMCAFCMax);
+			graficocardio.Value[2, 3] = Convert.ToDouble(YMCAFCMax);
+			graficocardio.Value[2, 4] = Convert.ToDouble(YMCAFCMax);
+			
+			graficocardio.CloseData(COD.Values); //It requires to import SoftwareFX.ChartFX.Lite
+			
+			//Graph Settings			
+			graficocardio.Grid = ChartGrid.Horz ; //It requires to import SoftwareFX.ChartFX.Lite 
+			//graficocardio.TopGap = 20;
+			graficocardio.AxisY.Max = 220;
+			graficocardio.AxisY.Min = 70;
+
+			graficocardio.AxisX.Title.Text  ="Carga";
+			graficocardio.AxisX.Title.TextColor = System.Drawing.Color.White;   
+			graficocardio.AxisY.Title.Text  ="FC";
+			graficocardio.AxisY.Title.TextColor = System.Drawing.Color.White;
+
+			graficocardio.AxisX.Max = 90;
+			graficocardio.AxisX.Min = 1;
+
+			graficocardio.BackColor = Color.FromArgb(27,78,169);
+			graficocardio.InsideColor= Color.FromArgb(27,78,169);
+
+			graficocardio.Border = true;
+			graficocardio.BorderColor = Color.White;
+
+			graficocardio.AxisX.TextColor = Color.White;
+			graficocardio.AxisY.TextColor = Color.White;
+
+			graficocardio.PointLabels = true;
+			graficocardio.PointLabelColor = Color.White;
+
+			graficocardio.Series[0].Color = System.Drawing.Color.Red;
+			graficocardio.Series[1].Color = System.Drawing.Color.Red;
+			
+
+			//**************************  RECTA DE REGRESS�O  ********************
+			RegressionObject oReg = new RegressionObjectClass();
+			string sRecta = "y = m*{0} + {1}"; //"m*x + n"
+			string sM = string.Empty;
+			string sN = string.Empty;
+			//double TotalX = 0;
+			//double TotalY = 0;
+			//double PontoMedioX = 0;
+			//double PontoMedioY= 0;
+			private const int MAX_FC_RECTA = 110;
+
+
+			int refValue;
+			oReg.Init() ;
+			
+			//oReg.Degree = 1; //Para regress�o utiliza-se o 1 para correla��o o 2
+			//((NETRegressionLib.RegressionObjectClass)oReg).Degree= 1;
+			
+			//FREQUENCIA CARDIACA 1
+			if (Convert.ToDouble(txtYMCAFC1.Text) > Convert.ToDouble(MAX_FC_RECTA))
+			{
+				oReg.XYAdd(Convert.ToDouble(txtYMCAVO21.Text), Convert.ToDouble(txtYMCAFC1.Text));
+				//TotalX += Convert.ToDouble(txtYMCAVO21.Text);
+				//TotalY += Convert.ToDouble(txtYMCAFC1.Text);
+			}
+	
+
+			//FREQUENCIA CARDIACA 2
+			if (Convert.ToDouble(txtYMCAFC2.Text) > Convert.ToDouble(MAX_FC_RECTA))
+			{
+				oReg.XYAdd(Convert.ToDouble(txtYMCAVO22.Text), Convert.ToDouble(txtYMCAFC2.Text));
+				//TotalX += Convert.ToDouble(txtYMCAVO22.Text);
+				//TotalY += Convert.ToDouble(txtYMCAFC2.Text);
+
+			}
+			
+			//FREQUENCIA CARDIACA 3
+			if (Convert.ToDouble(txtYMCAFC3.Text) > Convert.ToDouble(MAX_FC_RECTA))
+			{
+				oReg.XYAdd(Convert.ToDouble(txtYMCAVO23.Text), Convert.ToDouble(txtYMCAFC3.Text));
+				//TotalX += Convert.ToDouble(txtYMCAVO23.Text);
+				//TotalY += Convert.ToDouble(txtYMCAFC3.Text);
+
+			}
+	
+			//FREQUENCIA CARDIACA 4
+			if (Convert.ToDouble(txtYMCAFC4.Text) > Convert.ToDouble(MAX_FC_RECTA))
+			{
+				oReg.XYAdd(Convert.ToDouble(txtYMCAVO24.Text), Convert.ToDouble(txtYMCAFC4.Text));
+				//TotalX += Convert.ToDouble(txtYMCAVO24.Text);
+				//TotalY += Convert.ToDouble(txtYMCAFC4.Text);
+
+			}
+		
+			//PontoMedioX = TotalX / Convert.ToDouble(oReg.XYCount);
+			//PontoMedioY = TotalY / Convert.ToDouble(oReg.XYCount);
+
+			//MessageBox.Show(oReg.XYCount.ToString());
+			
+			refValue = 1 ;
+			sM = oReg.get_Coeff(ref refValue).ToString();
+			refValue = 0 ;
+			sN = oReg.get_Coeff(ref refValue).ToString();
+
+			if (sM.Length > 5) sM = sM.Substring(0,5);
+			
+			if (sN.Length > 5) sN = sN.Substring(0,5);
+
+			sRecta = string.Format(sRecta,sM,sN);
+			
+			txtEqRecta.Text = sRecta;
+			
+			//C�lculo do V02M�ximo
+			double vo2MAx=0;
+			vo2MAx = Convert.ToDouble(YMCAFCMax) - Convert.ToDouble(sN);
+			vo2MAx = vo2MAx / Convert.ToDouble(sM);
+			
+			txtYMCAVO2Max.Text = Convert.ToString(vo2MAx);
+			if (txtYMCAVO2Max.Text.Length > 5) txtYMCAVO2Max.Text= txtYMCAVO2Max.Text.Substring(0,5);
+		}
+         */
+
+
         private decimal DoGetVo2MaxYMCA(decimal? V02max)
         {
             try

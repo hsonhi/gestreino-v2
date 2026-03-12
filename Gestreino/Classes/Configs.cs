@@ -29,6 +29,7 @@ namespace Gestreino.Classes
         public static string GESTREINO_AVALIDO_IDADE;
         public static string GESTREINO_AVALIDO_PESO;
         public static string GESTREINO_AVALIDO_ALTURA;
+        public static string GESTREINO_AVALIDO_FCMAX;
         public static string GESTREINO_AVALIDO_SEXO;
         public static int? INST_MDL_GPAG_MOEDA_PADRAO;
         public static string INST_MDL_GPAG_MOEDA_PADRAO_CODIGO;

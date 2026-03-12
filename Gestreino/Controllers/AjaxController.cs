@@ -739,7 +739,7 @@ namespace Gestreino.Controllers
                 var av1 = databaseManager.SP_PES_ENT_PESSOAS(PesId, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).Select(x => new { x.NOME_PROPIO, x.APELIDO, x.DATA_NASCIMENTO,x.SEXO,x.INST_APLICACAO_ID }).ToList();
                 if (av1.First().INST_APLICACAO_ID != int.Parse(AcessControl.getLoginInfo("Sid"))) return;
 
-                var av2 = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == PesId).Select(x => new { x.ALTURA, x.PESO }).ToList();
+                var av2 = databaseManager.PES_PESSOAS_CARACT.Where(x => x.PES_PESSOAS_ID == PesId).Select(x => new { x.ALTURA, x.PESO,x.FCMAXIMO }).ToList();
 
                 if (av1.Any())
                 {
@@ -755,6 +755,7 @@ namespace Gestreino.Controllers
                 {
                     Configs.GESTREINO_AVALIDO_PESO = av2.First().PESO.Value.ToString("G29");
                     Configs.GESTREINO_AVALIDO_ALTURA = av2.First().ALTURA.Value.ToString("G29");
+                    Configs.GESTREINO_AVALIDO_FCMAX = av2.First().FCMAXIMO.Value.ToString("G29");
                 }
             }
 
