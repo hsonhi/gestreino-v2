@@ -366,35 +366,35 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>1º Patamar:</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCACarga1, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCATrab1, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAPot1, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAVO21, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAFC1, new { type = "number", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCACarga1, new { Value = Model.YMCACarga1 != null ? (Model.YMCACarga1 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCATrab1, new { Value = Model.YMCATrab1 != null ? (Model.YMCATrab1 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAPot1, new { Value = Model.YMCAPot1 != null ? (Model.YMCAPot1 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAVO21, new { Value = Model.YMCAVO21 != null ? (Model.YMCAVO21 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAFC1, new { Value = Model.YMCAFC1 != null ? (Model.YMCAFC1 ?? 0).ToString("G29") : null, type = "number", @class = "form-control form-control-sm w-75" })</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>2º Patamar:</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCACarga2, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCATrab2, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAPot2, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAVO22, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAFC2, new { type = "number", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCACarga2, new { Value = Model.YMCACarga2 != null ? (Model.YMCACarga2 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCATrab2, new { Value = Model.YMCATrab2 != null ? (Model.YMCATrab2 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAPot2, new { Value = Model.YMCAPot2 != null ? (Model.YMCAPot2 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAVO22, new { Value = Model.YMCAVO22 != null ? (Model.YMCAVO22 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAFC2, new { Value = Model.YMCAFC2 != null ? (Model.YMCAFC2 ?? 0).ToString("G29") : null, type = "number", @class = "form-control form-control-sm w-75" })</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>3º Patamar:</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCACarga3, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCATrab3, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAPot3, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAVO23, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAFC3, new { type = "number", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCACarga3, new { Value = Model.YMCACarga3 != null ? (Model.YMCACarga3 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCATrab3, new { Value = Model.YMCATrab3 != null ? (Model.YMCATrab3 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAPot3, new { Value = Model.YMCAPot3 != null ? (Model.YMCAPot3 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAVO23, new { Value = Model.YMCAVO23 != null ? (Model.YMCAVO23 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAFC3, new { Value = Model.YMCAFC3 != null ? (Model.YMCAFC3 ?? 0).ToString("G29") : null, type = "number", @class = "form-control form-control-sm w-75" })</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>4º Patamar:</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCACarga4, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCATrab4, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAPot4, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAVO24, new { @readonly = "", @class = "form-control form-control-sm w-75" })</td>
-                                                                <td>@Html.TextBoxFor(m => m.YMCAFC4, new { type = "number", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCACarga4, new { Value = Model.YMCACarga4 != null ? (Model.YMCACarga4 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCATrab4, new { Value = Model.YMCATrab4 != null ? (Model.YMCATrab4 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAPot4, new { Value = Model.YMCAPot4 != null ? (Model.YMCAPot4 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAVO24, new { Value = Model.YMCAVO24 != null ? (Model.YMCAVO24 ?? 0).ToString("G29") : null, @readonly = "", @class = "form-control form-control-sm w-75" })</td>
+                                                                <td>@Html.TextBoxFor(m => m.YMCAFC4, new { Value = Model.YMCAFC4 != null ? (Model.YMCAFC4 ?? 0).ToString("G29") : null, type = "number", @class = "form-control form-control-sm w-75" })</td>
                                                             </tr>
                                                         </table>
                                                     </div>
@@ -453,7 +453,7 @@
                                                         @Html.LabelFor(m => m.CustoCalorico, new { @class = "col-md-3 col-form-label" })
                                                         <div class="col-md-4">
                                                             <div class="input-group mb-3">
-                                                                @Html.TextBoxFor(m => m.CustoCalorico, new { type = "number", min = "0", step = ".01", @class = "form-control form-control-sm", required = "" })
+                                                                @Html.TextBoxFor(m => m.CustoCalorico, new { Value = Model.CustoCalorico != null ? (Model.CustoCalorico ?? 0).ToString("G29") : null, type = "number", min = "0", step = ".01", @class = "form-control form-control-sm", required = "" })
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text font-size-11" id="basic-addon1">%</span>
                                                                 </div>
@@ -569,10 +569,6 @@
                 }
             </div>
         </div>
-        @{ string sRecta = "y = m*{0} + {1}";
-            } 
-
-        @string.Format(sRecta, "870", "6")
         <h2>&nbsp;</h2>
         <h2>&nbsp;</h2>
     </div>
