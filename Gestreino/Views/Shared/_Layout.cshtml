@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="~/Assets/images/logo_cropped.png">
+    <link rel="icon" type="image/x-icon" href="~/Assets/images/favicon.png">
     <title>@ViewBag.Title - Gestreino</title>
     <style>
         :root {
@@ -122,9 +122,9 @@
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <img src="~/Assets/images/home-button.png" width="16" /> @AcessControl.getLoginInfo("GivenName")
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                            if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && Session["GESTREINO_AVALIDO_NOME"]!=null)
                             {
-                                <a target="_blank" href="@Url.Action("viewathletes", "gtmanagement", new {Id=int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO))})" class="blue-gradient-angled text-white p-1 br-1"><img src="~/Assets/images/athlete.png" width="18" /> Atleta: @Configs.GESTREINO_AVALIDO_NOME,  Idade: @Configs.GESTREINO_AVALIDO_IDADE,   Peso: @Configs.GESTREINO_AVALIDO_PESO Kg,    Altura: @Configs.GESTREINO_AVALIDO_ALTURA cm</a>
+                                <a target="_blank" href="@Url.Action("viewathletes", "gtmanagement", new {Id=int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO))})" class="blue-gradient-angled text-white p-1 br-1"><img src="~/Assets/images/athlete.png" width="18" /> Atleta: @Session["GESTREINO_AVALIDO_NOME"],  Idade: @Session["GESTREINO_AVALIDO_IDADE"],   Peso: @Session["GESTREINO_AVALIDO_PESO"] Kg,    Altura: @Session["GESTREINO_AVALIDO_ALTURA"] cm</a>
                             }
                             else
                             { <span class="blue-gradient-angled text-white p-1 br-1">Atleta: Nenhum selecionado</span>}

@@ -25,12 +25,6 @@ namespace Gestreino.Classes
         public static int? GT_EXERCISE_TYPE_BODYMASS_EX_MAX_ALLOWED = 12;
         public static int? GT_EXERCISE_TYPE_CARDIO_EX_MAX_ALLOWED = 4;
         public static int? INST_MDL_ADM_VLRID_ARQUIVO_LOGOTIPO=2;
-        public static string GESTREINO_AVALIDO_NOME;
-        public static string GESTREINO_AVALIDO_IDADE;
-        public static string GESTREINO_AVALIDO_PESO;
-        public static string GESTREINO_AVALIDO_ALTURA;
-        public static string GESTREINO_AVALIDO_FCMAX;
-        public static string GESTREINO_AVALIDO_SEXO;
         public static int? INST_MDL_GPAG_MOEDA_PADRAO;
         public static string INST_MDL_GPAG_MOEDA_PADRAO_CODIGO;
         public static string INST_MDL_GPAG_MOEDA_PADRAO_SIGLA;

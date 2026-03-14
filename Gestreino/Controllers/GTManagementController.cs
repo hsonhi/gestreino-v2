@@ -538,11 +538,22 @@ namespace Gestreino.Controllers
                 databaseManager.GT_SOCIOS_EVOLUCAO.Add(fx);
                 databaseManager.SaveChanges();
 
-                if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)))
+                if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && Session["GESTREINO_AVALIDO_NOME"]!=null)
                 {
-                    AjaxController f = new AjaxController();
-                    if(MODEL.ID==int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)))
-                       f.SetGTAvaliado(MODEL.ID.Value);
+                    //AjaxController f = new AjaxController();
+                    if (MODEL.ID == int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)))
+                        //f.SetGTAvaliado(MODEL.ID.Value);
+                    {
+                        var av1 = databaseManager.SP_PES_ENT_PESSOAS(MODEL.ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Convert.ToChar('R').ToString()).Select(x => new { x.NOME_PROPIO, x.APELIDO, x.DATA_NASCIMENTO, x.SEXO, x.INST_APLICACAO_ID }).ToList();
+
+                            // Set a session variable
+                            Session["GESTREINO_AVALIDO_NOME"] = av1.First().NOME_PROPIO + " " + av1.First().APELIDO;
+                            Session["GESTREINO_AVALIDO_IDADE"] = MODEL.Age.ToString();
+                            Session["GESTREINO_AVALIDO_SEXO"] = av1.First().SEXO;
+                            Session["GESTREINO_AVALIDO_PESO"] = Peso != null? Peso.Value.ToString("G29"):string.Empty;
+                            Session["GESTREINO_AVALIDO_ALTURA"] = Altura != null ? Altura.Value.ToString("G29") : string.Empty;
+                            Session["GESTREINO_AVALIDO_FCMAX"] = MODEL.Caract_FCMaximo != null ? MODEL.Caract_FCMaximo.Value.ToString("G29") : string.Empty;
+                    }
                 }
                
                 returnUrl = "/gtmanagement/viewathletes/" + MODEL.ID;
@@ -1864,7 +1875,7 @@ namespace Gestreino.Controllers
 
             if (Id > 0)
             {
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("bodymassplans", "gtmanagement", new { Id = string.Empty });
 
                 if (databaseManager.GT_Treino.Where(x => x.ID == Id).Count() == 0)
@@ -1968,7 +1979,7 @@ namespace Gestreino.Controllers
                 if (databaseManager.GT_Treino.Where(x => x.ID == Id).Count() == 0)
                     return RedirectToAction("cardioplans", "gtmanagement", new { Id = string.Empty });
 
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("cardioplans", "gtmanagement", new { Id = string.Empty });
 
                 MODEL.ID = Id;
@@ -2288,7 +2299,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespAnsiedadeDepressao.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("anxient", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("anxient", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -2570,7 +2581,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespAutoConceito.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("selfconcept", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("selfconcept", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -2724,12 +2735,12 @@ namespace Gestreino.Controllers
             string sex = databaseManager.PES_PESSOAS.Where(x => x.ID == MODEL.PEsId).Select(X => X.SEXO).FirstOrDefault();
             MODEL.IdadeQuery = sex == "M" ? "Tem idade superior a 45 anos?" : "Tem idade superior a 55 anos?";
 
-            if (!string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_IDADE))
+            if (Session["GESTREINO_AVALIDO_IDADE"]!=null)
             {
                 if (sex == "M")
-                    MODEL.q1 = int.Parse(Configs.GESTREINO_AVALIDO_IDADE) > 45 ? 1 : 0;
+                    MODEL.q1 = int.Parse(Session["GESTREINO_AVALIDO_IDADE"].ToString()) > 45 ? 1 : 0;
                 else
-                    MODEL.q1 = int.Parse(Configs.GESTREINO_AVALIDO_IDADE) > 55 ? 1 : 0;
+                    MODEL.q1 = int.Parse(Session["GESTREINO_AVALIDO_IDADE"].ToString()) > 55 ? 1 : 0;
             }
 
             if (Id > 0)
@@ -2737,7 +2748,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespRisco.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("coronaryrisk", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("coronaryrisk", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -2972,7 +2983,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespProblemasSaude.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("health", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("health", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -3341,7 +3352,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespFlexiTeste.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("flexibility", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("flexibility", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -3396,7 +3407,7 @@ namespace Gestreino.Controllers
 
                     if (GetFlexiIndiceAnteriorType2(data.First().GT_SOCIOS_ID, MODEL.ID) != null)
                     {
-                        MODEL.iFlexiAnt = GetPercentil(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), GetFlexiIndiceAnteriorType2(data.First().GT_SOCIOS_ID, MODEL.ID).Value);
+                        MODEL.iFlexiAnt = GetPercentil(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), GetFlexiIndiceAnteriorType2(data.First().GT_SOCIOS_ID, MODEL.ID).Value);
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoSentarAlcancar(MODEL.iFlexiAnt.Value) : string.Empty;
                     }
                 }
@@ -3435,7 +3446,7 @@ namespace Gestreino.Controllers
                     int iPerc;
                     int iValue;
                     string sRes;
-                    MODEL.ESPERADO = DoSetEsperado(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                    MODEL.ESPERADO = DoSetEsperado(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
                     DoGraficoActualSentar(MODEL.TENTATIVA1.Value, MODEL.TENTATIVA2.Value, out iPerc, out iValue, out sRes);
                     MODEL.iFlexiAct = iPerc;
                     MODEL.RESULTADO = iValue;
@@ -3535,7 +3546,7 @@ namespace Gestreino.Controllers
                     //Type2
                     if (GetFlexiIndiceAnteriorType2(GT_SOCIOS_ID, MODEL.ID) != null)
                     {
-                        MODEL.iFlexiAnt = GetPercentil(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), GetFlexiIndiceAnteriorType2(GT_SOCIOS_ID, MODEL.ID).Value);
+                        MODEL.iFlexiAnt = GetPercentil(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), GetFlexiIndiceAnteriorType2(GT_SOCIOS_ID, MODEL.ID).Value);
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoSentarAlcancar(MODEL.iFlexiAnt.Value) : string.Empty;
                     }
                 }
@@ -3562,7 +3573,7 @@ namespace Gestreino.Controllers
  
             MODEL.GT_TipoNivelActividade_List = databaseManager.GT_TipoNivelActividade.OrderBy(x => x.ID).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.DESCRICAO });
             MODEL.GT_TipoMetodoComposicao_List = databaseManager.GT_TipoMetodoComposicao.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.DESCRICAO });
-            MODEL.Actual = !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_PESO) ? decimal.Parse(Configs.GESTREINO_AVALIDO_PESO).ToString("G29").Replace(",", ".") : string.Empty;
+            MODEL.Actual = Session["GESTREINO_AVALIDO_PESO"]!=null ? decimal.Parse(Session["GESTREINO_AVALIDO_PESO"].ToString()).ToString("G29").Replace(",", ".") : string.Empty;
             MODEL.GT_TipoMetodoComposicao_ID = MODEL.GT_TipoMetodoComposicao_List.Any() ? Convert.ToInt32(MODEL.GT_TipoMetodoComposicao_List.Select(X => X.Value).FirstOrDefault()) : 0;
 
             if (Id > 0)
@@ -3570,7 +3581,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespComposicao.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("bodycomposition", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("bodycomposition", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -3612,7 +3623,7 @@ namespace Gestreino.Controllers
 
                 if (GetValorAnteriorComposicao(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteComposicao_ID) != null)
                 {
-                    MODEL.iFlexiAnt = GetPercentilComposicao(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), GetValorAnteriorComposicao(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteComposicao_ID).Value);
+                    MODEL.iFlexiAnt = GetPercentilComposicao(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), GetValorAnteriorComposicao(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteComposicao_ID).Value);
                     MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoComposicao(MODEL.iFlexiAnt.Value) : string.Empty;
                 }
             }
@@ -3662,7 +3673,7 @@ namespace Gestreino.Controllers
 
                 MODEL.iFlexiAct = iPerc;
                 MODEL.lblResActualFlexi = sRes;
-                MODEL.Tricipital = Configs.GESTREINO_AVALIDO_SEXO == "Masculino" ? MODEL.Tricipital : MODEL.TricipitalFem;
+                MODEL.Tricipital = Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino" ? MODEL.Tricipital : MODEL.TricipitalFem;
 
                 if (MODEL.ID > 0)
                 {
@@ -3737,7 +3748,7 @@ namespace Gestreino.Controllers
 
                 if (GetValorAnteriorComposicao(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteComposicao_ID) != null)
                 {
-                    MODEL.iFlexiAnt = GetPercentilComposicao(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), GetValorAnteriorComposicao(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteComposicao_ID).Value);
+                    MODEL.iFlexiAnt = GetPercentilComposicao(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), GetValorAnteriorComposicao(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteComposicao_ID).Value);
                     MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoComposicao(MODEL.iFlexiAnt.Value) : string.Empty;
                 }
 
@@ -3763,7 +3774,7 @@ namespace Gestreino.Controllers
             MODEL.GT_TipoMetodoComposicao_List = databaseManager.GT_TipoMetodoCardio.OrderBy(x => x.ID).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.DESCRICAO });
             MODEL.GT_TipoMetodoComposicao_ID = MODEL.GT_TipoMetodoComposicao_List.Any() ? Convert.ToInt32(MODEL.GT_TipoMetodoComposicao_List.Select(X => X.Value).FirstOrDefault()) : 0;
             MODEL.YMCACarga1 = Convert.ToDecimal(0.5);
-            MODEL.CARACT_FCMAX = Convert.ToDecimal(Configs.GESTREINO_AVALIDO_FCMAX);
+            MODEL.CARACT_FCMAX = Session["GESTREINO_AVALIDO_FCMAX"]!=null?Convert.ToDecimal(Session["GESTREINO_AVALIDO_FCMAX"].ToString()):0;
             MODEL.GT_TipoTesteCardio_ID = 1;
            
             if (Id > 0)
@@ -3771,7 +3782,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespAptidaoCardio.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("cardio", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("cardio", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -3899,7 +3910,7 @@ namespace Gestreino.Controllers
 
                 if (GetValorAnteriorCardio(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteCardio_ID) != null)
                 {
-                    MODEL.iFlexiAnt = GetPercentilCardioresp(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), GetValorAnteriorCardio(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteCardio_ID).Value);
+                    MODEL.iFlexiAnt = GetPercentilCardioresp(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), GetValorAnteriorCardio(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteCardio_ID).Value);
                     MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadocardio(MODEL.iFlexiAnt.Value) : string.Empty;
                 }
             }
@@ -3941,7 +3952,7 @@ namespace Gestreino.Controllers
                 int iPerc = 0;
                 decimal iValue = 0;
                 string sRes = string.Empty;
-                MODEL.CARACT_FCMAX = Convert.ToDecimal(Configs.GESTREINO_AVALIDO_FCMAX);
+                MODEL.CARACT_FCMAX = Convert.ToDecimal(Session["GESTREINO_AVALIDO_FCMAX"].ToString());
                 DoLoadValuesPercentilCardioResp();
 
                 if (MODEL.GT_TipoTesteCardio_ID == 1) //200m
@@ -4158,7 +4169,7 @@ namespace Gestreino.Controllers
 
                 if (GetValorAnteriorCardio(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteCardio_ID) != null)
                 {
-                    MODEL.iFlexiAnt = GetPercentilCardioresp(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), GetValorAnteriorCardio(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteCardio_ID).Value);
+                    MODEL.iFlexiAnt = GetPercentilCardioresp(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), GetValorAnteriorCardio(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteCardio_ID).Value);
                     MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadocardio(MODEL.iFlexiAnt.Value) : string.Empty;
                 }
 
@@ -4189,7 +4200,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespPessoaIdosa.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("elderly", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("elderly", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -4402,7 +4413,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespForca.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("force", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("force", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -4498,7 +4509,7 @@ namespace Gestreino.Controllers
                     MODEL.NoventaRMBraco = DoSet90RMBracos(MODEL.CargaBraco);
 
                     DoGetActualBracos(MODEL.RazaoBraco, out iPerc, out iValue, out sRes);
-                    MODEL.DesejavelBracos = DoSetEsperadoBracos(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO));
+                    MODEL.DesejavelBracos = DoSetEsperadoBracos(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()));
 
                 }
                 if (MODEL.GT_TipoTesteForca_ID == 2)
@@ -4514,20 +4525,20 @@ namespace Gestreino.Controllers
                     MODEL.NoventaRMPerna = DoSet90RMPernas(MODEL.CargaPerna);
 
                     DoGetActualPernas(MODEL.RazaoPerna, out iPerc, out iValue, out sRes);
-                    MODEL.DesejavelPerna = DoSetEsperadoPernas(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO));
+                    MODEL.DesejavelPerna = DoSetEsperadoPernas(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()));
                 }
                 if (MODEL.GT_TipoTesteForca_ID == 3)
                 {
                     //Colocar default values nos campos
                     DoGetActualAbdominais(MODEL.NAbdominais, out iPerc, out iValue, out sRes);
                     //Valores Desejados
-                    MODEL.DesejavelAbdominais = DoSetEsperadoAbdominais(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                    MODEL.DesejavelAbdominais = DoSetEsperadoAbdominais(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
                 }
                 if (MODEL.GT_TipoTesteForca_ID == 4)
                 {
                     DoGetActualFlexoes(MODEL.NFlexoes, out iPerc, out iValue, out sRes);
                     //Valores Desejados
-                    MODEL.DesejavelFlexoes = DoSetEsperadoFlexoes(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                    MODEL.DesejavelFlexoes = DoSetEsperadoFlexoes(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
                 }
                 if (MODEL.GT_TipoTesteForca_ID == 5)
                 {
@@ -4577,22 +4588,22 @@ namespace Gestreino.Controllers
                 {
                     if (MODEL.GT_TipoTesteForca_ID == 1)
                     {
-                        MODEL.iFlexiAnt = GetPercentilBracos(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), DoGetRazaoBracos(GetValorAnteriorForca(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID).Value));
+                        MODEL.iFlexiAnt = GetPercentilBracos(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), DoGetRazaoBracos(GetValorAnteriorForca(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID).Value));
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoBracos(MODEL.iFlexiAnt.Value) : string.Empty;
                     }
                     if (MODEL.GT_TipoTesteForca_ID == 2)
                     {
-                        MODEL.iFlexiAnt = GetPercentilPernas(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), DoGetRazaoPernas(GetValorAnteriorForca(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID).Value));
+                        MODEL.iFlexiAnt = GetPercentilPernas(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), DoGetRazaoPernas(GetValorAnteriorForca(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID).Value));
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoPernas(MODEL.iFlexiAnt.Value) : string.Empty;
                     }
                     if (MODEL.GT_TipoTesteForca_ID == 3)
                     {
-                        MODEL.iFlexiAnt = GetPercentilAbdominais(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToInt32(GetValorAnteriorForca(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID)));
+                        MODEL.iFlexiAnt = GetPercentilAbdominais(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToInt32(GetValorAnteriorForca(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID)));
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoAbdominais(Convert.ToInt32(MODEL.iFlexiAnt.Value)) : string.Empty;
                     }
                     if (MODEL.GT_TipoTesteForca_ID == 4)
                     {
-                        MODEL.iFlexiAnt = GetPercentilFlexoes(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToInt32(GetValorAnteriorForca(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID)));
+                        MODEL.iFlexiAnt = GetPercentilFlexoes(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToInt32(GetValorAnteriorForca(data.First().GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID)));
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoFlexoes(Convert.ToInt32(MODEL.iFlexiAnt.Value)) : string.Empty;
                     }
                     if (MODEL.GT_TipoTesteForca_ID == 5)
@@ -4622,7 +4633,7 @@ namespace Gestreino.Controllers
                     }
                 }
                 //Potencia Muscular
-                MODEL.PotenciaExpV = Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) * (Convert.ToDecimal(4.9) * DoGetValorResExplosivaV(MODEL)) * 2;
+                MODEL.PotenciaExpV = Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) * (Convert.ToDecimal(4.9) * DoGetValorResExplosivaV(MODEL)) * 2;
             }
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Quest_Force;
             return View("Quest/Force", MODEL);
@@ -4668,7 +4679,7 @@ namespace Gestreino.Controllers
                     MODEL.NoventaRMBraco = DoSet90RMBracos(MODEL.CargaBraco);
 
                     DoGetActualBracos(MODEL.RazaoBraco, out iPerc, out iValue, out sRes);
-                    MODEL.DesejavelBracos = DoSetEsperadoBracos(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO));
+                    MODEL.DesejavelBracos = DoSetEsperadoBracos(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()));
 
                 }
                 if (MODEL.GT_TipoTesteForca_ID == 2)
@@ -4684,20 +4695,20 @@ namespace Gestreino.Controllers
                     MODEL.NoventaRMPerna = DoSet90RMPernas(MODEL.CargaPerna);
 
                     DoGetActualPernas(MODEL.RazaoPerna, out iPerc, out iValue, out sRes);
-                    MODEL.DesejavelPerna = DoSetEsperadoPernas(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO));
+                    MODEL.DesejavelPerna = DoSetEsperadoPernas(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()));
                 }
                 if (MODEL.GT_TipoTesteForca_ID == 3)
                 {
                     //Colocar default values nos campos
                     DoGetActualAbdominais(MODEL.NAbdominais, out iPerc, out iValue, out sRes);
                     //Valores Desejados
-                    MODEL.DesejavelAbdominais = DoSetEsperadoAbdominais(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                    MODEL.DesejavelAbdominais = DoSetEsperadoAbdominais(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
                 }
                 if (MODEL.GT_TipoTesteForca_ID == 4)
                 {
                     DoGetActualFlexoes(MODEL.NFlexoes, out iPerc, out iValue, out sRes);
                     //Valores Desejados
-                    MODEL.DesejavelFlexoes = DoSetEsperadoFlexoes(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                    MODEL.DesejavelFlexoes = DoSetEsperadoFlexoes(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
                 }
                 if (MODEL.GT_TipoTesteForca_ID == 5)
                 {
@@ -4909,22 +4920,22 @@ namespace Gestreino.Controllers
                 {
                     if (MODEL.GT_TipoTesteForca_ID == 1)
                     {
-                        MODEL.iFlexiAnt = GetPercentilBracos(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), DoGetRazaoBracos(GetValorAnteriorForca(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID).Value));
+                        MODEL.iFlexiAnt = GetPercentilBracos(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), DoGetRazaoBracos(GetValorAnteriorForca(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID).Value));
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoBracos(MODEL.iFlexiAnt.Value) : string.Empty;
                     }
                     if (MODEL.GT_TipoTesteForca_ID == 2)
                     {
-                        MODEL.iFlexiAnt = GetPercentilPernas(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), DoGetRazaoPernas(GetValorAnteriorForca(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID).Value));
+                        MODEL.iFlexiAnt = GetPercentilPernas(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), DoGetRazaoPernas(GetValorAnteriorForca(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID).Value));
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoPernas(MODEL.iFlexiAnt.Value) : string.Empty;
                     }
                     if (MODEL.GT_TipoTesteForca_ID == 3)
                     {
-                        MODEL.iFlexiAnt = GetPercentilAbdominais(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToInt32(GetValorAnteriorForca(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID)));
+                        MODEL.iFlexiAnt = GetPercentilAbdominais(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToInt32(GetValorAnteriorForca(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID)));
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoAbdominais(Convert.ToInt32(MODEL.iFlexiAnt.Value)) : string.Empty;
                     }
                     if (MODEL.GT_TipoTesteForca_ID == 4)
                     {
-                        MODEL.iFlexiAnt = GetPercentilFlexoes(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToInt32(GetValorAnteriorForca(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID)));
+                        MODEL.iFlexiAnt = GetPercentilFlexoes(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToInt32(GetValorAnteriorForca(GT_SOCIOS_ID, MODEL.ID, MODEL.GT_TipoTesteForca_ID)));
                         MODEL.lblResAnteriorFlexi = MODEL.iFlexiAnt != null ? GetResultadoFlexoes(Convert.ToInt32(MODEL.iFlexiAnt.Value)) : string.Empty;
                     }
                     if (MODEL.GT_TipoTesteForca_ID == 5)
@@ -4954,7 +4965,7 @@ namespace Gestreino.Controllers
                     }
                 }
                 //Potencia Muscular
-                MODEL.PotenciaExpV = Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) * (Convert.ToDecimal(4.9) * DoGetValorResExplosivaV(MODEL)) * 2;
+                MODEL.PotenciaExpV = Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) * (Convert.ToDecimal(4.9) * DoGetValorResExplosivaV(MODEL)) * 2;
                 MODEL.lblDataInsercao = databaseManager.GT_RespForca.Where(x => x.ID == MODEL.ID).Select(X => X.DATA_INSERCAO).FirstOrDefault();
                 ModelState.Clear();
             }
@@ -4979,7 +4990,7 @@ namespace Gestreino.Controllers
                 var data = databaseManager.GT_RespFuncional.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
                     return RedirectToAction("functional", "gtmanagement", new { Id = string.Empty });
-                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+                if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("functional", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -6570,7 +6581,7 @@ namespace Gestreino.Controllers
             int ValorAct = 0;
 
             ValorAct = Convert.ToInt32((txtTentativa1 + txtTentativa2) / 2);
-            iPercentilAct = GetPercentil(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), ValorAct);
+            iPercentilAct = GetPercentil(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), ValorAct);
             iPerc = iPercentilAct;
             iValue = ValorAct;
             sRes = GetResultadoSentarAlcancar(iPercentilAct);
@@ -6633,10 +6644,10 @@ namespace Gestreino.Controllers
             if (MODEL.GT_TipoTesteComposicao_ID == 1)
             {
                 //Cálculo de Densidade Corporal (DC)
-                if (Configs.GESTREINO_AVALIDO_SEXO == "Masculino")
+                if (Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino")
                 {
                     SumPregas = Convert.ToDecimal(MODEL.Peitoral) + Convert.ToDecimal(MODEL.Tricipital) + Convert.ToDecimal(MODEL.Subescapular);
-                    DC = Convert.ToDecimal(1.1125025) - (Convert.ToDecimal(0.0013125) * (SumPregas)) + (Convert.ToDecimal(0.0000055) * (SumPregas * SumPregas)) - Convert.ToDecimal(0.000244) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_IDADE);
+                    DC = Convert.ToDecimal(1.1125025) - (Convert.ToDecimal(0.0013125) * (SumPregas)) + (Convert.ToDecimal(0.0000055) * (SumPregas * SumPregas)) - Convert.ToDecimal(0.000244) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_IDADE"]);
 
                     //Cálculo de %MG (txtPercMG)
                     MODEL.PercMG = ((Convert.ToDecimal(495) / DC) - 450);
@@ -6644,7 +6655,7 @@ namespace Gestreino.Controllers
                 else
                 {
                     SumPregas = Convert.ToDecimal(MODEL.TricipitalFem) + Convert.ToDecimal(MODEL.SupraIliacaFem) + Convert.ToDecimal(MODEL.AbdominalFem);
-                    DC = Convert.ToDecimal(1.089733) - (Convert.ToDecimal(0.0009245) * (SumPregas)) + (Convert.ToDecimal(0.0000025) * (SumPregas * SumPregas)) - Convert.ToDecimal(0.000979) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_IDADE);
+                    DC = Convert.ToDecimal(1.089733) - (Convert.ToDecimal(0.0009245) * (SumPregas)) + (Convert.ToDecimal(0.0000025) * (SumPregas * SumPregas)) - Convert.ToDecimal(0.000979) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_IDADE"]);
 
                     //Cálculo de %MG (txtPercMG)
                     MODEL.PercMG = ((Convert.ToDecimal(501) / DC) - 457);
@@ -6655,24 +6666,24 @@ namespace Gestreino.Controllers
             else if (MODEL.GT_TipoTesteComposicao_ID == 2)
             {
                 //Cálculo de Densidade Corporal (DC)
-                if (Configs.GESTREINO_AVALIDO_SEXO == "Masculino")
-                    MODEL.PercMG = Convert.ToDecimal(0.31457) * ((Convert.ToDecimal(MODEL.PerimetroUmbigo) + Convert.ToDecimal(MODEL.Abdominal)) / 2) - (Convert.ToDecimal(0.10969) * (Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO))) + Convert.ToDecimal(10.8336);
+                if (Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino")
+                    MODEL.PercMG = Convert.ToDecimal(0.31457) * ((Convert.ToDecimal(MODEL.PerimetroUmbigo) + Convert.ToDecimal(MODEL.Abdominal)) / 2) - (Convert.ToDecimal(0.10969) * (Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()))) + Convert.ToDecimal(10.8336);
                 else
-                    MODEL.PercMG = Convert.ToDecimal(0.11077) * ((Convert.ToDecimal(MODEL.PerimetroUmbigo) + Convert.ToDecimal(MODEL.Abdominal)) / 2) - (Convert.ToDecimal(0.11077) * (Convert.ToDecimal(Configs.GESTREINO_AVALIDO_ALTURA))) + (Convert.ToDecimal(0.11077) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO));
+                    MODEL.PercMG = Convert.ToDecimal(0.11077) * ((Convert.ToDecimal(MODEL.PerimetroUmbigo) + Convert.ToDecimal(MODEL.Abdominal)) / 2) - (Convert.ToDecimal(0.11077) * (Convert.ToDecimal(Session["GESTREINO_AVALIDO_ALTURA"]))) + (Convert.ToDecimal(0.11077) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()));
 
                 MODEL.PercMG = MODEL.PercMG.ToString().Length > 5 ? Convert.ToDecimal(MODEL.PercMG.ToString().Substring(0, 5)) : MODEL.PercMG;
             }
             //Gray e Col passou a Deurenberg et al
             else if (MODEL.GT_TipoTesteComposicao_ID == 3)
             {
-                decimal dMIG = Convert.ToDecimal(-12.44) + Convert.ToDecimal(0.340) * (Convert.ToDecimal(Configs.GESTREINO_AVALIDO_ALTURA) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_ALTURA)) / Convert.ToDecimal(MODEL.Resistencia);
-                dMIG = dMIG + Convert.ToDecimal(0.273) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO);
-                dMIG = dMIG + (Convert.ToDecimal(15.34) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_ALTURA)) * Convert.ToDecimal(0.01);
-                dMIG = dMIG - (Convert.ToDecimal(0.127) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_IDADE));
+                decimal dMIG = Convert.ToDecimal(-12.44) + Convert.ToDecimal(0.340) * (Convert.ToDecimal(Session["GESTREINO_AVALIDO_ALTURA"]) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_ALTURA"])) / Convert.ToDecimal(MODEL.Resistencia);
+                dMIG = dMIG + Convert.ToDecimal(0.273) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString());
+                dMIG = dMIG + (Convert.ToDecimal(15.34) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_ALTURA"])) * Convert.ToDecimal(0.01);
+                dMIG = dMIG - (Convert.ToDecimal(0.127) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_IDADE"]));
                 MODEL.MIG = dMIG;
                 MODEL.MIG = MODEL.MIG.ToString().Length > 5 ? Convert.ToDecimal(MODEL.MIG.ToString().Substring(0, 5)) : MODEL.MIG;
-                MODEL.MG = Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) - dMIG;
-                MODEL.PercMG = (Convert.ToDecimal(MODEL.MG) * Convert.ToDecimal(100)) / Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO);
+                MODEL.MG = Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) - dMIG;
+                MODEL.PercMG = (Convert.ToDecimal(MODEL.MG) * Convert.ToDecimal(100)) / Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString());
                 MODEL.PercMG = MODEL.PercMG.ToString().Length > 5 ? Convert.ToDecimal(MODEL.PercMG.ToString().Substring(0, 5)) : MODEL.PercMG;
             }
             //Guo e Col
@@ -6683,18 +6694,18 @@ namespace Gestreino.Controllers
             //			}
 
             //%MG Desejável
-            MODEL.PercMGDesejavel = DoSetEsperadoComposicao(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+            MODEL.PercMGDesejavel = DoSetEsperadoComposicao(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
 
 
             //Apenas para != de  Deurenberg et al
             if (MODEL.GT_TipoTesteComposicao_ID != 3)
             {
                 //Calculo do MG (txtMG)
-                MODEL.MG = (Convert.ToDecimal(MODEL.PercMG) / 100) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO);
+                MODEL.MG = (Convert.ToDecimal(MODEL.PercMG) / 100) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString());
                 MODEL.MG = MODEL.MG.ToString().Length > 5 ? Convert.ToDecimal(MODEL.MG.ToString().Substring(0, 5)) : MODEL.MG;
 
                 //Cálculo de MIG (txtMIG)
-                MODEL.MIG = Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) - Convert.ToDecimal(MODEL.MG);
+                MODEL.MIG = Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) - Convert.ToDecimal(MODEL.MG);
                 MODEL.MIG = MODEL.MIG.ToString().Length > 5 ? Convert.ToDecimal(MODEL.MIG.ToString().Substring(0, 5)) : MODEL.MIG;
             }
             //Cálculo do Peso desejável (txtPesoDesejado)
@@ -6843,7 +6854,7 @@ namespace Gestreino.Controllers
             int iPercentilAct;
             decimal ValorAct = 0;
             ValorAct = PercMG.Value;
-            iPercentilAct = GetPercentilComposicao(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), ValorAct);
+            iPercentilAct = GetPercentilComposicao(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), ValorAct);
 
         }
         private void DoGetActualComposicao(decimal? PercMG, out int iPerc, out decimal iValue, out string sRes)
@@ -6851,7 +6862,7 @@ namespace Gestreino.Controllers
             int iPercentilAct;
             decimal ValorAct = 0;
             ValorAct = PercMG.Value;
-            iPercentilAct = GetPercentilComposicao(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), ValorAct);
+            iPercentilAct = GetPercentilComposicao(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), ValorAct);
             sRes = GetResultadoComposicao(iPercentilAct);
             iPerc = iPercentilAct;
             iValue = ValorAct;
@@ -7072,7 +7083,7 @@ namespace Gestreino.Controllers
             MODEL.V02max = MODEL.V02max.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02max.ToString().Substring(0, 5)) : MODEL.V02max;
             MODEL.V02Mets = DoGetVo2MetsRemo2000(MODEL.MediaWatts);
             MODEL.V02Mets = MODEL.V02Mets.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02Mets.ToString().Substring(0, 5)) : MODEL.V02Mets;
-            MODEL.V02desejavel = DoGetDesejavel(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+            MODEL.V02desejavel = DoGetDesejavel(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
             MODEL.V02CustoCalMin = DoGetCustoCaloricoRemo2000(MODEL.CustoCalorico, MODEL.MediaWatts);
             MODEL.V02CustoCalMin = MODEL.V02CustoCalMin.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02CustoCalMin.ToString().Substring(0, 5)) : MODEL.V02CustoCalMin;
         }
@@ -7080,7 +7091,7 @@ namespace Gestreino.Controllers
         {
             decimal retValue;
 
-            retValue = ((Convert.ToDecimal(MediaWatts) * Convert.ToDecimal(14.4) + 65) / Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO));
+            retValue = ((Convert.ToDecimal(MediaWatts) * Convert.ToDecimal(14.4) + 65) / Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()));
 
             return retValue;
 
@@ -7101,7 +7112,7 @@ namespace Gestreino.Controllers
 
             retValue = retValue - 1;
 
-            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO)) / Convert.ToDecimal(200);
+            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString())) / Convert.ToDecimal(200);
 
             return retValue;
         }
@@ -7112,7 +7123,7 @@ namespace Gestreino.Controllers
 
             //if (txtRemo2000Vo2.Text == string.Empty) txtRemo2000Vo2.Text = "0";
             ValorAct = V02max != null ? V02max.Value : 0;
-            iPercentilAct = GetPercentilCardioresp(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), ValorAct);
+            iPercentilAct = GetPercentilCardioresp(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), ValorAct);
 
             sRes = GetResultadocardio(iPercentilAct);
             iPerc = iPercentilAct;
@@ -7158,7 +7169,7 @@ namespace Gestreino.Controllers
             MODEL.V02Mets = DoGetVo2MetsTesteTerrenoCooper(MODEL.Distancia12m);
             MODEL.V02Mets = MODEL.V02Mets.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02Mets.ToString().Substring(0, 5)) : MODEL.V02Mets;
 
-            MODEL.V02desejavel = DoGetDesejavel(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+            MODEL.V02desejavel = DoGetDesejavel(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
 
             MODEL.V02CustoCalMin = DoGetCustoCaloricoTesteTerrenoCooper(MODEL.Distancia12m, MODEL.CustoCalorico);
             MODEL.V02CustoCalMin = MODEL.V02CustoCalMin.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02CustoCalMin.ToString().Substring(0, 5)) : MODEL.V02CustoCalMin;
@@ -7189,7 +7200,7 @@ namespace Gestreino.Controllers
 
             retValue = retValue - 1;
 
-            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO)) / Convert.ToDecimal(200);
+            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString())) / Convert.ToDecimal(200);
 
             return retValue;
         }
@@ -7207,7 +7218,7 @@ namespace Gestreino.Controllers
             MODEL.V02Mets = DoGetVo2MetsTerrenoCaminhada(MODEL.Tempo1600m, MODEL.FrequenciaFimTeste);
             MODEL.V02Mets = MODEL.V02Mets.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02Mets.ToString().Substring(0, 5)) : MODEL.V02Mets;
 
-            MODEL.V02desejavel = DoGetDesejavel(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+            MODEL.V02desejavel = DoGetDesejavel(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
 
             MODEL.V02CustoCalMin = DoGetCustoCaloricoTerrenoCaminhada(MODEL.Tempo1600m, MODEL.FrequenciaFimTeste, MODEL.CustoCalorico);
             MODEL.V02CustoCalMin = MODEL.V02CustoCalMin.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02CustoCalMin.ToString().Substring(0, 5)) : MODEL.V02CustoCalMin;
@@ -7225,9 +7236,9 @@ namespace Gestreino.Controllers
         {
             decimal retValue;
 
-            retValue = Convert.ToDecimal(132.853) - (Convert.ToDecimal(0.0769) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO)) - (Convert.ToDecimal(0.3877) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_IDADE));
+            retValue = Convert.ToDecimal(132.853) - (Convert.ToDecimal(0.0769) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString())) - (Convert.ToDecimal(0.3877) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_IDADE"]));
 
-            if (Configs.GESTREINO_AVALIDO_SEXO == "Masculino")
+            if (Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino")
                 retValue = retValue + Convert.ToDecimal(6.315);
 
             retValue = retValue - (Convert.ToDecimal(3.2649) * Convert.ToDecimal(Tempo1600m));
@@ -7252,7 +7263,7 @@ namespace Gestreino.Controllers
 
             retValue = retValue - 1;
 
-            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO)) / Convert.ToDecimal(200);
+            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString())) / Convert.ToDecimal(200);
 
             return retValue;
         }
@@ -7267,7 +7278,7 @@ namespace Gestreino.Controllers
             MODEL.V02Mets = DoGetVo2MetsStep(MODEL.FC15sec);
             MODEL.V02Mets = MODEL.V02Mets.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02Mets.ToString().Substring(0, 5)) : MODEL.V02Mets;
 
-            MODEL.V02desejavel = DoGetDesejavel(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+            MODEL.V02desejavel = DoGetDesejavel(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
 
             MODEL.V02CustoCalMin = DoGetCustoCaloricoStep(MODEL.FC15sec, MODEL.CustoCalorico);
             MODEL.V02CustoCalMin = MODEL.V02CustoCalMin.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02CustoCalMin.ToString().Substring(0, 5)) : MODEL.V02CustoCalMin;
@@ -7276,7 +7287,7 @@ namespace Gestreino.Controllers
         {
             decimal retValue;
 
-            if (Configs.GESTREINO_AVALIDO_SEXO == "Masculino")
+            if (Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino")
                 retValue = Convert.ToDecimal(111.33) - (Convert.ToDecimal(0.42) * Convert.ToDecimal(FC15sec));
             else
                 retValue = Convert.ToDecimal(65.81) - (Convert.ToDecimal(0.1847) * Convert.ToDecimal(FC15sec));
@@ -7300,7 +7311,7 @@ namespace Gestreino.Controllers
 
             retValue = retValue - 1;
 
-            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO)) / Convert.ToDecimal(200);
+            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString())) / Convert.ToDecimal(200);
 
             return retValue;
         }
@@ -7317,7 +7328,7 @@ namespace Gestreino.Controllers
             MODEL.V02Mets = DoGetVo2MetsPassadeira(MODEL.FC3min, MODEL.VelocidadeMPH);
             MODEL.V02Mets = MODEL.V02Mets.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02Mets.ToString().Substring(0, 5)) : MODEL.V02Mets;
 
-            MODEL.V02desejavel = DoGetDesejavel(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+            MODEL.V02desejavel = DoGetDesejavel(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
 
             MODEL.V02CustoCalMin = DoGetCustoCaloricoPassadeira(MODEL.FC3min, MODEL.VelocidadeMPH, MODEL.CustoCalorico);
             MODEL.V02CustoCalMin = MODEL.V02CustoCalMin.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02CustoCalMin.ToString().Substring(0, 5)) : MODEL.V02CustoCalMin;
@@ -7326,9 +7337,9 @@ namespace Gestreino.Controllers
         {
             decimal retValue;
             decimal dSexo;
-            dSexo = Configs.GESTREINO_AVALIDO_SEXO == "Masculino" ? 1 : 2;
+            dSexo = Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino" ? 1 : 2;
 
-            retValue = Convert.ToDecimal(54.07) + (Convert.ToDecimal(7.062) * dSexo) - (Convert.ToDecimal(0.1938) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO)) + (Convert.ToDecimal(4.47) * Convert.ToDecimal(VelocidadeMPH)) - (Convert.ToDecimal(0.1453) * Convert.ToDecimal(FC3min));
+            retValue = Convert.ToDecimal(54.07) + (Convert.ToDecimal(7.062) * dSexo) - (Convert.ToDecimal(0.1938) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString())) + (Convert.ToDecimal(4.47) * Convert.ToDecimal(VelocidadeMPH)) - (Convert.ToDecimal(0.1453) * Convert.ToDecimal(FC3min));
 
             return retValue;
 
@@ -7349,7 +7360,7 @@ namespace Gestreino.Controllers
 
             retValue = retValue - 1;
 
-            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO)) / Convert.ToDecimal(200);
+            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString())) / Convert.ToDecimal(200);
 
             return retValue;
         }
@@ -7371,7 +7382,7 @@ namespace Gestreino.Controllers
             MODEL.V02Mets = DoGetVo2MetsCiclo(MODEL.ValorMedioFC, MODEL.VO2Carga);
             MODEL.V02Mets = MODEL.V02Mets.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02Mets.ToString().Substring(0, 5)) : MODEL.V02Mets;
 
-            MODEL.V02desejavel = DoGetDesejavel(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+            MODEL.V02desejavel = DoGetDesejavel(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
 
             MODEL.V02CustoCalMin = DoGetCustoCaloricoCiclo(MODEL.ValorMedioFC, MODEL.VO2Carga, MODEL.CustoCalorico);
             MODEL.V02CustoCalMin = MODEL.V02CustoCalMin.ToString().Length > 5 ? Convert.ToDecimal(MODEL.V02CustoCalMin.ToString().Substring(0, 5)) : MODEL.V02CustoCalMin;
@@ -7383,7 +7394,7 @@ namespace Gestreino.Controllers
             {
                 decimal retValue;
 
-                if (Configs.GESTREINO_AVALIDO_SEXO == "Masculino")
+                if (Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino")
                     retValue = (Convert.ToDecimal(195 - 61) / (Convert.ToDecimal(ValorMedioFC) - Convert.ToDecimal(61))) * Convert.ToDecimal(VO2Carga);
                 else
                     retValue = (Convert.ToDecimal(198 - 72) / (Convert.ToDecimal(ValorMedioFC) - Convert.ToDecimal(72))) * Convert.ToDecimal(VO2Carga);
@@ -7391,9 +7402,9 @@ namespace Gestreino.Controllers
                 retValue = retValue * Convert.ToDecimal(1000);
 
                 //Dividir Pelo Peso
-                retValue = retValue / Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO);
+                retValue = retValue / Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString());
 
-                retValue = retValue * DoGetValorCorrecao(Convert.ToDecimal(Configs.GESTREINO_AVALIDO_IDADE));
+                retValue = retValue * DoGetValorCorrecao(Convert.ToDecimal(Session["GESTREINO_AVALIDO_IDADE"]));
                 //Multiplicar pelo facto de correcção
 
                 return retValue;
@@ -7457,7 +7468,7 @@ namespace Gestreino.Controllers
 
             retValue = retValue - 1;
 
-            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO)) / Convert.ToDecimal(200);
+            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString())) / Convert.ToDecimal(200);
 
             return retValue;
         }
@@ -7471,7 +7482,7 @@ namespace Gestreino.Controllers
             MODEL.YMCAPot1 = Convert.ToDecimal(MODEL.YMCACarga1) * Convert.ToDecimal(CEDENCIA);
             MODEL.YMCAPot1 = MODEL.YMCAPot1.ToString().Length > 6 ? Convert.ToDecimal(MODEL.YMCAPot1.ToString().Substring(0, 6)) : MODEL.YMCAPot1;
 
-            MODEL.YMCAVO21 = Convert.ToDecimal(1.8) * (Convert.ToDecimal(MODEL.YMCATrab1) / Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) + Convert.ToDecimal(7));
+            MODEL.YMCAVO21 = Convert.ToDecimal(1.8) * (Convert.ToDecimal(MODEL.YMCATrab1) / Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) + Convert.ToDecimal(7));
             MODEL.YMCAVO21 = MODEL.YMCAVO21.ToString().Length > 6 ? Convert.ToDecimal(MODEL.YMCAVO21.ToString().Substring(0, 6)) : MODEL.YMCAVO21;
         }
         private void CalculaPatamar234YMCA(Cardio MODEL)
@@ -7483,7 +7494,7 @@ namespace Gestreino.Controllers
             MODEL.YMCAPot2 = Convert.ToDecimal(MODEL.YMCACarga2) * Convert.ToDecimal(CEDENCIA);
             MODEL.YMCAPot2 = MODEL.YMCAPot2.ToString().Length > 6 ? Convert.ToDecimal(MODEL.YMCAPot2.ToString().Substring(0, 6)) : MODEL.YMCAPot2;
 
-            MODEL.YMCAVO22 = Convert.ToDecimal(1.8) * (Convert.ToDecimal(MODEL.YMCATrab2) / Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) + Convert.ToDecimal(7));
+            MODEL.YMCAVO22 = Convert.ToDecimal(1.8) * (Convert.ToDecimal(MODEL.YMCATrab2) / Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) + Convert.ToDecimal(7));
             MODEL.YMCAVO22 = MODEL.YMCAVO22.ToString().Length > 6 ? Convert.ToDecimal(MODEL.YMCAVO22.ToString().Substring(0, 6)) : MODEL.YMCAVO22;
 
             //Atribuição das cargas ao patamar 3 e 4
@@ -7498,7 +7509,7 @@ namespace Gestreino.Controllers
             MODEL.YMCAPot3 = Convert.ToDecimal(MODEL.YMCACarga3) * Convert.ToDecimal(CEDENCIA);
             MODEL.YMCAPot3 = MODEL.YMCAPot3.ToString().Length > 6 ? Convert.ToDecimal(MODEL.YMCAPot3.ToString().Substring(0, 6)) : MODEL.YMCAPot3;
 
-            MODEL.YMCAVO23 = Convert.ToDecimal(1.8) * (Convert.ToDecimal(MODEL.YMCATrab3) / Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) + Convert.ToDecimal(7));
+            MODEL.YMCAVO23 = Convert.ToDecimal(1.8) * (Convert.ToDecimal(MODEL.YMCATrab3) / Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) + Convert.ToDecimal(7));
             MODEL.YMCAVO23 = MODEL.YMCAVO23.ToString().Length > 6 ? Convert.ToDecimal(MODEL.YMCAVO23.ToString().Substring(0, 6)) : MODEL.YMCAVO23;
 
             //Patamar4
@@ -7508,7 +7519,7 @@ namespace Gestreino.Controllers
             MODEL.YMCAPot4 = Convert.ToDecimal(MODEL.YMCACarga4) * Convert.ToDecimal(CEDENCIA);
             MODEL.YMCAPot4 = MODEL.YMCAPot4.ToString().Length > 6 ? Convert.ToDecimal(MODEL.YMCAPot4.ToString().Substring(0, 6)) : MODEL.YMCAPot4;
 
-            MODEL.YMCAVO24 = Convert.ToDecimal(1.8) * (Convert.ToDecimal(MODEL.YMCATrab4) / Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) + Convert.ToDecimal(7));
+            MODEL.YMCAVO24 = Convert.ToDecimal(1.8) * (Convert.ToDecimal(MODEL.YMCATrab4) / Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) + Convert.ToDecimal(7));
             MODEL.YMCAVO24 = MODEL.YMCAVO24.ToString().Length > 6 ? Convert.ToDecimal(MODEL.YMCAVO24.ToString().Substring(0, 6)) : MODEL.YMCAVO24;
         }
         private void CalculaValoresYMCA(Cardio MODEL)
@@ -7571,7 +7582,7 @@ namespace Gestreino.Controllers
             }
             else if (Points > 1)
             {
-                vo2MAx = Convert.ToDouble(Configs.GESTREINO_AVALIDO_FCMAX) - Convert.ToDouble(N);
+                vo2MAx = Convert.ToDouble(Session["GESTREINO_AVALIDO_FCMAX"].ToString()) - Convert.ToDouble(N);
                 vo2MAx = Math.Round((vo2MAx / Convert.ToDouble(M)), 3);
                 vo2MAx = vo2MAx.ToString().Length > 5 ? Convert.ToDouble(vo2MAx.ToString().Substring(0, 5)) : vo2MAx;
                 decimal tryt;
@@ -7585,7 +7596,7 @@ namespace Gestreino.Controllers
             MODEL.V02Mets = DoGetVo2MetsYMCA(MODEL.V02max);
             MODEL.V02Mets = MODEL.V02Mets.ToString().Length > 6 ? Convert.ToDecimal(MODEL.V02Mets.ToString().Substring(0, 6)) : MODEL.V02Mets;
 
-            MODEL.V02desejavel = DoGetDesejavel(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+            MODEL.V02desejavel = DoGetDesejavel(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
 
             MODEL.V02CustoCalMin = DoGetCustoCaloricoYMCA(MODEL.V02max, MODEL.CustoCalorico);
             MODEL.V02CustoCalMin = MODEL.V02CustoCalMin.ToString().Length > 6 ? Convert.ToDecimal(MODEL.V02CustoCalMin.ToString().Substring(0, 6)) : MODEL.V02CustoCalMin;
@@ -7674,7 +7685,7 @@ namespace Gestreino.Controllers
 
             retValue = retValue - 1;
 
-            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO)) / Convert.ToDecimal(200);
+            retValue = (retValue * Convert.ToDecimal(3.5) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString())) / Convert.ToDecimal(200);
 
             return retValue;
         }
@@ -8848,7 +8859,7 @@ namespace Gestreino.Controllers
             //Detectar o valor
             foreach (Object i in arrTemp)
             {
-                if (Convert.ToInt32(i) >= Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE))
+                if (Convert.ToInt32(i) >= Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]))
                 {
                     break;
                 }
@@ -8856,9 +8867,9 @@ namespace Gestreino.Controllers
 
             }
 
-            if (Configs.GESTREINO_AVALIDO_SEXO == "Masculino")
+            if (Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino")
                 return Convert.ToDecimal(((Array)aValoresM[0]).GetValue(indice));
-            else if (Configs.GESTREINO_AVALIDO_SEXO == "Feminino")
+            else if (Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Feminino")
                 return Convert.ToDecimal(((Array)aValoresF[0]).GetValue(indice));
             else
                 return Convert.ToDecimal(0);
@@ -8903,10 +8914,10 @@ namespace Gestreino.Controllers
             //Depois de 13 de Agosto de 2005/Depois do Nando corrigir algumas fórmulas
             //**************************************
             //Calculo do MG (txtMG)
-            sMG = Convert.ToString((Convert.ToDecimal(MODEL.MG) / 100) * Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO));
+            sMG = Convert.ToString((Convert.ToDecimal(MODEL.MG) / 100) * Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()));
 
             //Cálculo de MIG (txtMIG)
-            sMIG = Convert.ToString(Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) - Convert.ToDecimal(sMG));
+            sMIG = Convert.ToString(Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) - Convert.ToDecimal(sMG));
 
             //Calculo do sPercMG das Pessoas Idosas
             DoLoadPercMGPeso();
@@ -8919,7 +8930,7 @@ namespace Gestreino.Controllers
         {
             decimal PercMG = 0;
 
-            if (Configs.GESTREINO_AVALIDO_SEXO == "Masculino")
+            if (Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino")
                 PercMG = (Convert.ToDecimal(1.281) * Convert.ToDecimal(IMC)) - Convert.ToDecimal(10.13);
             else
                 PercMG = (Convert.ToDecimal(1.480) * Convert.ToDecimal(IMC)) - Convert.ToDecimal(7);
@@ -8929,21 +8940,21 @@ namespace Gestreino.Controllers
         private void DoSelectGroupBy_Sex_Idade(int? type)
         {
             if (type == 1)
-                SelectGroupAgeElevacoes(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                SelectGroupAgeElevacoes(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
             if (type == 2)
-                SelectGroupAgeFlexoes(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                SelectGroupAgeFlexoes(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
             if (type == 3)
-                SelectGroupAgePeso(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                SelectGroupAgePeso(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
             if (type == 4)
-                SelectGroupAgeSentarAlcancar(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                SelectGroupAgeSentarAlcancar(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
             if (type == 5)
-                SelectGroupAgeAgilidade(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                SelectGroupAgeAgilidade(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
             if (type == 6)
-                SelectGroupAgeAlcancar(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                SelectGroupAgeAlcancar(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
             if (type == 7)
-                SelectGroupAgeAndar(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                SelectGroupAgeAndar(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
             if (type == 8)
-                SelectGroupAgeStep(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE));
+                SelectGroupAgeStep(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]));
         }
         private decimal? GetValorAnteriorPessoaIdosa(int GT_SOCIOS_ID, int? Id, int? Type)
         {
@@ -9180,7 +9191,7 @@ namespace Gestreino.Controllers
         }
         private decimal DoGetRazaoBracos(decimal CargaUtilizada)
         {
-            return CargaUtilizada / Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO);
+            return CargaUtilizada / Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString());
         }
         private string DoGetDeficeForcaBracos(int? sNumeroRep)
         {
@@ -9211,7 +9222,7 @@ namespace Gestreino.Controllers
             if (txtRazaoBracos == null) txtRazaoBracos = 0;
 
             ValorAct = Convert.ToDecimal(txtRazaoBracos);
-            iPercentilAct = GetPercentilBracos(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), ValorAct);
+            iPercentilAct = GetPercentilBracos(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), ValorAct);
 
             sRes = GetResultadoBracos(iPercentilAct);
             iPerc = iPercentilAct;
@@ -9319,7 +9330,7 @@ namespace Gestreino.Controllers
             if (txtRazaoPernas == null) txtRazaoPernas = 0;
 
             ValorAct = Convert.ToDecimal(txtRazaoPernas);
-            iPercentilAct = GetPercentilPernas(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), ValorAct);
+            iPercentilAct = GetPercentilPernas(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), ValorAct);
 
             sRes = GetResultadoPernas(iPercentilAct);
             iPerc = iPercentilAct;
@@ -9343,13 +9354,13 @@ namespace Gestreino.Controllers
         }
         private decimal DoGetRazaoPernas(decimal CargaUtilizada)
         {
-            return CargaUtilizada / Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO);
+            return CargaUtilizada / Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString());
         }
         private decimal DoGetDesejavelPernas()
         {
             Array arrTemp;
             arrTemp = (Array)aPernasEscolhido[0];
-            return Convert.ToDecimal(Configs.GESTREINO_AVALIDO_PESO) * Convert.ToDecimal(arrTemp.GetValue(2));
+            return Convert.ToDecimal(Session["GESTREINO_AVALIDO_PESO"].ToString()) * Convert.ToDecimal(arrTemp.GetValue(2));
         }
         private string DoGetTrabalhoDesenvPernas(int? sNumeroRep)
         {
@@ -9556,7 +9567,7 @@ namespace Gestreino.Controllers
             decimal ValorAct = 0;
 
             ValorAct = Convert.ToDecimal(txtAbdominais);
-            iPercentilAct = GetPercentilAbdominais(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToInt32(ValorAct));
+            iPercentilAct = GetPercentilAbdominais(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToInt32(ValorAct));
 
             sRes = GetResultadoAbdominais(iPercentilAct);
             iPerc = iPercentilAct;
@@ -9696,7 +9707,7 @@ namespace Gestreino.Controllers
             decimal ValorAct = 0;
 
             ValorAct = Convert.ToDecimal(txtFlexoes.Value);
-            iPercentilAct = GetPercentilFlexoes(Configs.GESTREINO_AVALIDO_SEXO, Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE), Convert.ToInt32(ValorAct));
+            iPercentilAct = GetPercentilFlexoes(Session["GESTREINO_AVALIDO_SEXO"].ToString(), Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]), Convert.ToInt32(ValorAct));
 
             sRes = GetResultadoFlexoes(iPercentilAct);
             iPerc = iPercentilAct;
@@ -9935,7 +9946,7 @@ namespace Gestreino.Controllers
         //Agilidade
         private int GetPercentilAgilidadeForca(decimal valor)
         {
-            switch (Configs.GESTREINO_AVALIDO_SEXO)
+            switch (Session["GESTREINO_AVALIDO_SEXO"].ToString())
             {
                 case "Masculino":
                     if (valor <= Convert.ToDecimal(15.9))
@@ -9966,7 +9977,7 @@ namespace Gestreino.Controllers
         }
         private string DoSetEsperadoAgilidade()
         {
-            return Configs.GESTREINO_AVALIDO_SEXO == "Masculino" ? "15,9 a 16,7" : "17,5 a 18,6";
+            return Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino" ? "15,9 a 16,7" : "17,5 a 18,6";
         }
         private decimal DoGetValorMinimo(Force MODEL)
         {
@@ -10015,7 +10026,7 @@ namespace Gestreino.Controllers
         //Forca Horizontal
         private int GetPercentilExplosivaH(decimal valor)
         {
-            switch (Configs.GESTREINO_AVALIDO_SEXO)
+            switch (Session["GESTREINO_AVALIDO_SEXO"].ToString())
             {
                 case "Masculino":
                     if (valor <= Convert.ToDecimal(2))
@@ -10050,7 +10061,7 @@ namespace Gestreino.Controllers
         }
         private string DoSetEsperadoExplosivaH()
         {
-            return Configs.GESTREINO_AVALIDO_SEXO == "Masculino" ? "2,5 a 2,7" : "2,2 a 2,5";
+            return Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino" ? "2,5 a 2,7" : "2,2 a 2,5";
         }
         private decimal DoGetValorMaximoExplosivaH(Force MODEL)
         {
@@ -10098,7 +10109,7 @@ namespace Gestreino.Controllers
         //Forca Vertical
         private int GetPercentilExplosivaV(decimal valor)
         {
-            switch (Configs.GESTREINO_AVALIDO_SEXO)
+            switch (Session["GESTREINO_AVALIDO_SEXO"].ToString())
             {
                 case "Masculino":
                     if (valor <= Convert.ToDecimal(0.46))
@@ -10133,7 +10144,7 @@ namespace Gestreino.Controllers
         }
         private string DoSetEsperadoExplosivaV()
         {
-            return Configs.GESTREINO_AVALIDO_SEXO == "Masculino" ? "0,55 a 0,60" : "0,45 a 0,50";
+            return Session["GESTREINO_AVALIDO_SEXO"].ToString() == "Masculino" ? "0,55 a 0,60" : "0,45 a 0,50";
         }
         private decimal DoGetValorResExplosivaV(Force MODEL)
         {

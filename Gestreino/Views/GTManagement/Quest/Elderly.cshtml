@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Pessoa Idosa";
 }
-@if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+@if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && Session["GESTREINO_AVALIDO_NOME"] != null)
 {
 
 
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-                @if (Convert.ToInt32(Configs.GESTREINO_AVALIDO_IDADE) < 60)
+                @if (Convert.ToInt32(Session["GESTREINO_AVALIDO_IDADE"]) < 60)
                 {
                     <p>O atleta seleccionado não tem idade suficiente para efectuar a avaliação!</p>
                 }

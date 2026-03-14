@@ -724,6 +724,7 @@
     <Content Include="Assets\images\athlete.png" />
     <Content Include="Assets\images\camera.png" />
     <Content Include="Assets\images\eraser.png" />
+    <Content Include="Assets\images\favicon.png" />
     <Content Include="Assets\images\gt.png" />
     <Content Include="Assets\images\help.png" />
     <Content Include="Assets\images\home-button.png" />
@@ -777,6 +778,7 @@
     <Content Include="Assets\images\imagesfunc\func71.jpg" />
     <Content Include="Assets\images\imagesfunc\func72.jpg" />
     <Content Include="Assets\images\imagesfunc\func73.jpg" />
+    <Content Include="Assets\images\institutions.jpg" />
     <Content Include="Assets\images\loading.gif" />
     <Content Include="Assets\images\login.jpeg" />
     <Content Include="Assets\images\logo.png" />
@@ -805,7 +807,6 @@
     <Content Include="Assets\lib\select2\select2.css" />
     <Content Include="Assets\lib\select2\select2.full.min.js" />
     <Content Include="Assets\lib\select2\select2.min.css" />
-    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="ORM.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -26,5 +26,10 @@ namespace Gestreino
             Configs c = new Configs();
             c.BeginConfig();
         }
+        void Session_Start(object sender, EventArgs e)
+        {
+            // Set the session timeout to 60 minutes
+            Session.Timeout = 1440;
+        }
     }
 }

@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Composição Corporal";
 }
-@if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+@if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && Session["GESTREINO_AVALIDO_NOME"] != null)
 {
     <!-- page content -->
     <div class="right_col" role="main">
@@ -212,7 +212,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @if (Configs.GESTREINO_AVALIDO_SEXO == "Masculino")
+                                                    @if (Session["GESTREINO_AVALIDO_SEXO"] == "Masculino")
                                                     {
                                                         <div id="jackson" style="display:@(Model.GT_TipoTesteComposicao_ID <= 1 ? "" : "none")">
                                                             <div class="row">

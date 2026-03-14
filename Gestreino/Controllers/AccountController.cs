@@ -540,15 +540,15 @@ namespace Gestreino.Controllers
                 // Remove whitespaces and parse datetime strings //TrimStart() //Trim()
 
                 // Create
-                var createUser = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null,InstitutionId, null, null, Login, MODEL.Nome, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, true, null, null, true, Configs.INST_INSTITUICAO_USER, "C").ToList();
-                var UserId = createUser.First().ID;
+           //     var createUser = databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES(null,InstitutionId, null, null, Login, MODEL.Nome, Convert.ToDecimal(MODEL.Phone), MODEL.Email.Trim(), Password, Salt, true, null, null, true, Configs.INST_INSTITUICAO_USER, "C").ToList();
+           //     var UserId = createUser.First().ID;
                 //Add to group
-                databaseManager.SP_UTILIZADORES_ENT_GRUPOS_UTILIZADORES(null, AcessControl.GROUP_INST, UserId, Configs.INST_INSTITUICAO_USER, "C").ToList();
+           //     databaseManager.SP_UTILIZADORES_ENT_GRUPOS_UTILIZADORES(null, AcessControl.GROUP_INST, UserId, Configs.INST_INSTITUICAO_USER, "C").ToList();
                 //Add to profile
-                databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES_PERFIS(null, AcessControl.PROFILE_ADM, UserId, Configs.INST_INSTITUICAO_USER, "C").ToList();
+           //     databaseManager.SP_UTILIZADORES_ENT_UTILIZADORES_PERFIS(null, AcessControl.PROFILE_ADM, UserId, Configs.INST_INSTITUICAO_USER, "C").ToList();
 
                 // Send Email
-                Mailer.SendEmailMVC(1, MODEL.Email, MODEL.Nome, Login, MODEL.Password.Trim(), Configs.INST_INSTITUICAO_URL, null); // Email template - 3
+           //     Mailer.SendEmailMVC(1, MODEL.Email, MODEL.Nome, Login, MODEL.Password.Trim(), Configs.INST_INSTITUICAO_URL, null); // Email template - 3
 
             }
             return Json(new { result = true, success = "Subscrição efetuada com successo, por favor verifique o seu email!", resetForm = true });

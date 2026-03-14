@@ -62,8 +62,8 @@ namespace Gestreino.Controllers
                         orderby j2.ID descending
                         select new { j3.CAMINHO_URL });
 
-            Configs.INST_INSTITUICAO_LOGO = path.Any() ? path.FirstOrDefault().CAMINHO_URL : string.Empty;
-            ViewBag.imgSrc = (string.IsNullOrEmpty(Configs.INST_INSTITUICAO_LOGO)) ? "/Assets/images/user-avatar.png" : "/" + Configs.INST_INSTITUICAO_LOGO;
+            var INST_INSTITUICAO_LOGO = path.Any() ? path.FirstOrDefault().CAMINHO_URL : string.Empty;
+            ViewBag.imgSrc = (string.IsNullOrEmpty(INST_INSTITUICAO_LOGO)) ? "/Assets/images/institutions.jpg" : "/" + INST_INSTITUICAO_LOGO;
             ViewBag.data = data;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Institution;
             return View("Institutions/ViewInstitutions");
@@ -5235,8 +5235,8 @@ namespace Gestreino.Controllers
                                              && j2.ACTIVO==true orderby j2.ID descending
                                              select new { j3.CAMINHO_URL });
 
-            Configs.INST_INSTITUICAO_LOGO=path.Any()?path.FirstOrDefault().CAMINHO_URL:string.Empty;
-            ViewBag.imgSrc = (string.IsNullOrEmpty(Configs.INST_INSTITUICAO_LOGO)) ? "/Assets/images/user-avatar.png" : "/" + Configs.INST_INSTITUICAO_LOGO;
+            var INST_INSTITUICAO_LOGO=path.Any()?path.FirstOrDefault().CAMINHO_URL:string.Empty;
+            ViewBag.imgSrc = (string.IsNullOrEmpty(INST_INSTITUICAO_LOGO)) ? "/Assets/images/institutions.jpg" : "/" + INST_INSTITUICAO_LOGO;
 
 
             MODEL.MOEDA_LIST = databaseManager.GRL_ENDERECO_PAIS.Where(x => x.DATA_REMOCAO == null).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME + " - " + x.CODIGO.ToString() });

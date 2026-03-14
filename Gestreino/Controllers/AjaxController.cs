@@ -747,15 +747,17 @@ namespace Gestreino.Controllers
                     if (DateofBirth != null)
                         Age = Converters.CalculateAge(DateofBirth.Value);
 
-                    Configs.GESTREINO_AVALIDO_NOME = av1.First().NOME_PROPIO + " " + av1.First().APELIDO;
-                    Configs.GESTREINO_AVALIDO_IDADE = Age.ToString();
-                    Configs.GESTREINO_AVALIDO_SEXO = av1.First().SEXO;
+                    // Set a session variable
+                    Session["GESTREINO_AVALIDO_NOME"] = av1.First().NOME_PROPIO + " " + av1.First().APELIDO;
+                    Session["GESTREINO_AVALIDO_IDADE"] = Age.ToString();
+                    Session["GESTREINO_AVALIDO_SEXO"] = av1.First().SEXO;
                 }
                 if (av2.Any())
                 {
-                    Configs.GESTREINO_AVALIDO_PESO = av2.First().PESO.Value.ToString("G29");
-                    Configs.GESTREINO_AVALIDO_ALTURA = av2.First().ALTURA.Value.ToString("G29");
-                    Configs.GESTREINO_AVALIDO_FCMAX = av2.First().FCMAXIMO.Value.ToString("G29");
+                    // Set a session variable
+                    Session["GESTREINO_AVALIDO_PESO"] = av2.First().PESO.Value.ToString("G29");
+                    Session["GESTREINO_AVALIDO_ALTURA"] = av2.First().ALTURA.Value.ToString("G29");
+                    Session["GESTREINO_AVALIDO_FCMAX"] = av2.First().FCMAXIMO.Value.ToString("G29");
                 }
             }
 
@@ -768,23 +770,16 @@ namespace Gestreino.Controllers
             try
             {
                 Cookies c = new Cookies();
+
+                if (entity == Cookies.COOKIES_SIDEBAR_MENU_COLLAPSE)
+                    value = Cookies.ReadCookie(Cookies.COOKIES_SIDEBAR_MENU_COLLAPSE) == "0" ? "1" : "0";
+             
                 c.WriteCookie(entity, value);
-                string cookievalue;
 
                 if (entity == Cookies.COOKIES_GESTREINO_AVALIADO)
                 {
                     SetGTAvaliado(int.Parse(value));
                     return Json(new { result = true, error = string.Empty, reload=true,showToastr = true, toastrMessage = "Submetido com sucesso!" });
-                }
-
-                if (Request.Cookies["cookie"] != null)
-                {
-                  //  cookievalue = Request.Cookies["cookie"].ToString();
-                }
-                else
-                {
-                 //   Response.Cookies["cookie"].Value = "cookie value";
-                 //   Response.Cookies["cookie"].Expires = DateTime.Now.AddMinutes(1); // add expiry time
                 }
             }
             catch (Exception ex)

@@ -117,6 +117,7 @@
                     <!--Separator-->
                     <a title="Exportar filtro (.xlsx)" onclick="initSearchTable(3)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gtsearch", applyFilter = "true" })" target="_blank" data-id="SearchTable"><i class="fa fa-filter"></i></a>
                     <a title="Exportar todos (.xlsx)" onclick="initSearchTable(3)" class="btnSearch btn btn-default" href="@Url.Action("ExportToExcel", "XLSReports", new { section = "gtsearch", applyFilter = "false" })" target="_blank" data-id="SearchTable"><i class="fa fa-file-excel"></i></a>
+                    <button title="Ajuda" onclick="openHelpWindow('Consultas')" class="btnSearch btn btn-default"><i class="fa fa-circle-question"></i></button>
                 </div>
             </div>
         </div>

@@ -93,7 +93,7 @@
 
 .nav-sm .container.body .col-md-3.left_col {
     min-height: 100%;
-    width: 70px;
+    width: 75px;
     padding: 0;
     z-index: 9999;
     position: absolute;
@@ -115,12 +115,12 @@
 
 .nav-sm .container.body .right_col {
     padding: 10px 20px;
-    margin-left: 70px;
+    margin-left: 75px;
     z-index: 2;
 }
 
 .nav-sm .navbar.nav_title {
-    width: 70px;
+    width: 75px;
 }
 
     .nav-sm .navbar.nav_title a span {
@@ -220,7 +220,6 @@
         margin-top: 10px;
         display: block;
     }
-
 .profile_pic {
     width: 35%;
     float: left;
@@ -861,6 +860,11 @@ a {
     padding-left: 10px;
 }
 
+.nav-sm .site_title {
+    margin-left: 0px !important;
+    padding-left: 6px !important;
+}
+
     .site_title:hover, .site_title:focus {
         text-decoration: none;
     }
@@ -915,7 +919,7 @@ a {
 .toggle {
     float: left;
     margin: 0;
-    width: 70px;
+    width: 75px;
 }
 
     .toggle a {
@@ -936,7 +940,7 @@ a {
 
 .panel_toolbox {
     float: right;
-    min-width: 70px;
+    min-width: 75px;
 }
 
     .panel_toolbox > li {

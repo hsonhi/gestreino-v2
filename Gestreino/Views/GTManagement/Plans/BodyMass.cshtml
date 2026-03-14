@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Plano de Treino Musculação";
 }
-@if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+@if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && Session["GESTREINO_AVALIDO_NOME"]!=null)
 {
     <!-- page content -->
 <div class="right_col" role="main">

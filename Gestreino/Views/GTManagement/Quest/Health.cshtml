@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Problemas de Saúde";
 }
-@if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && !string.IsNullOrEmpty(Configs.GESTREINO_AVALIDO_NOME))
+@if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && Session["GESTREINO_AVALIDO_NOME"] != null)
 {
     <style>
         .table td, .table th:not(#GTQuestTable) {

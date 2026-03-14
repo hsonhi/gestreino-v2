@@ -5892,3 +5892,23 @@ function initSearchTable(search) {
         if (search == 3) handleDataSearchTable3();
     }
 }
+
+
+/*
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', () => {
+        // Disable all submit buttons within the form
+        form.querySelectorAll('[type="submit"]').forEach(button => {
+            button.disabled = true;
+            button.value = 'Saving...';
+        });
+    });
+});
+function loadButtonIn(button) { 
+    button.disabled = true;
+    button.value = 'Saving...';
+}
+function loadButtonOut(button) {
+    button.disabled = false;
+    button.value = 'Submit.';
+}*/
