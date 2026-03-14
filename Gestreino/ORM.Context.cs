@@ -110,6 +110,13 @@ namespace Gestreino
         public virtual DbSet<UTILIZADORES> UTILIZADORES { get; set; }
         public virtual DbSet<GT_Treino> GT_Treino { get; set; }
         public virtual DbSet<INST_APLICACAO_ENDERECOS> INST_APLICACAO_ENDERECOS { get; set; }
+        public virtual DbSet<GT_bodyParts> GT_bodyParts { get; set; }
+        public virtual DbSet<GT_equipments> GT_equipments { get; set; }
+        public virtual DbSet<GT_Exercicio_bodyParts> GT_Exercicio_bodyParts { get; set; }
+        public virtual DbSet<GT_Exercicio_equipments> GT_Exercicio_equipments { get; set; }
+        public virtual DbSet<GT_Exercicio_instructions> GT_Exercicio_instructions { get; set; }
+        public virtual DbSet<GT_Exercicio_targetMuscles> GT_Exercicio_targetMuscles { get; set; }
+        public virtual DbSet<GT_targetMuscles> GT_targetMuscles { get; set; }
     
         public virtual ObjectResult<SP_UTILIZADORES_LOGIN_LOGS_Result> SP_UTILIZADORES_LOGIN_LOGS(Nullable<int> userId, string action)
         {

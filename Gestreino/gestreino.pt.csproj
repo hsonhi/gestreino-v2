@@ -332,6 +332,9 @@
     <Compile Include="GRL_TOKENS_TIPOS.cs">
       <DependentUpon>ORM.tt</DependentUpon>
     </Compile>
+    <Compile Include="GT_bodyParts.cs">
+      <DependentUpon>ORM.tt</DependentUpon>
+    </Compile>
     <Compile Include="GT_Carga.cs">
       <DependentUpon>ORM.tt</DependentUpon>
     </Compile>
@@ -344,6 +347,9 @@
     <Compile Include="GT_DuracaoTreinoCardio.cs">
       <DependentUpon>ORM.tt</DependentUpon>
     </Compile>
+    <Compile Include="GT_equipments.cs">
+      <DependentUpon>ORM.tt</DependentUpon>
+    </Compile>
     <Compile Include="GT_Exercicio.cs">
       <DependentUpon>ORM.tt</DependentUpon>
     </Compile>
@@ -354,6 +360,18 @@
       <DependentUpon>ORM.tt</DependentUpon>
     </Compile>
     <Compile Include="GT_Exercicio_ARQUIVOS.cs">
+      <DependentUpon>ORM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GT_Exercicio_bodyParts.cs">
+      <DependentUpon>ORM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GT_Exercicio_equipments.cs">
+      <DependentUpon>ORM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GT_Exercicio_instructions.cs">
+      <DependentUpon>ORM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GT_Exercicio_targetMuscles.cs">
       <DependentUpon>ORM.tt</DependentUpon>
     </Compile>
     <Compile Include="GT_FaseTreino.cs">
@@ -402,6 +420,9 @@
       <DependentUpon>ORM.tt</DependentUpon>
     </Compile>
     <Compile Include="GT_SOCIOS_EVOLUCAO.cs">
+      <DependentUpon>ORM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GT_targetMuscles.cs">
       <DependentUpon>ORM.tt</DependentUpon>
     </Compile>
     <Compile Include="GT_TempoDescanso.cs">

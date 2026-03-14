@@ -167,21 +167,50 @@
                             <div class="row mt-3">
                                 <div class="col-md-5">
                                     <h5 class="planfieldseth5">Exercícios disponíveis</h5>
+
+                                    <div class="p-2 bg-light">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text font-size-11" id="basic-addon1">GT_bodyParts_List</span>
+                                            </div>
+                                            @Html.DropDownListFor(x => Model.GT_bodyParts_ID, Model.GT_bodyParts_List, "", new { @class = "form-control form-control-sm" })
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text font-size-11" id="basic-addon1">GT_bodyParts_List</span>
+                                            </div>
+                                            @Html.DropDownListFor(x => Model.GT_equipments_ID, Model.GT_equipments_List, "", new { @class = "form-control form-control-sm" })
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text font-size-11" id="basic-addon1">GT_bodyParts_List</span>
+                                            </div>
+                                            @Html.DropDownListFor(x => Model.GT_targetMuscles_ID, Model.GT_targetMuscles_List, "", new { @class = "form-control form-control-sm" })
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text font-size-11" id="basic-addon1">Filtrar</span>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm" id="searchInput" onkeyup="filterItems()" placeholder="Pesquisar..">
+                                        </div>
+                                   </div>
+                                  
                                     <div class="planfieldset p-1">
                                         <div class="row mt-2">
                                             <div class="col-md-12">
                                                 <div class="">
                                                     <ul class="p-2 mb-0" id="list1" style="height: 300px; top: 10px; bottom: 10px; width: 100%;overflow-y:auto;">
-                                                       @foreach (var item in ViewBag.exercises)
+                                                        @foreach (var item in ViewBag.exercises)
                                                         {
                                                             var dis = string.Empty;
                                                             if (Model.ExerciseArqListTreino != null)
                                                             {
                                                                 dis = Model.ExerciseArqListTreino.Where(x => x.ExerciseId == item.ID).Any() ? "disabled" : "";
                                                             }
-                                                            var path = Model.ExerciseArqList.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
+                                                            var path = "/Assets/json/" + item.API_exerciseId + ".gif";// item.API_exerciseId != null? Model.fullPaths.Where(x=>x.Contains(item.API_exerciseId)).Select(x=>x).FirstOrDefault():string.Empty;//.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
+                                                                                                                      //var path = Model.ExerciseArqList.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
                                                             <li class="sidebar-menu-item hide-long-text" style="" id="ex_@item.ID">
-                                                                <img class="planimg" src="@path" width="60" />
+                                                                <img class="" src="@path" />
                                                                 <button @dis type="button" data-id="@item.ID" class="addlistplan1 btn btn-sm btn-success  btn-sm"><i class="fa fa-plus-circle"></i></button>
                                                                 <a href="javascript:" style="display:none" data-placement="top" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
                                                                 <button type="button" style="display:none" class="sortable btn btn-sm btn-default"><i class="fa fa-sort"></i></button>
@@ -193,22 +222,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--
-                                    NEW    
-                                    -->
-                                    @* @Model.ExerciseDbAPI.Count()
- <input type="text" class="form-control form-control-sm" id="searchInput" onkeyup="filterItems()" placeholder="Pesquisar..">
- <div id="itemList">
-     @foreach (var item in Model.ExerciseDbAPI.Where(x => ViewBag.list.Contains(x.exerciseId)).Take(50))
-     {
-         <div class="item">
-             <img src="@item.gifUrl" /><button type="button" data-id="" class="addlistplan1 btn btn-sm btn-success  btn-sm"><i class="fa fa-plus-circle"></i></button>
-             @item.name
-         </div>
-         
-     }
- </div>*@
-
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mt-4">
@@ -410,8 +423,8 @@
             var input, filter, parentDiv, items, txtValue;
             input = document.getElementById('searchInput');
             filter = input.value.toUpperCase();
-            parentDiv = document.getElementById("itemList");
-            items = parentDiv.getElementsByClassName('item'); // Get all elements with class 'item' inside 'itemList'
+            parentDiv = document.getElementById("list1");
+            items = parentDiv.getElementsByClassName('hide-long-text'); // Get all elements with class 'item' inside 'itemList'
 
             // Loop through all list items, and hide those who don't match the search query
             for (var i = 0; i < items.length; i++) {

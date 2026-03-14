@@ -1854,6 +1854,9 @@ namespace Gestreino.Controllers
             var GtTreino = databaseManager.GT_Treino.Where(x => x.DATA_REMOCAO == null && !string.IsNullOrEmpty(x.NOME) && x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS && x.INST_APLICACAO_ID== ApplicationId);
             MODEL.GTTreinoList = GtTreino.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.RepList = databaseManager.GT_CoeficienteRepeticao.OrderBy(x =>x.ID).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.ID.ToString() });
+            MODEL.GT_bodyParts_List = databaseManager.GT_bodyParts.Select(x => new SelectListItem { Value = x.ID.ToString(), Text =x.NOME });
+            MODEL.GT_equipments_List = databaseManager.GT_equipments.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.GT_targetMuscles_List = databaseManager.GT_targetMuscles.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.DateIni = DateTime.Parse(DateTime.Now.ToString()).ToString("dd-MM-yyyy");
 
             MODEL.GTTipoTreinoId = Configs.GT_EXERCISE_TYPE_BODYMASS;
@@ -1873,6 +1876,8 @@ namespace Gestreino.Controllers
                                where j1.DATA_REMOCAO == null && j2.DATA_REMOCAO == null && j1.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS && j3.GRL_ARQUIVOS_TIPO_DOCS_ID == Configs.INST_MDL_ADM_VLRID_ARQUIVO_LOGOTIPO && j2.ACTIVO == true
                                select new ExerciseArq() { ExerciseId = j1.ID, Name = j1.NOME, LogoPath = string.IsNullOrEmpty(j3.CAMINHO_URL) ? "" : "/" + j3.CAMINHO_URL }).ToList();
 
+            MODEL.fullPaths = Directory.GetFiles(Path.Combine(Server.MapPath("~/"), string.Empty) + @"Assets\json");
+
             if (Id > 0)
             {
                 if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
@@ -1889,7 +1894,7 @@ namespace Gestreino.Controllers
                                                where j1.GT_Treino_ID == Id
                                                orderby j1.ORDEM
                                                select new ExerciseArq() { Name = j2.NOME, ExerciseId = j1.GT_Exercicio_ID, GT_Series_ID = j1.GT_Series_ID, GT_Repeticoes_ID = j1.GT_Repeticoes_ID, GT_TempoDescanso_ID = j1.GT_TempoDescanso_ID, GT_Carga_ID = j1.GT_Carga_ID, REPETICOES_COMPLETADAS = j1.GT_CoeficienteRepeticao_ID, CARGA_USADA = j1.CARGA_USADA, ONERM = j1.ONERM, ORDEM = j1.ORDEM }).ToList();
-
+                
                 if (string.IsNullOrEmpty(predefined))
                 {
                     if (!string.IsNullOrEmpty(treino.First().DATA_INICIO.ToString()))

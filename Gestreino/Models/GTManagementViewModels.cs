@@ -667,7 +667,19 @@ namespace Gestreino.Models
         public List<ExerciseArq> ExerciseArqList { get; set; }
         public List<ExerciseArq> ExerciseArqListTreino { get; set; }
         public List<ExerciseDbAPI> ExerciseDbAPI { get; set; }
-        
+
+        [Display(Name = "")]
+        public int? GT_bodyParts_ID { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> GT_bodyParts_List { get; set; }
+        [Display(Name = "")]
+        public int? GT_equipments_ID { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> GT_equipments_List { get; set; }
+        [Display(Name = "")]
+        public int? GT_targetMuscles_ID { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> GT_targetMuscles_List { get; set; }
+
+        public string[] fullPaths { get; set; }
+
         //[Required]
         [Display(Name = "Data de início do plano:")]
         [DataType(DataType.Text)]

@@ -192,6 +192,20 @@
         <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC69096" />
         <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC939798" />
         <AssociationConnector Association="GESTREINO_ORM.FKINST_APLIC348700" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_bodyParts" Width="1.5" PointX="15.25" PointY="77.125" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_equipments" Width="1.5" PointX="12.25" PointY="86.125" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Exercicio_bodyParts" Width="1.5" PointX="17.5" PointY="71" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Exercicio_equipments" Width="1.5" PointX="14.5" PointY="71" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Exercicio_instructions" Width="1.5" PointX="11.5" PointY="83.25" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_Exercicio_targetMuscles" Width="1.5" PointX="14.5" PointY="74" />
+        <EntityTypeShape EntityType="GESTREINO_ORM.GT_targetMuscles" Width="1.5" PointX="12.25" PointY="89.125" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_bodyParts_GT_bodyParts_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_equipments_GT_equipments_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_bodyParts_GT_Exercicio_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_equipments_GT_Exercicio_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_instructions_GT_Exercicio_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_targetMuscles_GT_Exercicio_ID" />
+        <AssociationConnector Association="GESTREINO_ORM.GT_Exercicio_targetMuscles_GT_targetMuscles_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

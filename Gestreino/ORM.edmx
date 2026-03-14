@@ -157,6 +157,13 @@
           <Property Name="DATA_ACTUALIZACAO" Type="datetime" />
           <Property Name="DATA_REMOCAO" Type="datetime" />
         </EntityType>
+        <EntityType Name="GT_bodyParts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOME" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="GT_Carga">
           <Key>
             <PropertyRef Name="ID" />
@@ -191,6 +198,13 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DURACAO" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="GT_equipments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOME" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="GT_Exercicio">
           <Key>
             <PropertyRef Name="ID" />
@@ -200,6 +214,7 @@
           <Property Name="NOME" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="ALONGAMENTO" Type="int" />
           <Property Name="SEQUENCIA" Type="int" />
+          <Property Name="API_exerciseId" Type="varchar" MaxLength="32" />
           <Property Name="INSERIDO_POR" Type="int" Nullable="false" />
           <Property Name="ACTUALIZADO_POR" Type="int" />
           <Property Name="REMOVIDO_POR" Type="int" />
@@ -225,6 +240,38 @@
           <Property Name="DATA_INSERCAO" Type="datetime" Nullable="false" />
           <Property Name="DATA_ACTUALIZACAO" Type="datetime" />
           <Property Name="DATA_REMOCAO" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GT_Exercicio_bodyParts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GT_Exercicio_ID" Type="int" Nullable="false" />
+          <Property Name="GT_bodyParts_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GT_Exercicio_equipments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GT_Exercicio_ID" Type="int" Nullable="false" />
+          <Property Name="GT_equipments_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GT_Exercicio_instructions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GT_Exercicio_ID" Type="int" Nullable="false" />
+          <Property Name="DESCRICAO" Type="varchar" MaxLength="4000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GT_Exercicio_targetMuscles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GT_Exercicio_ID" Type="int" Nullable="false" />
+          <Property Name="GT_targetMuscles_ID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="GT_ExercicioTreino">
           <Key>
@@ -758,6 +805,13 @@
           <Property Name="TASISTOLICA" Type="decimal" Precision="18" Scale="2" />
           <Property Name="INSERIDO_POR" Type="int" Nullable="false" />
           <Property Name="DATA_INSERCAO" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GT_targetMuscles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOME" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="GT_TempoDescanso">
           <Key>
@@ -2224,6 +2278,54 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="GT_Exercicio_bodyParts_GT_bodyParts_ID">
+          <End Role="GT_bodyParts" Type="Self.GT_bodyParts" Multiplicity="1" />
+          <End Role="GT_Exercicio_bodyParts" Type="Self.GT_Exercicio_bodyParts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_bodyParts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_bodyParts">
+              <PropertyRef Name="GT_bodyParts_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_bodyParts_GT_Exercicio_ID">
+          <End Role="GT_Exercicio" Type="Self.GT_Exercicio" Multiplicity="1" />
+          <End Role="GT_Exercicio_bodyParts" Type="Self.GT_Exercicio_bodyParts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_Exercicio">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_bodyParts">
+              <PropertyRef Name="GT_Exercicio_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_equipments_GT_equipments_ID">
+          <End Role="GT_equipments" Type="Self.GT_equipments" Multiplicity="1" />
+          <End Role="GT_Exercicio_equipments" Type="Self.GT_Exercicio_equipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_equipments">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_equipments">
+              <PropertyRef Name="GT_equipments_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_equipments_GT_Exercicio_ID">
+          <End Role="GT_Exercicio" Type="Self.GT_Exercicio" Multiplicity="1" />
+          <End Role="GT_Exercicio_equipments" Type="Self.GT_Exercicio_equipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_Exercicio">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_equipments">
+              <PropertyRef Name="GT_Exercicio_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="GT_Exercicio_GT_TipoTreino_ID">
           <End Role="GT_TipoTreino" Type="Self.GT_TipoTreino" Multiplicity="1" />
           <End Role="GT_Exercicio" Type="Self.GT_Exercicio" Multiplicity="*" />
@@ -2233,6 +2335,42 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
             </Principal>
             <Dependent Role="GT_Exercicio">
               <PropertyRef Name="GT_TipoTreino_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_instructions_GT_Exercicio_ID">
+          <End Role="GT_Exercicio" Type="Self.GT_Exercicio" Multiplicity="1" />
+          <End Role="GT_Exercicio_instructions" Type="Self.GT_Exercicio_instructions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_Exercicio">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_instructions">
+              <PropertyRef Name="GT_Exercicio_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_targetMuscles_GT_Exercicio_ID">
+          <End Role="GT_Exercicio" Type="Self.GT_Exercicio" Multiplicity="1" />
+          <End Role="GT_Exercicio_targetMuscles" Type="Self.GT_Exercicio_targetMuscles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_Exercicio">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_targetMuscles">
+              <PropertyRef Name="GT_Exercicio_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_targetMuscles_GT_targetMuscles_ID">
+          <End Role="GT_targetMuscles" Type="Self.GT_targetMuscles" Multiplicity="1" />
+          <End Role="GT_Exercicio_targetMuscles" Type="Self.GT_Exercicio_targetMuscles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_targetMuscles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_targetMuscles">
+              <PropertyRef Name="GT_targetMuscles_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3246,12 +3384,18 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           <EntitySet Name="GRL_ENDERECO_PAIS" EntityType="Self.GRL_ENDERECO_PAIS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRL_TOKENS" EntityType="Self.GRL_TOKENS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRL_TOKENS_TIPOS" EntityType="Self.GRL_TOKENS_TIPOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GT_bodyParts" EntityType="Self.GT_bodyParts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_Carga" EntityType="Self.GT_Carga" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_CoeficienteRepeticao" EntityType="Self.GT_CoeficienteRepeticao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_DuracaoPlano" EntityType="Self.GT_DuracaoPlano" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_DuracaoTreinoCardio" EntityType="Self.GT_DuracaoTreinoCardio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GT_equipments" EntityType="Self.GT_equipments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_Exercicio" EntityType="Self.GT_Exercicio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_Exercicio_ARQUIVOS" EntityType="Self.GT_Exercicio_ARQUIVOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GT_Exercicio_bodyParts" EntityType="Self.GT_Exercicio_bodyParts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GT_Exercicio_equipments" EntityType="Self.GT_Exercicio_equipments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GT_Exercicio_instructions" EntityType="Self.GT_Exercicio_instructions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GT_Exercicio_targetMuscles" EntityType="Self.GT_Exercicio_targetMuscles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_ExercicioTreino" EntityType="Self.GT_ExercicioTreino" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_ExercicioTreinoCardio" EntityType="Self.GT_ExercicioTreinoCardio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_FaseTreino" EntityType="Self.GT_FaseTreino" Schema="dbo" store:Type="Tables" />
@@ -3270,6 +3414,7 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           <EntitySet Name="GT_Series" EntityType="Self.GT_Series" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_SOCIOS" EntityType="Self.GT_SOCIOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_SOCIOS_EVOLUCAO" EntityType="Self.GT_SOCIOS_EVOLUCAO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GT_targetMuscles" EntityType="Self.GT_targetMuscles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_TempoDescanso" EntityType="Self.GT_TempoDescanso" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_TipoMetodoCardio" EntityType="Self.GT_TipoMetodoCardio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GT_TipoMetodoComposicao" EntityType="Self.GT_TipoMetodoComposicao" Schema="dbo" store:Type="Tables" />
@@ -3565,9 +3710,37 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
             <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
             <End Role="GT_Exercicio_ARQUIVOS" EntitySet="GT_Exercicio_ARQUIVOS" />
           </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_bodyParts_GT_bodyParts_ID" Association="Self.GT_Exercicio_bodyParts_GT_bodyParts_ID">
+            <End Role="GT_bodyParts" EntitySet="GT_bodyParts" />
+            <End Role="GT_Exercicio_bodyParts" EntitySet="GT_Exercicio_bodyParts" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_bodyParts_GT_Exercicio_ID" Association="Self.GT_Exercicio_bodyParts_GT_Exercicio_ID">
+            <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
+            <End Role="GT_Exercicio_bodyParts" EntitySet="GT_Exercicio_bodyParts" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_equipments_GT_equipments_ID" Association="Self.GT_Exercicio_equipments_GT_equipments_ID">
+            <End Role="GT_equipments" EntitySet="GT_equipments" />
+            <End Role="GT_Exercicio_equipments" EntitySet="GT_Exercicio_equipments" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_equipments_GT_Exercicio_ID" Association="Self.GT_Exercicio_equipments_GT_Exercicio_ID">
+            <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
+            <End Role="GT_Exercicio_equipments" EntitySet="GT_Exercicio_equipments" />
+          </AssociationSet>
           <AssociationSet Name="GT_Exercicio_GT_TipoTreino_ID" Association="Self.GT_Exercicio_GT_TipoTreino_ID">
             <End Role="GT_TipoTreino" EntitySet="GT_TipoTreino" />
             <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_instructions_GT_Exercicio_ID" Association="Self.GT_Exercicio_instructions_GT_Exercicio_ID">
+            <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
+            <End Role="GT_Exercicio_instructions" EntitySet="GT_Exercicio_instructions" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_targetMuscles_GT_Exercicio_ID" Association="Self.GT_Exercicio_targetMuscles_GT_Exercicio_ID">
+            <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
+            <End Role="GT_Exercicio_targetMuscles" EntitySet="GT_Exercicio_targetMuscles" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_targetMuscles_GT_targetMuscles_ID" Association="Self.GT_Exercicio_targetMuscles_GT_targetMuscles_ID">
+            <End Role="GT_targetMuscles" EntitySet="GT_targetMuscles" />
+            <End Role="GT_Exercicio_targetMuscles" EntitySet="GT_Exercicio_targetMuscles" />
           </AssociationSet>
           <AssociationSet Name="GT_ExercicioTreino_GT_Carga_ID" Association="Self.GT_ExercicioTreino_GT_Carga_ID">
             <End Role="GT_Carga" EntitySet="GT_Carga" />
@@ -5563,6 +5736,41 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
             <Parameter Name="UserInsercaoId" Mode="In" Type="Int32" />
             <Parameter Name="Action" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="GT_bodyParts" EntityType="GESTREINO_ORM.GT_bodyParts" />
+          <EntitySet Name="GT_equipments" EntityType="GESTREINO_ORM.GT_equipments" />
+          <EntitySet Name="GT_Exercicio_bodyParts" EntityType="GESTREINO_ORM.GT_Exercicio_bodyParts" />
+          <EntitySet Name="GT_Exercicio_equipments" EntityType="GESTREINO_ORM.GT_Exercicio_equipments" />
+          <EntitySet Name="GT_Exercicio_instructions" EntityType="GESTREINO_ORM.GT_Exercicio_instructions" />
+          <EntitySet Name="GT_Exercicio_targetMuscles" EntityType="GESTREINO_ORM.GT_Exercicio_targetMuscles" />
+          <EntitySet Name="GT_targetMuscles" EntityType="GESTREINO_ORM.GT_targetMuscles" />
+          <AssociationSet Name="GT_Exercicio_bodyParts_GT_bodyParts_ID" Association="GESTREINO_ORM.GT_Exercicio_bodyParts_GT_bodyParts_ID">
+            <End Role="GT_bodyParts" EntitySet="GT_bodyParts" />
+            <End Role="GT_Exercicio_bodyParts" EntitySet="GT_Exercicio_bodyParts" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_equipments_GT_equipments_ID" Association="GESTREINO_ORM.GT_Exercicio_equipments_GT_equipments_ID">
+            <End Role="GT_equipments" EntitySet="GT_equipments" />
+            <End Role="GT_Exercicio_equipments" EntitySet="GT_Exercicio_equipments" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_bodyParts_GT_Exercicio_ID" Association="GESTREINO_ORM.GT_Exercicio_bodyParts_GT_Exercicio_ID">
+            <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
+            <End Role="GT_Exercicio_bodyParts" EntitySet="GT_Exercicio_bodyParts" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_equipments_GT_Exercicio_ID" Association="GESTREINO_ORM.GT_Exercicio_equipments_GT_Exercicio_ID">
+            <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
+            <End Role="GT_Exercicio_equipments" EntitySet="GT_Exercicio_equipments" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_instructions_GT_Exercicio_ID" Association="GESTREINO_ORM.GT_Exercicio_instructions_GT_Exercicio_ID">
+            <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
+            <End Role="GT_Exercicio_instructions" EntitySet="GT_Exercicio_instructions" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_targetMuscles_GT_Exercicio_ID" Association="GESTREINO_ORM.GT_Exercicio_targetMuscles_GT_Exercicio_ID">
+            <End Role="GT_Exercicio" EntitySet="GT_Exercicio" />
+            <End Role="GT_Exercicio_targetMuscles" EntitySet="GT_Exercicio_targetMuscles" />
+          </AssociationSet>
+          <AssociationSet Name="GT_Exercicio_targetMuscles_GT_targetMuscles_ID" Association="GESTREINO_ORM.GT_Exercicio_targetMuscles_GT_targetMuscles_ID">
+            <End Role="GT_targetMuscles" EntitySet="GT_targetMuscles" />
+            <End Role="GT_Exercicio_targetMuscles" EntitySet="GT_Exercicio_targetMuscles" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="SP_UTILIZADORES_LOGIN_LOGS_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -6047,6 +6255,11 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           <NavigationProperty Name="GT_TipoTreino" Relationship="GESTREINO_ORM.GT_Exercicio_GT_TipoTreino_ID" FromRole="GT_Exercicio" ToRole="GT_TipoTreino" />
           <NavigationProperty Name="GT_ExercicioTreino" Relationship="GESTREINO_ORM.GT_ExercicioTreino_GT_Exercicio_ID" FromRole="GT_Exercicio" ToRole="GT_ExercicioTreino" />
           <NavigationProperty Name="GT_ExercicioTreinoCardio" Relationship="GESTREINO_ORM.GT_ExercicioTreinoCardio_GT_Exercicio_ID" FromRole="GT_Exercicio" ToRole="GT_ExercicioTreinoCardio" />
+          <Property Name="API_exerciseId" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GT_Exercicio_bodyParts" Relationship="GESTREINO_ORM.GT_Exercicio_bodyParts_GT_Exercicio_ID" FromRole="GT_Exercicio" ToRole="GT_Exercicio_bodyParts" />
+          <NavigationProperty Name="GT_Exercicio_equipments" Relationship="GESTREINO_ORM.GT_Exercicio_equipments_GT_Exercicio_ID" FromRole="GT_Exercicio" ToRole="GT_Exercicio_equipments" />
+          <NavigationProperty Name="GT_Exercicio_instructions" Relationship="GESTREINO_ORM.GT_Exercicio_instructions_GT_Exercicio_ID" FromRole="GT_Exercicio" ToRole="GT_Exercicio_instructions" />
+          <NavigationProperty Name="GT_Exercicio_targetMuscles" Relationship="GESTREINO_ORM.GT_Exercicio_targetMuscles_GT_Exercicio_ID" FromRole="GT_Exercicio" ToRole="GT_Exercicio_targetMuscles" />
         </EntityType>
         <EntityType Name="GT_Exercicio_ARQUIVOS">
           <Key>
@@ -8310,6 +8523,153 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           <Property Type="String" Name="DATA_INSERCAO" Nullable="true" MaxLength="19" />
           <Property Type="String" Name="DATA_ACTUALIZACAO" Nullable="true" MaxLength="19" />
         </ComplexType>
+        <EntityType Name="GT_bodyParts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOME" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GT_Exercicio_bodyParts" Relationship="GESTREINO_ORM.GT_Exercicio_bodyParts_GT_bodyParts_ID" FromRole="GT_bodyParts" ToRole="GT_Exercicio_bodyParts" />
+        </EntityType>
+        <EntityType Name="GT_equipments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOME" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GT_Exercicio_equipments" Relationship="GESTREINO_ORM.GT_Exercicio_equipments_GT_equipments_ID" FromRole="GT_equipments" ToRole="GT_Exercicio_equipments" />
+        </EntityType>
+        <EntityType Name="GT_Exercicio_bodyParts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GT_Exercicio_ID" Type="Int32" Nullable="false" />
+          <Property Name="GT_bodyParts_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="GT_bodyParts" Relationship="GESTREINO_ORM.GT_Exercicio_bodyParts_GT_bodyParts_ID" FromRole="GT_Exercicio_bodyParts" ToRole="GT_bodyParts" />
+          <NavigationProperty Name="GT_Exercicio" Relationship="GESTREINO_ORM.GT_Exercicio_bodyParts_GT_Exercicio_ID" FromRole="GT_Exercicio_bodyParts" ToRole="GT_Exercicio" />
+        </EntityType>
+        <EntityType Name="GT_Exercicio_equipments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GT_Exercicio_ID" Type="Int32" Nullable="false" />
+          <Property Name="GT_equipments_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="GT_equipments" Relationship="GESTREINO_ORM.GT_Exercicio_equipments_GT_equipments_ID" FromRole="GT_Exercicio_equipments" ToRole="GT_equipments" />
+          <NavigationProperty Name="GT_Exercicio" Relationship="GESTREINO_ORM.GT_Exercicio_equipments_GT_Exercicio_ID" FromRole="GT_Exercicio_equipments" ToRole="GT_Exercicio" />
+        </EntityType>
+        <EntityType Name="GT_Exercicio_instructions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GT_Exercicio_ID" Type="Int32" Nullable="false" />
+          <Property Name="DESCRICAO" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GT_Exercicio" Relationship="GESTREINO_ORM.GT_Exercicio_instructions_GT_Exercicio_ID" FromRole="GT_Exercicio_instructions" ToRole="GT_Exercicio" />
+        </EntityType>
+        <EntityType Name="GT_Exercicio_targetMuscles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GT_Exercicio_ID" Type="Int32" Nullable="false" />
+          <Property Name="GT_targetMuscles_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="GT_Exercicio" Relationship="GESTREINO_ORM.GT_Exercicio_targetMuscles_GT_Exercicio_ID" FromRole="GT_Exercicio_targetMuscles" ToRole="GT_Exercicio" />
+          <NavigationProperty Name="GT_targetMuscles" Relationship="GESTREINO_ORM.GT_Exercicio_targetMuscles_GT_targetMuscles_ID" FromRole="GT_Exercicio_targetMuscles" ToRole="GT_targetMuscles" />
+        </EntityType>
+        <EntityType Name="GT_targetMuscles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOME" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GT_Exercicio_targetMuscles" Relationship="GESTREINO_ORM.GT_Exercicio_targetMuscles_GT_targetMuscles_ID" FromRole="GT_targetMuscles" ToRole="GT_Exercicio_targetMuscles" />
+        </EntityType>
+        <Association Name="GT_Exercicio_bodyParts_GT_bodyParts_ID">
+          <End Type="GESTREINO_ORM.GT_bodyParts" Role="GT_bodyParts" Multiplicity="1" />
+          <End Type="GESTREINO_ORM.GT_Exercicio_bodyParts" Role="GT_Exercicio_bodyParts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_bodyParts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_bodyParts">
+              <PropertyRef Name="GT_bodyParts_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_equipments_GT_equipments_ID">
+          <End Type="GESTREINO_ORM.GT_equipments" Role="GT_equipments" Multiplicity="1" />
+          <End Type="GESTREINO_ORM.GT_Exercicio_equipments" Role="GT_Exercicio_equipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_equipments">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_equipments">
+              <PropertyRef Name="GT_equipments_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_bodyParts_GT_Exercicio_ID">
+          <End Type="GESTREINO_ORM.GT_Exercicio" Role="GT_Exercicio" Multiplicity="1" />
+          <End Type="GESTREINO_ORM.GT_Exercicio_bodyParts" Role="GT_Exercicio_bodyParts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_Exercicio">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_bodyParts">
+              <PropertyRef Name="GT_Exercicio_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_equipments_GT_Exercicio_ID">
+          <End Type="GESTREINO_ORM.GT_Exercicio" Role="GT_Exercicio" Multiplicity="1" />
+          <End Type="GESTREINO_ORM.GT_Exercicio_equipments" Role="GT_Exercicio_equipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_Exercicio">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_equipments">
+              <PropertyRef Name="GT_Exercicio_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_instructions_GT_Exercicio_ID">
+          <End Type="GESTREINO_ORM.GT_Exercicio" Role="GT_Exercicio" Multiplicity="1" />
+          <End Type="GESTREINO_ORM.GT_Exercicio_instructions" Role="GT_Exercicio_instructions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_Exercicio">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_instructions">
+              <PropertyRef Name="GT_Exercicio_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_targetMuscles_GT_Exercicio_ID">
+          <End Type="GESTREINO_ORM.GT_Exercicio" Role="GT_Exercicio" Multiplicity="1" />
+          <End Type="GESTREINO_ORM.GT_Exercicio_targetMuscles" Role="GT_Exercicio_targetMuscles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_Exercicio">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_targetMuscles">
+              <PropertyRef Name="GT_Exercicio_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GT_Exercicio_targetMuscles_GT_targetMuscles_ID">
+          <End Type="GESTREINO_ORM.GT_targetMuscles" Role="GT_targetMuscles" Multiplicity="1" />
+          <End Type="GESTREINO_ORM.GT_Exercicio_targetMuscles" Role="GT_Exercicio_targetMuscles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GT_targetMuscles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GT_Exercicio_targetMuscles">
+              <PropertyRef Name="GT_targetMuscles_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9332,6 +9692,7 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
           <EntitySetMapping Name="GT_Exercicio">
             <EntityTypeMapping TypeName="GESTREINO_ORM.GT_Exercicio">
               <MappingFragment StoreEntitySet="GT_Exercicio">
+                <ScalarProperty Name="API_exerciseId" ColumnName="API_exerciseId" />
                 <ScalarProperty Name="DATA_REMOCAO" ColumnName="DATA_REMOCAO" />
                 <ScalarProperty Name="DATA_ACTUALIZACAO" ColumnName="DATA_ACTUALIZACAO" />
                 <ScalarProperty Name="DATA_INSERCAO" ColumnName="DATA_INSERCAO" />
@@ -10708,6 +11069,66 @@ warning 6002: The table/view 'GESTREINO_.dbo.PesoMedio' does not have a primary 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="GT_bodyParts">
+            <EntityTypeMapping TypeName="GESTREINO_ORM.GT_bodyParts">
+              <MappingFragment StoreEntitySet="GT_bodyParts">
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GT_equipments">
+            <EntityTypeMapping TypeName="GESTREINO_ORM.GT_equipments">
+              <MappingFragment StoreEntitySet="GT_equipments">
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GT_Exercicio_bodyParts">
+            <EntityTypeMapping TypeName="GESTREINO_ORM.GT_Exercicio_bodyParts">
+              <MappingFragment StoreEntitySet="GT_Exercicio_bodyParts">
+                <ScalarProperty Name="GT_bodyParts_ID" ColumnName="GT_bodyParts_ID" />
+                <ScalarProperty Name="GT_Exercicio_ID" ColumnName="GT_Exercicio_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GT_Exercicio_equipments">
+            <EntityTypeMapping TypeName="GESTREINO_ORM.GT_Exercicio_equipments">
+              <MappingFragment StoreEntitySet="GT_Exercicio_equipments">
+                <ScalarProperty Name="GT_equipments_ID" ColumnName="GT_equipments_ID" />
+                <ScalarProperty Name="GT_Exercicio_ID" ColumnName="GT_Exercicio_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GT_Exercicio_instructions">
+            <EntityTypeMapping TypeName="GESTREINO_ORM.GT_Exercicio_instructions">
+              <MappingFragment StoreEntitySet="GT_Exercicio_instructions">
+                <ScalarProperty Name="DESCRICAO" ColumnName="DESCRICAO" />
+                <ScalarProperty Name="GT_Exercicio_ID" ColumnName="GT_Exercicio_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GT_Exercicio_targetMuscles">
+            <EntityTypeMapping TypeName="GESTREINO_ORM.GT_Exercicio_targetMuscles">
+              <MappingFragment StoreEntitySet="GT_Exercicio_targetMuscles">
+                <ScalarProperty Name="GT_targetMuscles_ID" ColumnName="GT_targetMuscles_ID" />
+                <ScalarProperty Name="GT_Exercicio_ID" ColumnName="GT_Exercicio_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GT_targetMuscles">
+            <EntityTypeMapping TypeName="GESTREINO_ORM.GT_targetMuscles">
+              <MappingFragment StoreEntitySet="GT_targetMuscles">
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

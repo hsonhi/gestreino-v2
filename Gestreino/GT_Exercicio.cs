@@ -20,6 +20,10 @@ namespace Gestreino
             this.GT_Exercicio_ARQUIVOS = new HashSet<GT_Exercicio_ARQUIVOS>();
             this.GT_ExercicioTreino = new HashSet<GT_ExercicioTreino>();
             this.GT_ExercicioTreinoCardio = new HashSet<GT_ExercicioTreinoCardio>();
+            this.GT_Exercicio_bodyParts = new HashSet<GT_Exercicio_bodyParts>();
+            this.GT_Exercicio_equipments = new HashSet<GT_Exercicio_equipments>();
+            this.GT_Exercicio_instructions = new HashSet<GT_Exercicio_instructions>();
+            this.GT_Exercicio_targetMuscles = new HashSet<GT_Exercicio_targetMuscles>();
         }
     
         public int ID { get; set; }
@@ -33,6 +37,7 @@ namespace Gestreino
         public System.DateTime DATA_INSERCAO { get; set; }
         public Nullable<System.DateTime> DATA_ACTUALIZACAO { get; set; }
         public Nullable<System.DateTime> DATA_REMOCAO { get; set; }
+        public string API_exerciseId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GT_Exercicio_ARQUIVOS> GT_Exercicio_ARQUIVOS { get; set; }
@@ -41,5 +46,13 @@ namespace Gestreino
         public virtual ICollection<GT_ExercicioTreino> GT_ExercicioTreino { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GT_ExercicioTreinoCardio> GT_ExercicioTreinoCardio { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GT_Exercicio_bodyParts> GT_Exercicio_bodyParts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GT_Exercicio_equipments> GT_Exercicio_equipments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GT_Exercicio_instructions> GT_Exercicio_instructions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GT_Exercicio_targetMuscles> GT_Exercicio_targetMuscles { get; set; }
     }
 }
