@@ -5892,7 +5892,41 @@ function initSearchTable(search) {
         if (search == 3) handleDataSearchTable3();
     }
 }
+// GT PLANS
+function filterItems() {
+    // Declare variables
+    var input, filter, parentDiv, items, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    parentDiv = document.getElementById("list1");
+    items = parentDiv.getElementsByClassName('hide-long-text'); // Get all elements with class 'item' inside 'itemList'
 
+    // Loop through all list items, and hide those who don't match the search query
+    for (var i = 0; i < items.length; i++) {
+        txtValue = items[i].textContent || items[i].innerText; // Get the text content
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            items[i].style.display = ""; // Show the item
+        } else {
+            items[i].style.display = "none"; // Hide the item
+        }
+    }
+}
+function filterItemsBodyParts(val, target) {
+    var parentDiv, items, txtValue;
+    parentDiv = document.getElementById("list1");
+    items = parentDiv.getElementsByClassName('hide-long-text'); // Get all elements with class 'item' inside 'itemList'
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (var i = 0; i < items.length; i++) {
+        txtValue = $(items[i]).find('.' + target).val();
+        if (val == '') items[i].style.display = "";
+        else if (val == txtValue) {
+            items[i].style.display = ""; // Show the item
+        } else {
+            items[i].style.display = "none"; // Hide the item
+        }
+    }
+}
 
 /*
 document.querySelectorAll('form').forEach(form => {

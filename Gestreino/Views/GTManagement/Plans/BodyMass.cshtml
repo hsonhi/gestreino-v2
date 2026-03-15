@@ -172,19 +172,19 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text font-size-11" id="basic-addon1">Partes do corpo</span>
                                             </div>
-                                            @Html.DropDownListFor(x => Model.GT_bodyParts_ID, Model.GT_bodyParts_List, "", new { onchange= "filterItemsBodyParts(this.val)", @class = "form-control form-control-sm" })
+                                            @Html.DropDownListFor(x => Model.GT_bodyParts_ID, Model.GT_bodyParts_List, "", new { onchange= "filterItemsBodyParts(this.value,'GT_bodyParts')", @class = "form-control form-control-sm" })
                                         </div>
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text font-size-11" id="basic-addon1">Equipamentos&nbsp;&nbsp;&nbsp;</span>
                                             </div>
-                                            @Html.DropDownListFor(x => Model.GT_equipments_ID, Model.GT_equipments_List, "", new { @class = "form-control form-control-sm" })
+                                            @Html.DropDownListFor(x => Model.GT_equipments_ID, Model.GT_equipments_List, "", new { onchange = "filterItemsBodyParts(this.value,'GT_equipments')", @class = "form-control form-control-sm" })
                                         </div>
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text font-size-11" id="basic-addon1">Músculos alvo&nbsp;&nbsp;&nbsp;</span>
                                             </div>
-                                            @Html.DropDownListFor(x => Model.GT_targetMuscles_ID, Model.GT_targetMuscles_List, "", new { @class = "form-control form-control-sm" })
+                                            @Html.DropDownListFor(x => Model.GT_targetMuscles_ID, Model.GT_targetMuscles_List, "", new { onchange = "filterItemsBodyParts(this.value,'GT_targetMuscles')", @class = "form-control form-control-sm" })
                                         </div>
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
@@ -209,11 +209,15 @@
                                                             // item.API_exerciseId != null? Model.fullPaths.Where(x=>x.Contains(item.API_exerciseId)).Select(x=>x).FirstOrDefault():string.Empty;//.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
                                                             //var path = Model.ExerciseArqList.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
                                                             var GT_bodyParts_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_bodyParts_ID).ToList();
-                                                            <input type="" value="@string.Join(", ", GT_bodyParts_ID)" id="GT_bodyParts_ID"/>
+                                                            var GT_equipments_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_equipments_ID).ToList();
+                                                            var GT_targetMuscles_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_targetMuscles_ID).ToList();
                                                             <li class="sidebar-menu-item hide-long-text" style="" id="ex_@item.ID">
+                                                                <input type="hidden" value="@string.Join(", ", GT_bodyParts_ID)" class="GT_bodyParts" />
+                                                                <input type="hidden" value="@string.Join(", ", GT_equipments_ID)" class="GT_equipments" />
+                                                                <input type="hidden" value="@string.Join(", ", GT_targetMuscles_ID)" class="GT_targetMuscles" />
                                                                 <img class="" src="@path" />
                                                                 <button @dis type="button" data-id="@item.ID" class="addlistplan1 btn btn-sm btn-success  btn-sm"><i class="fa fa-plus-circle"></i></button>
-                                                                <button type="button" data-id="@item.ID" class=" btn btn-sm btn-default  btn-sm"><i class="fa fa-circle-info"></i></button>
+                                                                <button type="button" hidden data-id="@item.ID" class=" btn btn-sm btn-default  btn-sm"><i class="fa fa-circle-info"></i></button>
                                                                 <a href="javascript:" style="display:none" data-placement="top" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
                                                                 <button type="button" style="display:none" class="sortable btn btn-sm btn-default"><i class="fa fa-sort"></i></button>
                                                                 <br />
@@ -420,33 +424,9 @@
 </div>
     <!-- /page content -->
     <script>
-
-        function filterItems() {
-            // Declare variables
-            var input, filter, parentDiv, items, txtValue;
-            input = document.getElementById('searchInput');
-            filter = input.value.toUpperCase();
-            parentDiv = document.getElementById("list1");
-            items = parentDiv.getElementsByClassName('hide-long-text'); // Get all elements with class 'item' inside 'itemList'
-
-            // Loop through all list items, and hide those who don't match the search query
-            for (var i = 0; i < items.length; i++) {
-                txtValue = items[i].textContent || items[i].innerText; // Get the text content
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    items[i].style.display = ""; // Show the item
-                } else {
-                    items[i].style.display = "none"; // Hide the item
-                }
-            }
-        }
-
-        function filterItemsBodyParts(val) {
-            alert(val)
-        }
         document.addEventListener("DOMContentLoaded", function (event) {
             handleDataGTTreinoTable();
-            initSortable();
-
+           initSortable();
         });
     </script>
 }
