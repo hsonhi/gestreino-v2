@@ -1863,6 +1863,24 @@ namespace Gestreino.Controllers
             MODEL.PEsId = !string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) ? int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) : 0;
             ViewBag.exercises = databaseManager.GT_Exercicio.Where(x => x.DATA_REMOCAO == null && x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS).OrderBy(x=>x.NOME).ToList();
 
+
+            var ExerciseDbAPI =
+                             (from j1 in databaseManager.GT_Exercicio
+                              join j2 in databaseManager.GT_Exercicio_bodyParts on j1.ID equals j2.GT_Exercicio_ID
+                              join j3 in databaseManager.GT_Exercicio_equipments on j1.ID equals j3.GT_Exercicio_ID
+                              join j4 in databaseManager.GT_Exercicio_targetMuscles on j1.ID equals j4.GT_Exercicio_ID
+                              where j1.DATA_REMOCAO == null && j1.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS 
+                              && j1.API_exerciseId!=null
+                              select new ExerciseDbAPI(){ 
+                                ID= j1.ID,
+                                  GT_bodyParts_ID=j2.GT_bodyParts_ID,
+                                  GT_equipments_ID= j3.GT_equipments_ID,
+                                  GT_targetMuscles_ID=j4.GT_targetMuscles_ID
+                              }).ToList();
+            MODEL.ExerciseDbAPI = ExerciseDbAPI;
+
+
+
             var upload = "gtexercicios";
             List<ExerciseArq> ExerciseArqList = new List<ExerciseArq>();
             List<ExerciseArq> ExerciseArqListTreino = new List<ExerciseArq>();

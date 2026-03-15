@@ -738,6 +738,13 @@ namespace Gestreino.Models
 
     public class ExerciseDbAPI
     {
+        public int ID { get; set; }
+        public int GT_bodyParts_ID { get; set; }
+        public int GT_equipments_ID { get; set; }
+        public int GT_targetMuscles_ID { get; set; }
+    }
+    /* public class ExerciseDbAPI
+    {
         public string exerciseId { get; set; }
         public string name { get; set; }
         public string gifUrl { get; set; }
@@ -746,7 +753,7 @@ namespace Gestreino.Models
         public List<String> equipments { get; set; }
         public List<String> secondaryMuscles { get; set; }
         public List<String> instructions { get; set; }
-    }
+    }*/
 
     public class GT_Quest_Anxient
     {

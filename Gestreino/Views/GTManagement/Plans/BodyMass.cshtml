@@ -167,39 +167,37 @@
                             <div class="row mt-3">
                                 <div class="col-md-5">
                                     <h5 class="planfieldseth5">Exercícios disponíveis</h5>
-
-                                    <div class="p-2 bg-light">
-                                        <div class="input-group mb-3">
+                                    <div class="">
+                                        <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text font-size-11" id="basic-addon1">GT_bodyParts_List</span>
+                                                <span class="input-group-text font-size-11" id="basic-addon1">Partes do corpo</span>
                                             </div>
-                                            @Html.DropDownListFor(x => Model.GT_bodyParts_ID, Model.GT_bodyParts_List, "", new { @class = "form-control form-control-sm" })
+                                            @Html.DropDownListFor(x => Model.GT_bodyParts_ID, Model.GT_bodyParts_List, "", new { onchange= "filterItemsBodyParts(this.val)", @class = "form-control form-control-sm" })
                                         </div>
-                                        <div class="input-group mb-3">
+                                        <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text font-size-11" id="basic-addon1">GT_bodyParts_List</span>
+                                                <span class="input-group-text font-size-11" id="basic-addon1">Equipamentos&nbsp;&nbsp;&nbsp;</span>
                                             </div>
                                             @Html.DropDownListFor(x => Model.GT_equipments_ID, Model.GT_equipments_List, "", new { @class = "form-control form-control-sm" })
                                         </div>
-                                        <div class="input-group mb-3">
+                                        <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text font-size-11" id="basic-addon1">GT_bodyParts_List</span>
+                                                <span class="input-group-text font-size-11" id="basic-addon1">Músculos alvo&nbsp;&nbsp;&nbsp;</span>
                                             </div>
                                             @Html.DropDownListFor(x => Model.GT_targetMuscles_ID, Model.GT_targetMuscles_List, "", new { @class = "form-control form-control-sm" })
                                         </div>
-                                        <div class="input-group mb-3">
+                                        <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text font-size-11" id="basic-addon1">Filtrar</span>
+                                                <span class="input-group-text font-size-11" id="basic-addon1"><i class="fa fa-search"></i>&nbsp;Pesquisar..&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                             </div>
-                                            <input type="text" class="form-control form-control-sm" id="searchInput" onkeyup="filterItems()" placeholder="Pesquisar..">
+                                            <input type="text" class="form-control form-control-sm" id="searchInput" onkeyup="filterItems()" placeholder="">
                                         </div>
                                    </div>
-                                  
                                     <div class="planfieldset p-1">
                                         <div class="row mt-2">
                                             <div class="col-md-12">
                                                 <div class="">
-                                                    <ul class="p-2 mb-0" id="list1" style="height: 300px; top: 10px; bottom: 10px; width: 100%;overflow-y:auto;">
+                                                    <ul class="p-2 mb-0" id="list1" style="height: 351px; top: 10px; bottom: 10px; width: 100%;overflow-y:auto;">
                                                         @foreach (var item in ViewBag.exercises)
                                                         {
                                                             var dis = string.Empty;
@@ -207,13 +205,18 @@
                                                             {
                                                                 dis = Model.ExerciseArqListTreino.Where(x => x.ExerciseId == item.ID).Any() ? "disabled" : "";
                                                             }
-                                                            var path = "/Assets/json/" + item.API_exerciseId + ".gif";// item.API_exerciseId != null? Model.fullPaths.Where(x=>x.Contains(item.API_exerciseId)).Select(x=>x).FirstOrDefault():string.Empty;//.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
-                                                                                                                      //var path = Model.ExerciseArqList.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
+                                                            var path = "/Assets/json/" + item.API_exerciseId + ".gif";
+                                                            // item.API_exerciseId != null? Model.fullPaths.Where(x=>x.Contains(item.API_exerciseId)).Select(x=>x).FirstOrDefault():string.Empty;//.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
+                                                            //var path = Model.ExerciseArqList.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
+                                                            var GT_bodyParts_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_bodyParts_ID).ToList();
+                                                            <input type="" value="@string.Join(", ", GT_bodyParts_ID)" id="GT_bodyParts_ID"/>
                                                             <li class="sidebar-menu-item hide-long-text" style="" id="ex_@item.ID">
                                                                 <img class="" src="@path" />
                                                                 <button @dis type="button" data-id="@item.ID" class="addlistplan1 btn btn-sm btn-success  btn-sm"><i class="fa fa-plus-circle"></i></button>
+                                                                <button type="button" data-id="@item.ID" class=" btn btn-sm btn-default  btn-sm"><i class="fa fa-circle-info"></i></button>
                                                                 <a href="javascript:" style="display:none" data-placement="top" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
                                                                 <button type="button" style="display:none" class="sortable btn btn-sm btn-default"><i class="fa fa-sort"></i></button>
+                                                                <br />
                                                                 <a title="" href="@Url.Action("viewexercises", "administration", new {Id=item.ID})" target="_blank" class="text-50">@item.NOME</a>
                                                             </li>
                                                         }
@@ -246,7 +249,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-12">
 
-                                                <ul class="p-2 mb-0" id="list2" style="height: 300px; top: 10px; bottom: 10px; width: 100%;overflow-y:auto;">
+                                                <ul class="p-2 mb-0" id="list2" style="height: 490px; top: 10px; bottom: 10px; width: 100%;overflow-y:auto;">
                                                     @if (Model.ID > 0)
                                                     {
                                                         foreach (var item in Model.ExerciseArqListTreino.OrderBy(x => x.ORDEM))
@@ -435,6 +438,10 @@
                     items[i].style.display = "none"; // Hide the item
                 }
             }
+        }
+
+        function filterItemsBodyParts(val) {
+            alert(val)
         }
         document.addEventListener("DOMContentLoaded", function (event) {
             handleDataGTTreinoTable();
