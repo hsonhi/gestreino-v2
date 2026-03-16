@@ -181,7 +181,7 @@ namespace Gestreino.Models
         [Display(Name = "Tamanho do Logotipo (Pixels)")]
         public int? INST_PER_LOGOTIPO_WIDTH { get; set; }
 
-        [Display(Name = "Moeda padrão")]
+        [Display(Name = "País e moeda padrão")]
         public int? INST_MDL_GPAG_MOEDA_PADRAO { get; set; }
 
         [Display(Name = "Número de dígitos de valores monetários")]
@@ -627,6 +627,21 @@ namespace Gestreino.Models
         [Display(Name = "Sequência")]
         public int? Sequencia { get; set; }
 
+        [Display(Name = "Parte do Corpo")]
+        public int? BodypartId { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> BodypartList { get; set; }
+
+        [Display(Name = "Equipamento")]
+        public int? EquipamentId { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> EquipamentList { get; set; }
+
+        [Display(Name = "Músculo alvo")]
+        public int? TargetMuscleId { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> TargetMuscleList { get; set; }
+        [Display(Name = "Instruções")]
+        public string Instructions { get; set; }
+        public List<string> InstructionsList { get; set; }
+
     }
     public class GT_TreinoBodyMass
     {
@@ -667,6 +682,7 @@ namespace Gestreino.Models
         public List<ExerciseArq> ExerciseArqList { get; set; }
         public List<ExerciseArq> ExerciseArqListTreino { get; set; }
         public List<ExerciseDbAPI> ExerciseDbAPI { get; set; }
+        public List<Exercises> Exercises { get; set; }
 
         [Display(Name = "")]
         public int? GT_bodyParts_ID { get; set; }
@@ -677,8 +693,6 @@ namespace Gestreino.Models
         [Display(Name = "")]
         public int? GT_targetMuscles_ID { get; set; }
         public IEnumerable<System.Web.Mvc.SelectListItem> GT_targetMuscles_List { get; set; }
-
-        public string[] fullPaths { get; set; }
 
         //[Required]
         [Display(Name = "Data de início do plano:")]
@@ -719,6 +733,7 @@ namespace Gestreino.Models
     public class ExerciseArq
     {
         public int? ExerciseId { get; set; }
+        public string API_exerciseId { get; set; }
         public string Name { get; set; }
         public string LogoPath { get; set; }
         public int? GT_Treino_ID { get; set; }
@@ -739,9 +754,17 @@ namespace Gestreino.Models
     public class ExerciseDbAPI
     {
         public int ID { get; set; }
+        public string NOME { get; set; }
+        public string API_exerciseId { get; set; }
         public int GT_bodyParts_ID { get; set; }
         public int GT_equipments_ID { get; set; }
         public int GT_targetMuscles_ID { get; set; }
+    }
+    public class Exercises
+    {
+        public int ID { get; set; }
+        public string NOME { get; set; }
+        public string API_exerciseId { get; set; }
     }
     /* public class ExerciseDbAPI
     {

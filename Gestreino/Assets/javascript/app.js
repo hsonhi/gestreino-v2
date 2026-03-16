@@ -5920,7 +5920,7 @@ function filterItemsBodyParts(val, target) {
     for (var i = 0; i < items.length; i++) {
         txtValue = $(items[i]).find('.' + target).val();
         if (val == '') items[i].style.display = "";
-        else if (val == txtValue) {
+        else if (val == txtValue) { // Update to if txtValue contains
             items[i].style.display = ""; // Show the item
         } else {
             items[i].style.display = "none"; // Hide the item

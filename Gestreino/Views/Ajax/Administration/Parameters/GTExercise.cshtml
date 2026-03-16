@@ -52,6 +52,41 @@
                     @Html.TextBoxFor(x => Model.Sequencia, new { @class = "form-control form-control-sm", placeholder = "", type = "number", min = "1" })
                 </div>
             </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.BodypartId, new { @class = "col-sm-2 col-form-label text-right required" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(x => Model.BodypartId, Model.BodypartList, "Selecionar uma opcão", new { @class = "form-control form-control-sm", required = "required" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.EquipamentId, new { @class = "col-sm-2 col-form-label text-right required" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(x => Model.EquipamentId, Model.EquipamentList, "Selecionar uma opcão", new { @class = "form-control form-control-sm", required = "required" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.TargetMuscleId, new { @class = "col-sm-2 col-form-label text-right required" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(x => Model.TargetMuscleId, Model.TargetMuscleList, "Selecionar uma opcão", new { @class = "form-control form-control-sm", required = "required" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Instructions, new { @class = "col-sm-2 col-form-label text-right" })
+                <div class="col-sm-10">
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                </div>
+            </div>
             <div>
                 <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
@@ -84,6 +119,39 @@
                 @Html.LabelFor(m => m.Sequencia, new { @class = "col-sm-2 col-form-label text-right" })
                 <div class="col-sm-4">
                     @Html.TextBoxFor(x => Model.Sequencia, new { @class = "form-control form-control-sm", placeholder = "", type = "number", min = "1" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.BodypartId, new { @class = "col-sm-2 col-form-label text-right required" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(x => Model.BodypartId, Model.BodypartList, "Selecionar uma opcão", new { @class = "form-control form-control-sm", required = "required" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.EquipamentId, new { @class = "col-sm-2 col-form-label text-right required" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(x => Model.EquipamentId, Model.EquipamentList, "Selecionar uma opcão", new { @class = "form-control form-control-sm", required = "required" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.TargetMuscleId, new { @class = "col-sm-2 col-form-label text-right required" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(x => Model.TargetMuscleId, Model.TargetMuscleList, "Selecionar uma opcão", new { @class = "form-control form-control-sm", required = "required" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Instructions, new { @class = "col-sm-2 col-form-label text-right" })
+                <div class="col-sm-10">
+                    @{ int txts = 12 - Model.InstructionsList.Count();}
+
+                    @foreach (var item in Model.InstructionsList)
+                    {
+                        <input type="text" name="instructions[]" value="@item" class="form-control form-control-sm" maxlength="255" />
+                    }
+                    @for (int x = 1; x <= txts; x++)
+                    {
+                        <input type="text" name="instructions[]" class="form-control form-control-sm" maxlength="255" />
+                    }
                 </div>
             </div>
             <div>

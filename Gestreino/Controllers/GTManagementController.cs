@@ -1854,33 +1854,39 @@ namespace Gestreino.Controllers
             var GtTreino = databaseManager.GT_Treino.Where(x => x.DATA_REMOCAO == null && !string.IsNullOrEmpty(x.NOME) && x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS && x.INST_APLICACAO_ID== ApplicationId);
             MODEL.GTTreinoList = GtTreino.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.RepList = databaseManager.GT_CoeficienteRepeticao.OrderBy(x =>x.ID).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.ID.ToString() });
-            MODEL.GT_bodyParts_List = databaseManager.GT_bodyParts.Select(x => new SelectListItem { Value = x.ID.ToString(), Text =x.NOME });
-            MODEL.GT_equipments_List = databaseManager.GT_equipments.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
-            MODEL.GT_targetMuscles_List = databaseManager.GT_targetMuscles.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.DateIni = DateTime.Parse(DateTime.Now.ToString()).ToString("dd-MM-yyyy");
-
             MODEL.GTTipoTreinoId = Configs.GT_EXERCISE_TYPE_BODYMASS;
             MODEL.PEsId = !string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) ? int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) : 0;
-            ViewBag.exercises = databaseManager.GT_Exercicio.Where(x => x.DATA_REMOCAO == null && x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS).OrderBy(x=>x.NOME).ToList();
-
-
+        
             var ExerciseDbAPI =
                              (from j1 in databaseManager.GT_Exercicio
                               join j2 in databaseManager.GT_Exercicio_bodyParts on j1.ID equals j2.GT_Exercicio_ID
                               join j3 in databaseManager.GT_Exercicio_equipments on j1.ID equals j3.GT_Exercicio_ID
                               join j4 in databaseManager.GT_Exercicio_targetMuscles on j1.ID equals j4.GT_Exercicio_ID
                               where j1.DATA_REMOCAO == null && j1.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS 
-                              && j1.API_exerciseId!=null
+                              //&& j1.API_exerciseId!=null
                               select new ExerciseDbAPI(){ 
                                 ID= j1.ID,
+                                NOME=j1.NOME,
+                                API_exerciseId= j1.API_exerciseId,
                                   GT_bodyParts_ID=j2.GT_bodyParts_ID,
                                   GT_equipments_ID= j3.GT_equipments_ID,
                                   GT_targetMuscles_ID=j4.GT_targetMuscles_ID
                               }).ToList();
+
+            MODEL.Exercises = ExerciseDbAPI.Select(x => new Exercises() { ID = x.ID, NOME = x.NOME, API_exerciseId = x.API_exerciseId }).Distinct().OrderBy(x=>x.NOME).ToList();
             MODEL.ExerciseDbAPI = ExerciseDbAPI;
 
+            var GT_bodyPartsIds = ExerciseDbAPI.Select(x => x.GT_bodyParts_ID).ToList();
+            var GT_equipmentsIds = ExerciseDbAPI.Select(x => x.GT_equipments_ID).ToList();
+            var GT_targetMusclesIds = ExerciseDbAPI.Select(x => x.GT_targetMuscles_ID).ToList();
 
+            MODEL.GT_bodyParts_List = databaseManager.GT_bodyParts.Where(x=> GT_bodyPartsIds.Contains(x.ID)).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.GT_equipments_List = databaseManager.GT_equipments.Where(x => GT_equipmentsIds.Contains(x.ID)).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.GT_targetMuscles_List = databaseManager.GT_targetMuscles.Where(x => GT_targetMusclesIds.Contains(x.ID)).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
 
+            //Files
+            /*
             var upload = "gtexercicios";
             List<ExerciseArq> ExerciseArqList = new List<ExerciseArq>();
             List<ExerciseArq> ExerciseArqListTreino = new List<ExerciseArq>();
@@ -1893,8 +1899,7 @@ namespace Gestreino.Controllers
                                join j3 in databaseManager.GRL_ARQUIVOS on j2.ARQUIVOS_ID equals j3.ID
                                where j1.DATA_REMOCAO == null && j2.DATA_REMOCAO == null && j1.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS && j3.GRL_ARQUIVOS_TIPO_DOCS_ID == Configs.INST_MDL_ADM_VLRID_ARQUIVO_LOGOTIPO && j2.ACTIVO == true
                                select new ExerciseArq() { ExerciseId = j1.ID, Name = j1.NOME, LogoPath = string.IsNullOrEmpty(j3.CAMINHO_URL) ? "" : "/" + j3.CAMINHO_URL }).ToList();
-
-            MODEL.fullPaths = Directory.GetFiles(Path.Combine(Server.MapPath("~/"), string.Empty) + @"Assets\json");
+            */
 
             if (Id > 0)
             {
@@ -1911,7 +1916,7 @@ namespace Gestreino.Controllers
                                                join j2 in databaseManager.GT_Exercicio on j1.GT_Exercicio_ID equals j2.ID
                                                where j1.GT_Treino_ID == Id
                                                orderby j1.ORDEM
-                                               select new ExerciseArq() { Name = j2.NOME, ExerciseId = j1.GT_Exercicio_ID, GT_Series_ID = j1.GT_Series_ID, GT_Repeticoes_ID = j1.GT_Repeticoes_ID, GT_TempoDescanso_ID = j1.GT_TempoDescanso_ID, GT_Carga_ID = j1.GT_Carga_ID, REPETICOES_COMPLETADAS = j1.GT_CoeficienteRepeticao_ID, CARGA_USADA = j1.CARGA_USADA, ONERM = j1.ONERM, ORDEM = j1.ORDEM }).ToList();
+                                               select new ExerciseArq() {API_exerciseId=j2.API_exerciseId, Name = j2.NOME, ExerciseId = j1.GT_Exercicio_ID, GT_Series_ID = j1.GT_Series_ID, GT_Repeticoes_ID = j1.GT_Repeticoes_ID, GT_TempoDescanso_ID = j1.GT_TempoDescanso_ID, GT_Carga_ID = j1.GT_Carga_ID, REPETICOES_COMPLETADAS = j1.GT_CoeficienteRepeticao_ID, CARGA_USADA = j1.CARGA_USADA, ONERM = j1.ONERM, ORDEM = j1.ORDEM }).ToList();
                 
                 if (string.IsNullOrEmpty(predefined))
                 {
@@ -1934,7 +1939,7 @@ namespace Gestreino.Controllers
                 }
             }
 
-            MODEL.ExerciseArqList = ExerciseArqList;
+            //MODEL.ExerciseArqList = ExerciseArqList;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_PlanBodyMass;
 
             // EXERCISE API
@@ -1982,8 +1987,38 @@ namespace Gestreino.Controllers
 
             MODEL.GTTipoTreinoId = Configs.GT_EXERCISE_TYPE_CARDIO;
             MODEL.PEsId = !string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) ? int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) : 0;
-            ViewBag.exercises = databaseManager.GT_Exercicio.Where(x => x.DATA_REMOCAO == null && x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_CARDIO).OrderBy(x=>x.NOME).ToList();
+           
 
+            var ExerciseDbAPI =
+                            (from j1 in databaseManager.GT_Exercicio
+                             join j2 in databaseManager.GT_Exercicio_bodyParts on j1.ID equals j2.GT_Exercicio_ID
+                             join j3 in databaseManager.GT_Exercicio_equipments on j1.ID equals j3.GT_Exercicio_ID
+                             join j4 in databaseManager.GT_Exercicio_targetMuscles on j1.ID equals j4.GT_Exercicio_ID
+                             where j1.DATA_REMOCAO == null && j1.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_CARDIO
+                             //&& j1.API_exerciseId!=null
+                             select new ExerciseDbAPI()
+                             {
+                                 ID = j1.ID,
+                                 NOME = j1.NOME,
+                                 API_exerciseId = j1.API_exerciseId,
+                                 GT_bodyParts_ID = j2.GT_bodyParts_ID,
+                                 GT_equipments_ID = j3.GT_equipments_ID,
+                                 GT_targetMuscles_ID = j4.GT_targetMuscles_ID
+                             }).ToList();
+
+            MODEL.Exercises = ExerciseDbAPI.Select(x => new Exercises() { ID = x.ID, NOME = x.NOME, API_exerciseId = x.API_exerciseId }).Distinct().OrderBy(x => x.NOME).ToList();
+            MODEL.ExerciseDbAPI = ExerciseDbAPI;
+
+            var GT_bodyPartsIds = ExerciseDbAPI.Select(x => x.GT_bodyParts_ID).ToList();
+            var GT_equipmentsIds = ExerciseDbAPI.Select(x => x.GT_equipments_ID).ToList();
+            var GT_targetMusclesIds = ExerciseDbAPI.Select(x => x.GT_targetMuscles_ID).ToList();
+
+            MODEL.GT_bodyParts_List = databaseManager.GT_bodyParts.Where(x => GT_bodyPartsIds.Contains(x.ID)).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.GT_equipments_List = databaseManager.GT_equipments.Where(x => GT_equipmentsIds.Contains(x.ID)).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.GT_targetMuscles_List = databaseManager.GT_targetMuscles.Where(x => GT_targetMusclesIds.Contains(x.ID)).OrderBy(x => x.NOME).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+
+            // Files
+            /*
             var upload = "gtexercicios";
             List<ExerciseArq> ExerciseArqList = new List<ExerciseArq>();
             List<ExerciseArq> ExerciseArqListTreino = new List<ExerciseArq>();
@@ -1996,6 +2031,7 @@ namespace Gestreino.Controllers
                                join j3 in databaseManager.GRL_ARQUIVOS on j2.ARQUIVOS_ID equals j3.ID
                                where j1.DATA_REMOCAO == null && j2.DATA_REMOCAO == null && j1.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_CARDIO && j3.GRL_ARQUIVOS_TIPO_DOCS_ID == Configs.INST_MDL_ADM_VLRID_ARQUIVO_LOGOTIPO && j2.ACTIVO == true
                                select new ExerciseArq() { ExerciseId = j1.ID, Name = j1.NOME, LogoPath = string.IsNullOrEmpty(j3.CAMINHO_URL) ? "" : "/" + j3.CAMINHO_URL }).ToList();
+            */
 
             if (Id > 0)
             {
@@ -2012,7 +2048,7 @@ namespace Gestreino.Controllers
                                                join j2 in databaseManager.GT_Exercicio on j1.GT_Exercicio_ID equals j2.ID
                                                where j1.GT_Treino_ID == Id
                                                orderby j1.ORDEM
-                                               select new ExerciseArq() { Name = j2.NOME, ExerciseId = j1.GT_Exercicio_ID, GT_DuracaoTreinoCardio_ID = j1.GT_DuracaoTreinoCardio_ID, FC = j1.FC, Nivel = j1.NIVEL, Distancia = j1.DISTANCIA, ORDEM = j1.ORDEM }).ToList();
+                                               select new ExerciseArq() {API_exerciseId=j2.API_exerciseId, Name = j2.NOME, ExerciseId = j1.GT_Exercicio_ID, GT_DuracaoTreinoCardio_ID = j1.GT_DuracaoTreinoCardio_ID, FC = j1.FC, Nivel = j1.NIVEL, Distancia = j1.DISTANCIA, ORDEM = j1.ORDEM }).ToList();
 
                 if (string.IsNullOrEmpty(predefined))
                 {
@@ -2040,7 +2076,7 @@ namespace Gestreino.Controllers
                     MODEL.GTTreinoId = Id;
                 }
             }
-            MODEL.ExerciseArqList = ExerciseArqList;
+            //MODEL.ExerciseArqList = ExerciseArqList;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_PlanCardio;
             return View("Plans/Cardio", MODEL);
         }

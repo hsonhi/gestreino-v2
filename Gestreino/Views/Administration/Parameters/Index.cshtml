@@ -10,7 +10,7 @@
                 <div class="animated flipInY col-lg-3 col-md-3 col-sm-6">
                         <a href="@Url.Action("parametersgrl", "administration")">
                             <div class="tile-stats">
-                                <div class="icon">
+                                <div class="icon right">
                                     <i class="fa fa-cogs"></i>
                                 </div>
                                 <div class="count">&nbsp;</div>
@@ -22,7 +22,7 @@
                 <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
                         <a href="@Url.Action("parameterspes", "administration")">
                             <div class="tile-stats">
-                                <div class="icon">
+                                <div class="icon right">
                                     <i class="fa fa-users"></i>
                                 </div>
                                 <div class="count">&nbsp;</div>
@@ -34,7 +34,7 @@
                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
                         <a href="@Url.Action("parametersgt", "administration")">
                             <div class="tile-stats">
-                                <div class="icon">
+                                <div class="icon right">
                                     <i class="fa fa-code"></i>
                                 </div>
                                 <div class="count">&nbsp;</div>
@@ -70,20 +70,6 @@
                                     </ul>
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane active" id="tab_content1" aria-labelledby="">
-                                            <div class="alert alert-primary-light mb-0"
-                                                 role="alert" style="border-radius:0 !important">
-                                                <div class="d-flex flex-wrap align-items-start">
-                                                    <div class="mr-8pt">
-                                                        <i class="fa fa-cogs"></i>&nbsp;
-                                                    </div>
-                                                    <div class="flex"
-                                                         style="min-width: 180px">
-                                                        <span class="text-black-100">
-                                                            <strong>Personalização!</strong> Cores de temas e tamanho de formato de Logotipo
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             @using (Ajax.BeginForm("UpdateInstPer", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "p-4" }))
                                             {
                                                 @Html.AntiForgeryToken()
@@ -121,20 +107,6 @@
                                             }
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="">
-                                            <div class="alert alert-primary-light mb-0"
-                                                 role="alert">
-                                                <div class="d-flex flex-wrap align-items-start">
-                                                    <div class="mr-8pt">
-                                                        <i class="fa fa-cogs"></i>&nbsp;
-                                                    </div>
-                                                    <div class="flex"
-                                                         style="min-width: 180px">
-                                                        <span class="text-black-100">
-                                                            <strong>Pagamentos!</strong> Moeda padrão e número de dígitos
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             @using (Ajax.BeginForm("UpdateInstPag", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "p-4" }))
                                             {
                                                 @Html.AntiForgeryToken()
@@ -166,20 +138,6 @@
                                             }
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="">
-                                            <div class="alert alert-primary-light mb-0"
-                                                 role="alert">
-                                                <div class="d-flex flex-wrap align-items-start">
-                                                    <div class="mr-8pt">
-                                                        <i class="fa fa-cogs"></i>&nbsp;
-                                                    </div>
-                                                    <div class="flex"
-                                                         style="min-width: 180px">
-                                                        <span class="text-black-100">
-                                                            <strong>Segurança!</strong> Definições de sessão e tokens
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             @using (Ajax.BeginForm("UpdateInstSec", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "p-4" }))
                                             {
                                                 @Html.AntiForgeryToken()
@@ -217,20 +175,6 @@
                                             }
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="">
-                                            <div class="alert alert-primary-light mb-0"
-                                                 role="alert">
-                                                <div class="d-flex flex-wrap align-items-start">
-                                                    <div class="mr-8pt">
-                                                        <i class="fa fa-cogs"></i>&nbsp;
-                                                    </div>
-                                                    <div class="flex"
-                                                         style="min-width: 180px">
-                                                        <span class="text-black-100">
-                                                            <strong>SMTP!</strong> Definições do servidor SMTP
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             @using (Ajax.BeginForm("UpdateInstNet", "administration", new AjaxOptions { HttpMethod = "POST", OnFailure = "handleFailure", OnSuccess = "handleSuccess", UpdateTargetId = "" }, new { @class = "p-4" }))
                                             {
                                                 @Html.AntiForgeryToken()

@@ -2223,7 +2223,7 @@ namespace Gestreino.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult NewGRLExercicioTable(GTExercicio MODEL)
+        public ActionResult NewGRLExercicioTable(GTExercicio MODEL, string[] instructions)
         {
             try
             {
@@ -2236,6 +2236,21 @@ namespace Gestreino.Controllers
                 }
                 // Create
                 var create = databaseManager.SP_GT_ENT_EXERCICIO(null, MODEL.TipoTreinoId, MODEL.Nome, MODEL.Alongamento, MODEL.Sequencia, int.Parse(User.Identity.GetUserId()), "C").ToList();
+                int ExId = create[0].ID;
+
+
+                var createBodypart = databaseManager.SP_GT_ENT_EXERCICIO(ExId, MODEL.BodypartId, null, null, null, int.Parse(User.Identity.GetUserId()), "CB").ToList();
+                var createEquipment = databaseManager.SP_GT_ENT_EXERCICIO(ExId, MODEL.EquipamentId, null, null, null, int.Parse(User.Identity.GetUserId()), "CE").ToList();
+                var createTargetMuscle = databaseManager.SP_GT_ENT_EXERCICIO(ExId, MODEL.TargetMuscleId, null, null, null, int.Parse(User.Identity.GetUserId()), "CT").ToList();
+
+                foreach(var item in instructions)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        databaseManager.SP_GT_ENT_EXERCICIO(ExId, null, item, null, null, int.Parse(User.Identity.GetUserId()), "CI").ToList();
+                    }
+                }
+
                 ModelState.Clear();
             }
             catch (Exception ex)
@@ -2246,7 +2261,7 @@ namespace Gestreino.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateGRLExercicioTable(GTExercicio MODEL)
+        public ActionResult UpdateGRLExercicioTable(GTExercicio MODEL, string[] instructions)
         {
             try
             {
@@ -2260,6 +2275,22 @@ namespace Gestreino.Controllers
 
                 // Update
                 var create = databaseManager.SP_GT_ENT_EXERCICIO(MODEL.ID, MODEL.TipoTreinoId, MODEL.Nome, MODEL.Alongamento, MODEL.Sequencia, int.Parse(User.Identity.GetUserId()), "U").ToList();
+
+                //Delete
+                databaseManager.SP_GT_ENT_EXERCICIO(MODEL.ID, null, null, null, null, int.Parse(User.Identity.GetUserId()), "DD").ToList();
+
+                var createBodypart = databaseManager.SP_GT_ENT_EXERCICIO(MODEL.ID, MODEL.BodypartId, null, null, null, int.Parse(User.Identity.GetUserId()), "CB").ToList();
+                var createEquipment = databaseManager.SP_GT_ENT_EXERCICIO(MODEL.ID, MODEL.EquipamentId, null, null, null, int.Parse(User.Identity.GetUserId()), "CE").ToList();
+                var createTargetMuscle = databaseManager.SP_GT_ENT_EXERCICIO(MODEL.ID, MODEL.TargetMuscleId, null, null, null, int.Parse(User.Identity.GetUserId()), "CT").ToList();
+
+                foreach (var item in instructions)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        databaseManager.SP_GT_ENT_EXERCICIO(MODEL.ID, null, item, null, null, int.Parse(User.Identity.GetUserId()), "CI").ToList();
+                    }
+                }
+
                 ModelState.Clear();
             }
             catch (Exception ex)
@@ -2285,6 +2316,7 @@ namespace Gestreino.Controllers
                 // Delete
                 foreach (var i in ids)
                 {
+                    databaseManager.SP_GT_ENT_EXERCICIO(i, null, null, null, null, int.Parse(User.Identity.GetUserId()), "DD").ToList();
                     databaseManager.SP_GT_ENT_EXERCICIO(i, null, null, null, null, int.Parse(User.Identity.GetUserId()), "D").ToList();
                 }
                 ModelState.Clear();

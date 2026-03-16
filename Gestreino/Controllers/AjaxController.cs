@@ -491,9 +491,24 @@ namespace Gestreino.Controllers
                 MODEL.Nome = data.First().NOME;
                 MODEL.Alongamento= data.First().ALONGAMENTO;
                 MODEL.Sequencia = data.First().SEQUENCIA;
+
+                var Exercise = (from j1 in databaseManager.GT_Exercicio
+                              join j2 in databaseManager.GT_Exercicio_bodyParts on j1.ID equals j2.GT_Exercicio_ID
+                              join j3 in databaseManager.GT_Exercicio_equipments on j1.ID equals j3.GT_Exercicio_ID
+                              join j4 in databaseManager.GT_Exercicio_targetMuscles on j1.ID equals j4.GT_Exercicio_ID
+                              where j1.ID== id
+                              select new {j2.GT_bodyParts_ID,j3.GT_equipments_ID,j4.GT_targetMuscles_ID }).ToList();
+
+                MODEL.BodypartId = Exercise.Select(X => X.GT_bodyParts_ID).FirstOrDefault();
+                MODEL.EquipamentId = Exercise.Select(X => X.GT_equipments_ID).FirstOrDefault();
+                MODEL.TargetMuscleId = Exercise.Select(X => X.GT_targetMuscles_ID).FirstOrDefault();
+                MODEL.InstructionsList = databaseManager.GT_Exercicio_instructions.Where(x => x.GT_Exercicio_ID == id).Select(x => x.DESCRICAO).ToList();
             }
 
             MODEL.TipoList = databaseManager.GT_TipoTreino.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.TargetMuscleList = databaseManager.GT_targetMuscles.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.EquipamentList = databaseManager.GT_equipments.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
+            MODEL.BodypartList = databaseManager.GT_bodyParts.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
 
             int?[] ids = new int?[] { id.Value };
             if (action.Contains("Multiplos")) ids = bulkids;

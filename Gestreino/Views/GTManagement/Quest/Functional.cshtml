@@ -1,12 +1,18 @@
 ﻿@model Gestreino.Models.Functional
+@using System;
+@using System.Globalization;
 @using Gestreino.Classes
 @{
     ViewBag.Title = "Funcional";
 }
 @if (!string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && Session["GESTREINO_AVALIDO_NOME"] != null)
 {
-
-
+    <style>
+        .table td, .table th:not(#GTQuestTable) {
+            border-top: none !important;
+            padding: .25rem .75rem !important;
+        }
+    </style>
     <!-- page content --><div class="right_col" role="main">
         <div class="row">
             <div class="col-md-12 col-sm-12 ">
@@ -32,7 +38,7 @@
                     @Html.HiddenFor(m => m.PEsId)
                     @Html.HiddenFor(m => m.ID)
                     <input type="hidden" value="GT_RespFuncional" id="GT_Res" />
-                  
+
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <div class="btn-group" style="border:1px solid #ddd; border-radius:4px">
@@ -50,15 +56,38 @@
                         <div class="col-md-9">
                             <div class="animated flipInY">
                                 <div class="tile-stats">
-                                    <div class="icon">
-                                        <i class="fa fa-clipboard-check"></i>
+                                    <div class="tile-stats-header">
+                                        <div class="icon">
+                                            <i class="fa fa-clipboard-check"></i>
+                                        </div>
+                                        <h3 class="p-2">Funcional</h3>
                                     </div>
-                                    <h3 class="p-2">Funcional</h3>
                                     @if (Model.lblDataInsercao != null)
                                     {
-                                        <h6 class="p-2 mt-2 text-success"><i class="fa fa-floppy-disk"></i> Questionário registado: @Model.lblDataInsercao.Value.ToString("dd/MM/yyyy HH:mm")</h6>
+                                        CultureInfo frenchCulture = new CultureInfo("pt-PT");
+                                        <div class="p-2" style="padding-bottom:0 !important">
+                                            <div class="p-2" style="padding-bottom:0 !important">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="alert alert-soft-success"
+                                                             role="alert" style="margin-bottom:0!important">
+                                                            <div class="d-flex flex-wrap align-items-start">
+                                                                <div class="mr-8pt">
+                                                                    <i class="fa fa-briefcase-clock mr-12pt"></i> <strong>@Session["GESTREINO_AVALIDO_NOME"]:</strong>
+                                                                </div>
+                                                                <div class="flex"
+                                                                     style="min-width: 180px">
+                                                                    <span class="text-black-100">
+                                                                        &nbsp;@Model.lblDataInsercao.Value.ToString("dd MMMM yyyy HH:mm", frenchCulture)
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     }
-
                                     <div class="p4-quest mt-3">
                                         @if (Model.ID > 0)
                                         {

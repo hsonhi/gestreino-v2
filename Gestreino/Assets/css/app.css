@@ -2097,13 +2097,14 @@ h4.graph_title {
     background: #FFF;
     -webkit-transition: all 300ms ease-in-out;
     transition: all 300ms ease-in-out;
+   
 }
 
     .tile-stats:hover .icon i {
         animation-name: tansformAnimation;
         animation-duration: .5s;
         animation-iteration-count: 1;
-        color: rgba(58, 58, 58, 0.41);
+        /*color: rgba(58, 58, 58, 0.41);*/
         animation-timing-function: ease;
         animation-fill-mode: forwards;
         -webkit-animation-name: tansformAnimation;
@@ -2123,9 +2124,14 @@ h4.graph_title {
         height: 20px;
         color: #BAB8B8;
         position: absolute;
-        right: 66px;
+        left: 18px;
+        /*  right: 66px;*/
         top: 22px;
         z-index: 1;
+    }
+    .tile-stats .right {
+        left: inherit !important;
+         right: 66px;
     }
 
         .tile-stats .icon i {
@@ -2181,6 +2187,16 @@ h4.graph_title {
             color: #fff;
             background: rgba(0, 0, 0, 0.15);
         }
+
+.tile-stats-header {
+    background: rgba(0,0,0,.03);
+    height: 82px;
+    border-bottom: 1px solid #ddd
+}
+    .tile-stats-header h3 {
+        top: 20px;
+        left: 54px
+    }
 
 table.tile_info {
     padding: 10px 15px;
@@ -6600,7 +6616,7 @@ select.is-valid ~ .select2-container--bootstrap4 .select2-selection, form.was-va
 }
 
 .p4-quest {
-    padding: 0 1.5rem 1.5rem !important;
+    padding: 0 1.2rem 1.2rem !important;
 }
 
 .blue-gradient-angled {
