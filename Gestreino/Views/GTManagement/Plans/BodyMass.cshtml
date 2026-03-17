@@ -213,7 +213,7 @@
                                                                         {
                                                                             dis = Model.ExerciseArqListTreino.Where(x => x.ExerciseId == item.ID).Any() ? "disabled" : "";
                                                                         }
-                                                                        var path = "/Assets/json/" + item.API_exerciseId + ".gif";
+                                                                        var path = "/uploads/exercisedb/gifs-180/" + item.API_exerciseId + ".gif";
                                                                         //var path = Model.ExerciseArqList.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
                                                                         var GT_bodyParts_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_bodyParts_ID).ToList();
                                                                         var GT_equipments_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_equipments_ID).ToList();
@@ -266,7 +266,7 @@
                                                                 {
                                                                     foreach (var item in Model.ExerciseArqListTreino.OrderBy(x => x.ORDEM))
                                                                     {
-                                                                        var path = "/Assets/json/" + item.API_exerciseId + ".gif";
+                                                                        var path = "/uploads/exercisedb/gifs-180/" + item.API_exerciseId + ".gif";
                                                                         //var path = Model.ExerciseArqList.Where(x => x.ExerciseId == item.ExerciseId).Select(x => x.LogoPath).FirstOrDefault();
 
                                                                         <li class="sidebar-menu-item hide-long-text" style="" id="ex_@item.ExerciseId">

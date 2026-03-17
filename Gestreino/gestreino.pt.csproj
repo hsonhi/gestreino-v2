@@ -877,7 +877,6 @@
     <Content Include="Assets\fonts\Helvetica\HelveticaNeueThinItalic.otf" />
     <Content Include="Assets\fonts\Helvetica\HelveticaNeueUltraLight.otf" />
     <Content Include="Assets\fonts\Helvetica\HelveticaNeueUltraLightItalic.otf" />
-    <Content Include="Assets\json\dataset.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Properties\PublishProfiles\gestreino.pt - Web Deploy.pubxml" />
