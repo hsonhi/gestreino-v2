@@ -349,10 +349,11 @@
 
 body .container.body .right_col {
     background: #F7F7F7;
+    /*   min-height: 100vh !important; Ensures it covers the full viewport height */
 }
 
 .nav-md .container.body .right_col {
-    padding: 10px 20px 0;
+    padding: 10px 20px;
     margin-left: 230px;
 }
 
@@ -978,12 +979,12 @@ footer {
 }
 
 .nav-sm footer {
-    margin-left: 70px;
+    margin-left: 75px;
 }
 
 .footer_fixed footer {
     position: fixed;
-    left: 0px;
+    left: 75px;
     bottom: 0px;
     width: 100%;
 }
@@ -2198,6 +2199,11 @@ h4.graph_title {
         left: 54px
     }
 
+.no-bg {
+    background: none !important;
+    border-bottom: none !important;
+}
+
 table.tile_info {
     padding: 10px 15px;
 }
@@ -2924,8 +2930,8 @@ span.tag {
 ul.bar_tabs {
     overflow: visible;
     /*background: #F5F7FA;*/
-    height: 25px;
-    margin: 21px 0 14px;
+    
+    margin: 24px 0 14px;
     padding-left: 14px;
     position: relative;
     z-index: 1;
@@ -2936,45 +2942,20 @@ ul.bar_tabs {
     ul.bar_tabs > li {
         border: 1px solid #E6E9ED;
         color: #333 !important;
-        margin-top: -17px;
+        margin-top: -11px;
         margin-left: 8px;
         background: #fff;
         border-bottom: none;
         border-radius: 4px 4px 0 0;
     }
-
-        ul.bar_tabs > li.active {
-            /* border-right: 6px solid #D3D6DA;*/
-            border-top: 0;
-            margin-top: -15px;
-        }
-
-        ul.bar_tabs > li a {
-            padding: 10px 17px;
-            background: rgba(0,0,0,.03);
-            margin: 0;
-            border-top-right-radius: 0;
-        }
-
-            ul.bar_tabs > li a:hover {
-                border: 1px solid transparent;
-            }
-
-        ul.bar_tabs > li.active a {
-            border-bottom: none;
-        }
-
-    ul.bar_tabs.right {
-        padding-right: 14px;
-    }
-
-        ul.bar_tabs.right li {
-            float: right;
-        }
-
-a:focus {
-    outline: none;
+.nav-link {
+    background: #f8f9fa
 }
+
+.nav-tabs li a {
+    padding: .5rem 1rem !important
+}
+       
 
 /** /Tabs **/
 /* *********  timeline  **************************** */
@@ -6636,3 +6617,119 @@ fieldset legend {
 
 }
 
+
+
+
+
+.custom-select {
+    display: inline-block;
+    width: 100%;
+    font-size: .8525rem;
+    font-weight: 400;
+    line-height: 1.5;
+   margin-left:3px;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none
+}
+.custom-select:focus {
+    outline: 0
+}
+.custom-select:focus::-ms-value {
+    color: #272c33
+}
+
+ .custom-select:focus::-ms-value {
+    background-color: #fff
+}
+
+.custom-select[multiple], .custom-select[size]:not([size="1"]) {
+    height: auto
+}
+
+.custom-select[multiple], .custom-select[size]:not([size="1"]) {
+    background-image: none
+}
+
+ .custom-select[multiple],  .custom-select[size]:not([size="1"]) {
+    padding-right: .75rem
+}
+
+.custom-select:disabled {
+    color: #868e96
+}
+
+.custom-select:disabled {
+    background-color: #e9ecef
+}
+
+.custom-select::-ms-expand {
+    display: none
+}
+
+.custom-select:-moz-focusring {
+    color: transparent
+}
+
+ .custom-select:-moz-focusring {
+    text-shadow: 0 0 0 #272c33
+}
+
+.custom-control-label:before, .custom-file-label, .custom-select {
+    transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out
+}
+
+@media(prefers-reduced-motion:reduce) {
+    .custom-control-label:before, .custom-file-label, .custom-select {
+        transition: none
+    }
+}
+
+
+
+
+
+
+
+
+.progress {
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    line-height: 0;
+    font-size: .609375rem
+}
+
+.progress {
+    background-color: #e9ecef;
+    border-radius: .25rem;
+    box-shadow: inset 0 .1rem .1rem rgba(39,44,51,.1)
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+    white-space: nowrap;
+    transition: width .6s ease
+}
+
+.progress-bar {
+    text-align: center;
+    background-color: #5567ff
+}
+
+@media(prefers-reduced-motion:reduce) {
+    .progress-bar {
+        transition: none
+    }
+}
+.search-area {
+    /*  background: linear-gradient(45deg,#ebe9d9,#b6bbce);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 0 2px #c7cfe7*/
+}

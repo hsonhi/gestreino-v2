@@ -11,12 +11,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
@@ -1911,7 +1913,8 @@ namespace Gestreino.Controllers
 
                 MODEL.ID = Id;
                 var treino = databaseManager.SP_GT_ENT_TREINO(Id, ApplicationId,null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
-                MODEL.lblDataInsercao = treino.First().DATA_INSERCAO;
+                CultureInfo Culture = new CultureInfo("pt-PT");
+                MODEL.lblDataInsercao = DateTime.ParseExact(treino.First().DATA_INSERCAO, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("dd MMMM yyyy HH:mm", Culture);
                 MODEL.ExerciseArqListTreino = (from j1 in databaseManager.GT_ExercicioTreino
                                                join j2 in databaseManager.GT_Exercicio on j1.GT_Exercicio_ID equals j2.ID
                                                where j1.GT_Treino_ID == Id
@@ -2043,7 +2046,8 @@ namespace Gestreino.Controllers
 
                 MODEL.ID = Id;
                 var treino = databaseManager.SP_GT_ENT_TREINO(Id, ApplicationId,null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "R").ToList();
-                MODEL.lblDataInsercao = treino.First().DATA_INSERCAO;
+                CultureInfo Culture = new CultureInfo("pt-PT");
+                MODEL.lblDataInsercao = DateTime.ParseExact(treino.First().DATA_INSERCAO, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("dd MMMM yyyy HH:mm", Culture);
                 MODEL.ExerciseArqListTreino = (from j1 in databaseManager.GT_ExercicioTreinoCardio
                                                join j2 in databaseManager.GT_Exercicio on j1.GT_Exercicio_ID equals j2.ID
                                                where j1.GT_Treino_ID == Id
@@ -2062,7 +2066,7 @@ namespace Gestreino.Controllers
                     MODEL.Periodizacao = treino.First().PERIODIZACAO;
 
                     if (treino.First().pes_id != MODEL.PEsId)
-                        return RedirectToAction("bodymassplans", "gtmanagement", new { Id = string.Empty });
+                        return RedirectToAction("cardioplans", "gtmanagement", new { Id = string.Empty });
                 }
                 else
                 {
@@ -2275,15 +2279,18 @@ namespace Gestreino.Controllers
                 //Remove first
                 var delete = databaseManager.SP_GT_ENT_TREINO(MODEL.ID, null,null, MODEL.GTTipoTreinoId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, int.Parse(User.Identity.GetUserId()), MODEL.GTTipoTreinoId == Configs.GT_EXERCISE_TYPE_BODYMASS ? "DB" : "DC").ToList();
 
-                Decimal RMs = 0;
-                Decimal CargaUsada = 0;
-                Decimal Nivel = 0;
-                Decimal Distancia = 0;
+                Decimal? RMs = 0;
+                Decimal? CargaUsada = 0;
+                Decimal? Nivel = 0;
+                Decimal? Distancia = 0;
 
                 if (MODEL.GTTipoTreinoId == Configs.GT_EXERCISE_TYPE_BODYMASS)
                 {
                     for (int x = 0; x < exIds.Length; x++)
                     {
+                        RMs = null;
+                        CargaUsada = null;
+
                         if (exRM != null && !string.IsNullOrEmpty(exRM[x]))
                             RMs = decimal.Parse(exRM[x], CultureInfo.InvariantCulture);
 
@@ -2297,6 +2304,9 @@ namespace Gestreino.Controllers
                 {
                     for (int x = 0; x < exIds.Length; x++)
                     {
+                        Nivel = null;
+                        Distancia = null;
+
                         if (exNivel != null && !string.IsNullOrEmpty(exNivel[x]))
                             Nivel = decimal.Parse(exNivel[x], CultureInfo.InvariantCulture);
 
@@ -2352,14 +2362,15 @@ namespace Gestreino.Controllers
         public ActionResult Anxiety(GT_Quest_Anxient MODEL, int? Id)
         {
             if (!AcessControl.Authorized(AcessControl.GT_QUEST_ANXIETY_LIST_VIEW_SEARCH)) return View("Lockout");
+            MODEL.PEsId = !string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) ? int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) : 0;
 
             if (Id > 0)
             {
                 var data = databaseManager.GT_RespAnsiedadeDepressao.Where(x => x.ID == Id).ToList();
                 if (data.Count() == 0)
-                    return RedirectToAction("anxient", "gtmanagement", new { Id = string.Empty });
+                    return RedirectToAction("anxiety", "gtmanagement", new { Id = string.Empty });
                 if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
-                    return RedirectToAction("anxient", "gtmanagement", new { Id = string.Empty });
+                    return RedirectToAction("anxiety", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
                 MODEL.ID = Id;
@@ -2377,9 +2388,12 @@ namespace Gestreino.Controllers
                 MODEL.q12 = data.First().RESP_12;
                 MODEL.q13 = data.First().RESP_13;
                 MODEL.q14 = data.First().RESP_14;
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
+                    return RedirectToAction("anxiety", "gtmanagement", new { Id = string.Empty });
             }
 
-            MODEL.PEsId = !string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) ? int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) : 0;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Quest_Anxient;
             return View("Quest/Anxiety", MODEL);
         }
@@ -2634,6 +2648,7 @@ namespace Gestreino.Controllers
         public ActionResult SelfConcept(GT_Quest_SelfConcept MODEL, int? Id)
         {
             if (!AcessControl.Authorized(AcessControl.GT_QUEST_SELFCONCEPT_LIST_VIEW_SEARCH)) return View("Lockout");
+            MODEL.PEsId = !string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) ? int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) : 0;
 
             if (Id > 0)
             {
@@ -2665,9 +2680,12 @@ namespace Gestreino.Controllers
                 MODEL.q18 = data.First().RESP_18;
                 MODEL.q19 = data.First().RESP_19;
                 MODEL.q20 = data.First().RESP_20;
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
+                    return RedirectToAction("selfconcept", "gtmanagement", new { Id = string.Empty });
             }
 
-            MODEL.PEsId = !string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) ? int.Parse(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) : 0;
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Quest_SelfConcept;
             return View("Quest/SelfConcept", MODEL);
         }
@@ -2873,6 +2891,11 @@ namespace Gestreino.Controllers
                 MODEL.chkClaudicacao = data.First().chkClaudicacao.Value;
                 MODEL.chkMurmurio = data.First().chkMurmurio.Value;
                 MODEL.chkfadiga = data.First().chkfadiga.Value;
+
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
+                    return RedirectToAction("coronaryrisk", "gtmanagement", new { Id = string.Empty });
             }
 
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Quest_CoronaryRisk;
@@ -3144,6 +3167,11 @@ namespace Gestreino.Controllers
 
                 MODEL.q17 = data.First().radInactividade.HasValue ? Convert.ToInt32(data.First().radInactividade) : (int?)null;
                 MODEL.txtInactividade = data.First().txtInactividade;
+
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
+                    return RedirectToAction("health", "gtmanagement", new { Id = string.Empty });
             }
 
             ViewBag.LeftBarLinkActive = _MenuLeftBarLink_Quest_Health;
@@ -3414,6 +3442,11 @@ namespace Gestreino.Controllers
                 if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("flexibility", "gtmanagement", new { Id = string.Empty });
 
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
+                    return RedirectToAction("flexibility", "gtmanagement", new { Id = string.Empty });
+
                 ViewBag.data = data;
                 MODEL.ID = Id;
                 MODEL.TipoId = data.First().GT_TipoTesteFlexibilidade_ID;
@@ -3643,6 +3676,11 @@ namespace Gestreino.Controllers
                 if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("bodycomposition", "gtmanagement", new { Id = string.Empty });
 
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
+                    return RedirectToAction("bodycomposition", "gtmanagement", new { Id = string.Empty });
+
                 ViewBag.data = data;
                 MODEL.ID = Id;
                 MODEL.GT_TipoTesteComposicao_ID = data.First().GT_TipoTesteComposicao_ID;
@@ -3842,6 +3880,11 @@ namespace Gestreino.Controllers
                 if (data.Count() == 0)
                     return RedirectToAction("cardio", "gtmanagement", new { Id = string.Empty });
                 if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
+                    return RedirectToAction("cardio", "gtmanagement", new { Id = string.Empty });
+
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
                     return RedirectToAction("cardio", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -4262,6 +4305,11 @@ namespace Gestreino.Controllers
                 if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
                     return RedirectToAction("elderly", "gtmanagement", new { Id = string.Empty });
 
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
+                    return RedirectToAction("elderly", "gtmanagement", new { Id = string.Empty });
+
                 ViewBag.data = data;
                 MODEL.ID = Id;
                 MODEL.GT_TipoTestePessoaIdosa_ID = data.First().GT_TipoTestePessoaIdosa_ID;
@@ -4473,6 +4521,11 @@ namespace Gestreino.Controllers
                 if (data.Count() == 0)
                     return RedirectToAction("force", "gtmanagement", new { Id = string.Empty });
                 if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
+                    return RedirectToAction("force", "gtmanagement", new { Id = string.Empty });
+
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
                     return RedirectToAction("force", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;
@@ -5050,6 +5103,11 @@ namespace Gestreino.Controllers
                 if (data.Count() == 0)
                     return RedirectToAction("functional", "gtmanagement", new { Id = string.Empty });
                 if (string.IsNullOrEmpty(Cookies.ReadCookie(Cookies.COOKIES_GESTREINO_AVALIADO)) && string.IsNullOrEmpty(Session["GESTREINO_AVALIDO_NOME"].ToString()))
+                    return RedirectToAction("functional", "gtmanagement", new { Id = string.Empty });
+
+                var GT_SOCIOS_ID = data.First().GT_SOCIOS_ID;
+                var pesId = databaseManager.GT_SOCIOS.Where(x => x.ID == GT_SOCIOS_ID).Select(x => x.PES_PESSOAS_ID).FirstOrDefault();
+                if (pesId != MODEL.PEsId)
                     return RedirectToAction("functional", "gtmanagement", new { Id = string.Empty });
 
                 ViewBag.data = data;

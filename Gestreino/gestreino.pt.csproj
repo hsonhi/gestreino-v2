@@ -813,6 +813,7 @@
     <Content Include="Assets\images\user-avatar.png" />
     <Content Include="Assets\images\user.png" />
     <Content Include="Assets\javascript\app.js" />
+    <Content Include="Assets\javascript\bootstrap5.bundle.min.js" />
     <Content Include="Assets\javascript\bootstrap.bundle.min.js" />
     <Content Include="Assets\javascript\dataTables.checkboxes.min.js" />
     <Content Include="Assets\javascript\dataTables.min.js" />

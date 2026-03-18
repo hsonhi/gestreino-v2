@@ -15,6 +15,9 @@ namespace Gestreino
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            //bundles.Add(new ScriptBundle("~/bundles/bootstrap5").Include(
+            //            "~/Assets/javascript/bootstrap5.bundle.min.js"));
+
             bundles.Add(new Bundle("~/bundles/javascript").Include(
                       "~/Assets/javascript/jquery.min.js",
                       "~/Assets/javascript/jquery.min2-unobtrusive-ajax.min.js",
@@ -32,6 +35,7 @@ namespace Gestreino
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Assets/css/bootstrap.min.css",
                       "~/Assets/lib/select2/select2.min.css",
+                      //"~/Assets/css/dataTables.dataTables.min.css",
                       "~/Assets/css/app.css"));
         }
     }

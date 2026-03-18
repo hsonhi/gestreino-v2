@@ -114,7 +114,7 @@ function init_sidebar() {
 
         setContentHeight();
 
-        $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
+        //$('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
     });
 
     // check active menu
