@@ -52,7 +52,7 @@
                                 <a title="Novo" class="btn btn-light" href="@Url.Action("cardio", "gtmanagement", new { Id = string.Empty })"><img src="~/Assets/images/new.png" width="26" /> Novo</a>
                                 <button type="submit" class="btn btn-light"><img src="~/Assets/images/save.png" width="19" /> Guardar</button>
                             }
-                            <button type="button" disabled class="btn btn-light" title="Imprimir"><img src="~/Assets/images/printer.png" width="19" /> Imprimir</button>
+                            <button type="button" onClick="window.print()" class="btn btn-light" title="Imprimir"><img src="~/Assets/images/printer.png" width="19" /> Imprimir</button>
                             <button type="button" class="btn btn-light" onclick="openHelpWindow('Avaliacoes')" title="Ajuda"><img src="~/Assets/images/help.png" width="19" /> Ajuda</button>
                         </div>
                     </div>

@@ -137,7 +137,7 @@ namespace Gestreino.Classes
                     {
                         i++;
                         var img = images.Where(x => x.GT_Exercicio_ID == ex.GT_Exercicio_ID).OrderByDescending(x => x.ID).Select(x => x.CAMINHO_URL).FirstOrDefault();
-                        img =path+img.Replace("/", @"\");
+                        img = "Assets/json/0br45wL.gif".Replace("/", @"\");//path+img.Replace("/", @"\");
 
                         Html += "<td><span style=margin-left:45px>" + i + "</span><br><img src=\""+img+"\" style=\"border:1px solid #333;width:100px\"></td>";
                     }
@@ -146,14 +146,15 @@ namespace Gestreino.Classes
                 if (exercicio.Count() > 6)
                 {
                     var skip = 0;
+                    path += "Assets/json/0br45wL.gif".Replace("/", @"\");
                     for (int y=1; y<=2;y++)
                     {
                             Html += "<tr>";
                             foreach (var ex in exercicio.Skip(skip).Take(6))
                             {
                                 i++;
-                                var img = images.Where(x => x.GT_Exercicio_ID == ex.GT_Exercicio_ID).OrderByDescending(x => x.ID).Select(x => x.CAMINHO_URL).FirstOrDefault();
-                                path += img.Replace("/", @"\");
+                                //var img = images.Where(x => x.GT_Exercicio_ID == ex.GT_Exercicio_ID).OrderByDescending(x => x.ID).Select(x => x.CAMINHO_URL).FirstOrDefault();
+                                
 
                                 Html += "<td><span style=margin-left:45px>" + i + "</span><br><img src=\""+path+"\" style=\"border:1px solid #333;width:100px\"></td>";
                             }

@@ -229,7 +229,7 @@
                                                         <div class="col-md-12">
                                                             <div class="">
                                                                 <ul class="p-2 mb-0" id="list1" style="height: 351px; top: 10px; bottom: 10px; width: 100%;overflow-y:auto;">
-                                                                    @foreach (var item in Model.Exercises)
+                                                                    @foreach (var item in Model.ExerciseDbAPI)
                                                                     {
                                                                         var dis = string.Empty;
                                                                         if (Model.ExerciseArqListTreino != null)
@@ -238,13 +238,14 @@
                                                                         }
                                                                         var path = "/uploads/exercisedb/gifs-180/" + item.API_exerciseId + ".gif";
                                                                         //var path = Model.ExerciseArqList.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
-                                                                        var GT_bodyParts_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_bodyParts_ID).ToList();
-                                                                        var GT_equipments_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_equipments_ID).ToList();
-                                                                        var GT_targetMuscles_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_targetMuscles_ID).ToList();
+                                                                        //var GT_bodyParts_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_bodyParts_ID).ToList();
+                                                                        //var GT_equipments_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_equipments_ID).ToList();
+                                                                        //var GT_targetMuscles_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_targetMuscles_ID).ToList();
+                                                                        @*string.Join(", ", GT_bodyParts_ID) string.Join(", ", GT_equipments_ID) string.Join(", ", GT_targetMuscles_ID)*@
                                                                         <li class="sidebar-menu-item hide-long-text" style="" id="ex_@item.ID">
-                                                                            <input type="hidden" value="@string.Join(", ", GT_bodyParts_ID)" class="GT_bodyParts" />
-                                                                            <input type="hidden" value="@string.Join(", ", GT_equipments_ID)" class="GT_equipments" />
-                                                                            <input type="hidden" value="@string.Join(", ", GT_targetMuscles_ID)" class="GT_targetMuscles" />
+                                                                            <input type="hidden" value="@item.GT_bodyParts_ID" class="GT_bodyParts" />
+                                                                            <input type="hidden" value="@item.GT_equipments_ID" class="GT_equipments" />
+                                                                            <input type="hidden" value="@item.GT_targetMuscles_ID" class="GT_targetMuscles" />
                                                                             <img class="" src="@path" width="180" />
                                                                             <button @dis type="button" data-id="@item.ID" class="addlistplan1 btn btn-sm btn-success  btn-sm"><i class="fa fa-plus-circle"></i></button>
                                                                             <a href="javascript:" style="display:none" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>

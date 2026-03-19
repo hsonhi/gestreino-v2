@@ -29,12 +29,14 @@
             <div class="col-md-10 col-sm-12 ">
                 <div class="animated flipInY">
                     <div class="tile-stats">
-                        <div class="icon right">
-                            <i class="fa fa-cog"></i>
-                        </div>
-                        <h3 class="p-2">Atualizar dados da instituição</h3>
-                        <span class="p-4"><i class="fa fa-info-circle"></i> Os campos a vermelho são de caráter obrigatório!</span>
-                        <div class="p-4">
+                         <div class="tile-stats-header no-bg mb-2">
+                             <div class="icon">
+                                 <i class="fa fa-cog"></i>
+                             </div>
+                             <h3 class="p-2">&nbsp;&nbsp;&nbsp;&nbsp;Atualizar dados da instituição</h3>
+ </div>
+ <span class="p-2 ml-3"><i class="fa fa-info-circle"></i> Os campos a vermelho são de caráter obrigatório!</span>
+                         <div class="p-4">
                             <div class="row">
                                 @Html.LabelFor(m => m.Sigla, new { @class = "col-md-2 col-form-label required" })
                                 <div class="col-md-2">
