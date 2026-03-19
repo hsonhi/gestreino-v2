@@ -483,7 +483,7 @@ namespace Gestreino.Controllers
         }
         public ActionResult GTExercicio(GTExercicio MODEL, string action, int? id, int?[] bulkids)
         {
-            if (action == "Editar")
+            if (action == "Editar" || action == "View")
             {
                 var data = databaseManager.GT_Exercicio.Where(x => x.ID == id).ToList();
                 MODEL.ID = id.Value;
@@ -491,7 +491,7 @@ namespace Gestreino.Controllers
                 MODEL.Nome = data.First().NOME;
                 MODEL.Alongamento= data.First().ALONGAMENTO;
                 MODEL.Sequencia = data.First().SEQUENCIA;
-
+               
                 var Exercise = (from j1 in databaseManager.GT_Exercicio
                               join j2 in databaseManager.GT_Exercicio_bodyParts on j1.ID equals j2.GT_Exercicio_ID
                               join j3 in databaseManager.GT_Exercicio_equipments on j1.ID equals j3.GT_Exercicio_ID
@@ -503,8 +503,14 @@ namespace Gestreino.Controllers
                 MODEL.EquipamentId = Exercise.Select(X => X.GT_equipments_ID).FirstOrDefault();
                 MODEL.TargetMuscleId = Exercise.Select(X => X.GT_targetMuscles_ID).FirstOrDefault();
                 MODEL.InstructionsList = databaseManager.GT_Exercicio_instructions.Where(x => x.GT_Exercicio_ID == id).Select(x => x.DESCRICAO).ToList();
+                if (action == "View")
+                {
+                MODEL.API_exerciseId = data.First().API_exerciseId;
+                ViewBag.Bodypart = databaseManager.GT_bodyParts.Where(x => x.ID == MODEL.BodypartId).Select(x => x.NOME).FirstOrDefault();
+                ViewBag.Equipament = databaseManager.GT_equipments.Where(x => x.ID == MODEL.EquipamentId).Select(x => x.NOME).FirstOrDefault();
+                ViewBag.TargetMuscle = databaseManager.GT_targetMuscles.Where(x => x.ID == MODEL.TargetMuscleId).Select(x => x.NOME).FirstOrDefault();
+                }
             }
-
             MODEL.TipoList = databaseManager.GT_TipoTreino.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.TargetMuscleList = databaseManager.GT_targetMuscles.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
             MODEL.EquipamentList = databaseManager.GT_equipments.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.NOME });
@@ -516,7 +522,7 @@ namespace Gestreino.Controllers
 
             ViewBag.bulkids = ids;
             ViewBag.Action = action;
-            return View("administration/Parameters//GTExercise", MODEL);
+            return View("administration/Parameters/GTExercise", MODEL);
         }
 
         public ActionResult PESFamily(PES_Dados_Pessoais_Agregado MODEL, string action, int? id, int?[] bulkids)

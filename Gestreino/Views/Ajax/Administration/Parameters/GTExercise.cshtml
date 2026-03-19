@@ -1,9 +1,12 @@
 ﻿@using Gestreino.Models
 @using Gestreino.Classes
 @model  GTExercicio
-@{Layout = null; }
+@{Layout = null;}
 <div class="card-header card-reader-radius bg-primary-pickled-bluewood">
-    <h3 class="text-white mb-0">@ViewBag.Action exercício</h3>
+    <h3 class="text-white mb-0">
+        @if (ViewBag.Action == "View") {<span>Exercício</span>}
+else { <span>@ViewBag.Action exercício</span>}
+    </h3>
 </div>
 <div class="modal-body">
     <div class="row">
@@ -179,5 +182,42 @@
                 <button type="submit" class="btn btn-primary btn-sm" id="BtnSubmit">Submeter</button>
             </div>
         }
+    }
+    @if (ViewBag.Action == "View")
+    {
+        var path = "/uploads/exercisedb/gifs-180/" + Model.API_exerciseId + ".gif";
+        <div>
+            <button type="button" class="btn btn-light btn-sm pull-right" data-dismiss="modal"><i class="fa fa-times-rectangle"></i></button>
+        </div>
+        <div class="row">
+            <div class="col-md-5"><img class="" src="@path" width="180" /></div>
+            <div class="col-md-7"><h4>@Model.Nome</h4></div>
+        </div>
+        <table>
+            <tr>
+                <td class="w-25">Parte do Corpo:</td>
+                <td>@ViewBag.Bodypart</td>
+            </tr>
+            <tr>
+                <td>Equipamento:</td>
+                <td>@ViewBag.Equipament</td>
+            </tr>
+            <tr>
+                <td>Músculo alvo:</td>
+                <td>@ViewBag.TargetMuscle</td>
+            </tr>
+        </table>
+        <div class="row mt-2">
+            <div class="col-md-12">&nbsp;<h5><b>Instruções</b></h5></div>
+            <div class="col-md-12">
+                <div class=" p-2 bg-light">
+                    <a href="https://translate.google.com/?en-us&tl=pt-PT&text=@string.Join(", ", Model.InstructionsList)" target="_blank" class="btn-light btn-sm"><i class="fa fa-language" aria-hidden="true"></i></a>
+                    @foreach (var item in Model.InstructionsList)
+                    {
+                        <p class="mb-1">@item</p>
+                    }
+                </div>
+            </div>
+        </div>
     }
 </div>

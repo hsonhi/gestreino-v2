@@ -2221,8 +2221,8 @@ namespace Gestreino.Controllers
                     ACTUALIZACAO = x.ACTUALIZACAO,
                     DATAACTUALIZACAO = x.DATA_ACTUALIZACAO,
                     LINK = x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS ? "/gtmanagement/bodymassplans/" + x.ID : "/gtmanagement/cardioplans/" + x.ID,
-                    LINKPDF = x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS ? string.Empty + x.ID : "/pdfreports/cardio/" + x.ID,
-                    LINKPDFVIEW = x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS?"none":""
+                    LINKPDF = x.GT_TipoTreino_ID == Configs.GT_EXERCISE_TYPE_BODYMASS ? "/pdfreports/bodymass/"  + x.ID : "/pdfreports/cardio/" + x.ID,
+                    LINKPDFVIEW = ""
                 }),
                 sortColumn = sortColumn,
                 sortColumnDir = sortColumnDir,

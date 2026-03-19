@@ -218,7 +218,7 @@
                                 <div class="row">
                                     @Html.LabelFor(m => m.Caract_TASistolica, new { @class = "col-md-2 col-form-label required" })
                                     <div class="col-md-3">
-                                        @Html.TextBoxFor(m => m.Caract_TASistolica, new { @class = "form-control form-control-sm", type = "number", min = "1" })
+                                        @Html.TextBoxFor(m => m.Caract_TASistolica, new {Value=Model.Caract_TASistolica!=null? (Model.Caract_TASistolica ?? 0).ToString("G29"):null, @class = "form-control form-control-sm", type = "number", min = "1" })
                                     </div>
                                     <div class="col-md-1">
                                         <a title="Evolução" href="javascript:void(0)" class="open-modal-crud btn btn-sm btn-info btn-block" data-id="@Model.SOCIO_ID" data-action="tasistolica" data-entity="gtsocioevolution" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-bar-chart"></i></a>
@@ -231,7 +231,7 @@
                                 <div class="row">
                                     @Html.LabelFor(m => m.Caract_TADistolica, new { @class = "col-md-2 col-form-label required" })
                                     <div class="col-md-3">
-                                        @Html.TextBoxFor(m => m.Caract_TADistolica, new { @class = "form-control form-control-sm", type = "number", min = "1" })
+                                        @Html.TextBoxFor(m => m.Caract_TADistolica, new { Value = Model.Caract_TADistolica != null ? (Model.Caract_TADistolica ?? 0).ToString("G29") : null, @class = "form-control form-control-sm", type = "number", min = "1" })
                                     </div>
                                     <div class="col-md-1">
                                         <a title="Evolução" href="javascript:void(0)" class="open-modal-crud btn btn-sm btn-info btn-block" data-id="@Model.SOCIO_ID" data-action="tadistolica" data-entity="gtsocioevolution" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-bar-chart"></i></a>

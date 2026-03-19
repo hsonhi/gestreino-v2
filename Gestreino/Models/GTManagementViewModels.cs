@@ -614,6 +614,7 @@ namespace Gestreino.Models
     public class GTExercicio
     {
         public int? ID { get; set; }
+        public string API_exerciseId { get; set; }
 
         [Display(Name = "Nome")]
         public string Nome { get; set; }

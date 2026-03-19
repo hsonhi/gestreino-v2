@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="@Url.Action("parameters","administration")">Definições e Parametrização</a></li>
-            <li class="breadcrumb-item"><a href="@Url.Action("parametersgt","administration")">Entidades Gestreino (GT)</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("parametersgt","administration")">Entidades Gestreino</a></li>
             <li class="breadcrumb-item active" aria-current="page">@ViewBag.data[0].nome</li>
         </ol>
     </nav>
@@ -19,6 +19,9 @@
                     </div>
                     <div class="col-md-2">
                         <ul class="list-unstyled user_data">
+                            <li>
+                                <a title="Informação" href="javascript:void(0)" class="open-modal-crud btn btn-sm btn-secondary btn-block" data-id="@ViewBag.data[0].ID" data-action="View" data-entity="gtexercicio" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-info user-profile-icon"></i> Informação </a>
+                            </li>
                             <li>
                                 <a title="Editar" href="javascript:void(0)" class="open-modal-crud btn btn-sm btn-secondary btn-block" data-id="@ViewBag.data[0].ID" data-action="Editar" data-entity="gtexercicio" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil user-profile-icon"></i> Editar</a>
                             </li>

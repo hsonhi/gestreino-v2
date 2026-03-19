@@ -205,16 +205,16 @@
                                                                     //var path = Model.ExerciseArqList.Where(x => x.ExerciseId == item.ID).Select(x => x.LogoPath).FirstOrDefault();
                                                                     //var GT_equipments_ID = Model.ExerciseDbAPI.Where(x => x.ID == item.ID).Select(x => x.GT_equipments_ID).ToList();
                                                                     @*string.Join(" , ", GT_equipments_ID)*@
-                                                                    <li class="sidebar-menu-item hide-long-text" style="" id="ex_@item.ID">
-                                                                        <input type="hidden" value="@item.GT_equipments_ID" class="GT_equipments" />
-                                                                        <img class="" src="@path" width="180" />
-                                                                        <button @dis type="button" data-id="@item.ID" class="addlistplan1 btn btn-success btn-sm"><i class="fa fa-plus-circle"></i></button>
-                                                                        <a href="javascript:" style="display:none" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
-                                                                        <button type="button" style="display:none" class="sortable btn btn-sm btn-default"><i class="fa fa-sort"></i></button>
-                                                                        <button type="button" hidden data-id="@item.ID" class=" btn btn-sm btn-default  btn-sm"><i class="fa fa-circle-info"></i></button>
-                                                                        <br />
-                                                                        @item.NOME
-                                                                    </li>
+                                                                <li class="sidebar-menu-item hide-long-text" style="" id="ex_@item.ID">
+                                                                    <input type="hidden" value="@item.GT_equipments_ID" class="GT_equipments" />
+                                                                    <img class="" src="@path" width="180" />
+                                                                    <button @dis type="button" data-id="@item.ID" class="addlistplan1 btn btn-success btn-sm"><i class="fa fa-plus-circle"></i></button>
+                                                                    <a href="javascript:" style="display:none" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
+                                                                    <button type="button" style="display: none; cursor: n-resize;" class="sortable btn btn-sm btn-light"><i class="fa fa-sort"></i></button>
+                                                                    <button type="button" class="open-modal-crud btn btn-sm btn-light" data-id="@item.ID" data-action="View" data-entity="gtexercicio" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-info"></i></button>
+                                                                    <br />
+                                                                    @item.NOME
+                                                                </li>
                                                                 }
                                                             </ul>
                                                         </div>
@@ -255,8 +255,8 @@
                                                                             <img class="" src="@path" width="180" />
                                                                             <button type="button" data-id="@item.ExerciseId" class="removegaclass1 btn btn-danger btn-sm"><i class="fa fa-times"></i></button>
                                                                             <a href="javascript:" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ExerciseId" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
-                                                                            <button type="button" class="sortable btn btn-sm btn-default"><i class="fa fa-sort"></i></button>
-                                                                            <button type="button" hidden data-id="@item.ExerciseId" class=" btn btn-sm btn-default  btn-sm"><i class="fa fa-circle-info"></i></button>
+                                                                            <button type="button" style="cursor: n-resize;" class="sortable btn btn-sm btn-light"><i class="fa fa-sort"></i></button>
+                                                                            <button type="button" class="open-modal-crud btn btn-sm btn-light" data-id="@item.ExerciseId" data-action="View" data-entity="gtexercicio" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-info"></i></button>
                                                                             <br />
                                                                             @item.Name
                                                                             <div class="inputs_@item.ExerciseId">
