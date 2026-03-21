@@ -1,12 +1,12 @@
 ﻿@model Gestreino.Models.GTExercicio
 @{
-    ViewBag.Title = "Parametrização de entidadades Gestreino";
+    ViewBag.Title = "Parametrização de dados aplicacionais";
 }
 <div class="right_col" role="main">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="@Url.Action("parameters","administration")">Definições e Parametrização</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Entidades Gestreino</li>
+            <li class="breadcrumb-item active" aria-current="page">Parametrização de dados aplicacionais</li>
         </ol>
     </nav>
     <div class="alert alert-primary-light"
@@ -97,6 +97,189 @@
             <div class="flex"
                  style="min-width: 180px">
                 <span class="text-black-100">
+                    <strong>Partes do Corpo (Exercícios)</strong>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-32pt">
+        <div class="card-header">
+            <div class="form-inline">
+                <label class="" for="length_change">Mostrar</label>
+                <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="GRLGTBodyPart">
+                    <option value='10'>10</option>
+                    <option value='25'>25</option>
+                    <option value='50'>50</option>
+                    <option value='100'>100</option>
+                    <option value='500'>500</option>
+                    <option value='1000'>1000</option>
+                    <option value='2000'>2000</option>
+                    <option value='5000'>5000</option>
+                    <option value='10000'>10000</option>
+                </select>
+                <label class="" for="length_change">registos</label>
+                <div class="btn-group">
+                    <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="GRLGTBodyPart"><i class="fa fa-check-square"></i></button>
+                    <button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="grlgtbodypart" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                    <button title="Pesquisar" class="btnSearch btn btn-default" data-id="GRLGTBodyPart"><i class="fa fa-search"></i></button>
+                    <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="GRLGTBodyPart"><i class="fa fa-eraser"></i></button>
+                    <a title="Adicionar parte do corpo" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="grlgtbodypart" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="GRLGTBodyPart" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><input type="text" id="GRLGTBodyPartNome" class="form-control form-control-sm" /></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th data-name="GRLGTBodyPartNome">Nome</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="card-footer p-8pt">
+            <span class="paginateInfoGRLGTBodyPart paginateInfo mr-12pt" style="float:right"></span>
+            <div id="paginateGRLGTBodyPart" class="pagination justify-content-start pagination-xsm m-0"></div>
+        </div>
+    </div>
+    <br />
+    <div class="alert alert-primary-light"
+         role="alert">
+        <div class="d-flex flex-wrap align-items-start">
+            <div class="mr-8pt">
+                <i class="fa fa-cogs"></i>&nbsp;
+            </div>
+            <div class="flex"
+                 style="min-width: 180px">
+                <span class="text-black-100">
+                    <strong>Equipamentos (Exercícios)</strong>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-32pt">
+        <div class="card-header">
+            <div class="form-inline">
+                <label class="" for="length_change">Mostrar</label>
+                <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="GRLGTEquipment">
+                    <option value='10'>10</option>
+                    <option value='25'>25</option>
+                    <option value='50'>50</option>
+                    <option value='100'>100</option>
+                    <option value='500'>500</option>
+                    <option value='1000'>1000</option>
+                    <option value='2000'>2000</option>
+                    <option value='5000'>5000</option>
+                    <option value='10000'>10000</option>
+                </select>
+                <label class="" for="length_change">registos</label>
+                <div class="btn-group">
+                    <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="GRLGTEquipment"><i class="fa fa-check-square"></i></button>
+                    <button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="grlgtequipment" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                    <button title="Pesquisar" class="btnSearch btn btn-default" data-id="GRLGTEquipment"><i class="fa fa-search"></i></button>
+                    <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="GRLGTEquipment"><i class="fa fa-eraser"></i></button>
+                    <a title="Adicionar equipamento" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="grlgtequipment" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="GRLGTEquipment" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><input type="text" id="GRLGTEquipmentNome" class="form-control form-control-sm" /></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th data-name="GRLGTEquipmentNome">Nome</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="card-footer p-8pt">
+            <span class="paginateInfoGRLGTEquipment paginateInfo mr-12pt" style="float:right"></span>
+            <div id="paginateGRLGTEquipment" class="pagination justify-content-start pagination-xsm m-0"></div>
+        </div>
+    </div>
+    <br />
+    <div class="alert alert-primary-light"
+         role="alert">
+        <div class="d-flex flex-wrap align-items-start">
+            <div class="mr-8pt">
+                <i class="fa fa-cogs"></i>&nbsp;
+            </div>
+            <div class="flex"
+                 style="min-width: 180px">
+                <span class="text-black-100">
+                    <strong>Músculo alvo (Exercícios)</strong>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-32pt">
+        <div class="card-header">
+            <div class="form-inline">
+                <label class="" for="length_change">Mostrar</label>
+                <select class="custom-select length_change mb-2 mr-sm-2 mb-sm-0" data-id="GRLGTTargetMuscle">
+                    <option value='10'>10</option>
+                    <option value='25'>25</option>
+                    <option value='50'>50</option>
+                    <option value='100'>100</option>
+                    <option value='500'>500</option>
+                    <option value='1000'>1000</option>
+                    <option value='2000'>2000</option>
+                    <option value='5000'>5000</option>
+                    <option value='10000'>10000</option>
+                </select>
+                <label class="" for="length_change">registos</label>
+                <div class="btn-group">
+                    <button title="Selecionar" id="btnSelect" class="btnSelect btn btn-default" data-id="GRLGTTargetMuscle"><i class="fa fa-check-square"></i></button>
+                    <button title="Remover selecionado(s)" class="open-modal-crud RemoverMultiplos btn btn-default" data-id="0" data-action="RemoverMultiplos" data-entity="grlgttargetmuscle" data-toggle="modal" data-target="#crudControlModal" disabled=""><i class="fa fa-trash"></i></button>
+                    <button title="Pesquisar" class="btnSearch btn btn-default" data-id="GRLGTTargetMuscle"><i class="fa fa-search"></i></button>
+                    <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="GRLGTTargetMuscle"><i class="fa fa-eraser"></i></button>
+                    <a title="Adicionar músculo alvo" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="grlgttargetmuscle" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="GRLGTTargetMuscle" class="hideInputCheck table table-hover mb-0 thead-border-top-0 table-nowrap">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><input type="text" id="GRLGTTargetMuscleNome" class="form-control form-control-sm" /></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th data-name="GRLGTTargetMuscleNome">Nome</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="card-footer p-8pt">
+            <span class="paginateInfoGRLGTTargetMuscle paginateInfo mr-12pt" style="float:right"></span>
+            <div id="paginateGRLGTTargetMuscle" class="pagination justify-content-start pagination-xsm m-0"></div>
+        </div>
+    </div>
+    <br />
+    <div class="alert alert-primary-light"
+         role="alert">
+        <div class="d-flex flex-wrap align-items-start">
+            <div class="mr-8pt">
+                <i class="fa fa-cogs"></i>&nbsp;
+            </div>
+            <div class="flex"
+                 style="min-width: 180px">
+                <span class="text-black-100">
                     <strong>Duração de planos</strong>
                 </span>
             </div>
@@ -124,7 +307,7 @@
                     <button title="Pesquisar" class="btnSearch btn btn-default" data-id="GRLGTDuracaoTable"><i class="fa fa-search"></i></button>
                     <button title="Limpar Filtro" class="btnLimpar btn btn-default" data-id="GRLGTDuracaoTable"><i class="fa fa-eraser"></i></button>
                     <a title="Adicionar duração de plano" href="javascript:void(0)" class="open-modal-crud btn btn-default" data-id="0" data-action="Adicionar" data-entity="grlgtduracao" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-plus-circle"></i></a>
-                  </div>
+                </div>
             </div>
         </div>
         <div class="table-responsive">
@@ -237,5 +420,8 @@
         handleDataGRLGTDuracaoTable();
         handleDataGRLTipoTreinoTable();
         handleDataGRLExercicioTable();
+        handleDataGRLGTBodyPart();
+        handleDataGRLGTEquipment();
+        handleDataGRLGTTargetMuscle();
     });
 </script>

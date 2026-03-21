@@ -1,8 +1,13 @@
 ﻿@using Gestreino.Models
+@model Gestreino.Models.GT_TreinoBodyMass
 @using Gestreino.Classes
-@{Layout = null; }
+@{Layout = null;}
 <div class="card-header card-reader-radius bg-primary-pickled-bluewood">
-    <h3 class="text-white mb-0">@ViewBag.Action plano</h3>
+    <h3 class="text-white mb-0">
+        @if (ViewBag.action == "EditarCardio" || ViewBag.action == "EditarBodyMass")
+        {<span>Alterar dados do exercício</span>}
+        @if (ViewBag.action == "Remover") { <span>@ViewBag.Action plano</span>}
+    </h3>
 </div>
 <div class="modal-body">
     <div class="row">
@@ -23,6 +28,88 @@
             </div>
         </div>
     </div>
+    @if (ViewBag.Action == "EditarCardio")
+    {
+        <input type="hidden" id="setGTTreinoInputId" value="" />
+        <div class="row">
+            @Html.LabelFor(m => m.GT_DuracaoTreinoCardio_ID, new { @class = "col-md-8 col-form-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(x => Model.GT_DuracaoTreinoCardio_ID, Model.GT_DuracaoTreinoCardioList, new { @class = "form-control form-control-sm", required = "" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(m => m.FC, new { @class = "col-md-8 col-form-label" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(x => Model.FC, new { @class = "form-control form-control-sm", type = "number", min = "1" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(m => m.Nivel, new { @class = "col-md-8 col-form-label" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(x => Model.Nivel, new { @class = "form-control form-control-sm", step = ".01", type = "number", min = "1" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(m => m.Distancia, new { @class = "col-md-8 col-form-label" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(x => Model.Distancia, new { @class = "form-control form-control-sm", step = ".01", type = "number", min = "1" })
+            </div>
+        </div>
+        <div>
+            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="setGTTreinoInputs()" data-dismiss="modal">Submeter</button>
+        </div>
+        <input type="hidden" value="@Configs.GT_EXERCISE_TYPE_CARDIO_EX_MAX_ALLOWED" id="EX_MAX_ALLOWED" />
+    }
+    @if (ViewBag.Action == "EditarBodyMass")
+    {
+        <input type="hidden" id="setGTTreinoInputId" value="" />
+        <div class="row">
+            @Html.LabelFor(m => m.GT_Series_ID, new { @class = "col-md-4 col-form-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(x => Model.GT_Series_ID, Model.GT_Series_List, new { @class = "form-control form-control-sm", required = "" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(m => m.GT_Repeticoes_ID, new { @class = "col-md-4 col-form-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(x => Model.GT_Repeticoes_ID, Model.GT_Repeticoes_List, new { @class = "form-control form-control-sm", required = "" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(m => m.GT_Carga_ID, new { @class = "col-md-4 col-form-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(x => Model.GT_Carga_ID, Model.GT_Carga_List, new { @class = "form-control form-control-sm", required = "" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(m => m.GT_TempoDescanso_ID, new { @class = "col-md-4 col-form-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(x => Model.GT_TempoDescanso_ID, Model.GT_TempoDescanso_List, new { @class = "form-control form-control-sm", required = "" })
+            </div>
+        </div>
+        <div class="row">
+            @Html.LabelFor(m => m.Reps, new { @class = "col-md-4 col-form-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(x => Model.Reps, Model.RepList, new { onchange = "setRM2()", @class = "form-control form-control-sm", required = "" })
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-4 col-form-label">Carga:</label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(x => Model.CargaUsada, new { onchange = "setRM2()", @class = "form-control form-control-sm", step = ".01", type = "number", min = "1" })
+            </div>
+            <label class="col-md-1 col-form-label">RM:</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(x => Model.RM, new { @readonly = "", @class = "rm form-control form-control-sm", step = ".01", min = "1" })
+            </div>
+        </div>
+        <div>
+            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="setGTTreinoInputs()" data-dismiss="modal">Submeter</button>
+        </div>
+        <input type="hidden" value="@Configs.GT_EXERCISE_TYPE_BODYMASS_EX_MAX_ALLOWED" id="EX_MAX_ALLOWED" />
+    }
     @if (ViewBag.Action == "Remover")
     {
         using (Ajax.BeginForm("../gtmanagement/DeleteGTPlans", null, new AjaxOptions { HttpMethod = "POST", LoadingElementId = "", LoadingElementDuration = 2000, OnBegin = "loadIn", OnComplete = "loadOut", OnSuccess = "handleSuccess", OnFailure = "handleFailure", UpdateTargetId = "" }, new { id = "" }))

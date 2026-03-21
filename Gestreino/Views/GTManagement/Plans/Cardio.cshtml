@@ -209,9 +209,9 @@
                                                                     <input type="hidden" value="@item.GT_equipments_ID" class="GT_equipments" />
                                                                     <img class="" src="@path" width="180" />
                                                                     <button @dis type="button" data-id="@item.ID" class="addlistplan1 btn btn-success btn-sm"><i class="fa fa-plus-circle"></i></button>
-                                                                    <a href="javascript:" style="display:none" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
-                                                                    <button type="button" style="display: none; cursor: n-resize;" class="sortable btn btn-sm btn-light"><i class="fa fa-sort"></i></button>
+                                                                    <a title="" style="display:none" href="javascript:void(0)" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-action="EditarCardio" data-entity="gttreinos" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil"></i></a>
                                                                     <button type="button" class="open-modal-crud btn btn-sm btn-light" data-id="@item.ID" data-action="View" data-entity="gtexercicio" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-info"></i></button>
+                                                                    <button type="button" style="display: none; cursor: n-resize;" class="sortable btn btn-sm btn-light"><i class="fa fa-sort"></i></button>
                                                                     <br />
                                                                     @item.NOME
                                                                 </li>
@@ -254,9 +254,9 @@
                                                                         <li class="sidebar-menu-item hide-long-text" style="" id="ex_@item.ExerciseId">
                                                                             <img class="" src="@path" width="180" />
                                                                             <button type="button" data-id="@item.ExerciseId" class="removegaclass1 btn btn-danger btn-sm"><i class="fa fa-times"></i></button>
-                                                                            <a href="javascript:" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ExerciseId" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
-                                                                            <button type="button" style="cursor: n-resize;" class="sortable btn btn-sm btn-light"><i class="fa fa-sort"></i></button>
+                                                                            <a title="" href="javascript:void(0)" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ExerciseId" data-action="EditarCardio" data-entity="gttreinos" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil"></i></a>
                                                                             <button type="button" class="open-modal-crud btn btn-sm btn-light" data-id="@item.ExerciseId" data-action="View" data-entity="gtexercicio" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-info"></i></button>
+                                                                            <button type="button" style="cursor: n-resize;" class="sortable btn btn-sm btn-light"><i class="fa fa-sort"></i></button>
                                                                             <br />
                                                                             @item.Name
                                                                             <div class="inputs_@item.ExerciseId">
@@ -266,8 +266,8 @@
                                                                                         <td><input readonly type="hidden" name="exIds[]" value="@item.ExerciseId"></td>
                                                                                         <td><input class="form-control form-control-sm w-70" readonly type="" name="exDuracao[]" value="@item.GT_DuracaoTreinoCardio_ID"></td>
                                                                                         <td><input class="form-control form-control-sm w-70" readonly type="" name="exFC[]" value="@item.FC"></td>
-                                                                                        <td><input class="form-control form-control-sm w-70" readonly type="" name="exNivel[]" value="@(item.Nivel!=null?(item.Nivel??0).ToString(" G29"):string.Empty)"></td>
-                                                                                        <td><input class="form-control form-control-sm w-70" readonly type="" name="exDistancia[]" value="@(item.Distancia!=null?(item.Distancia??0).ToString(" G29"):string.Empty)"></td>
+                                                                                        <td><input class="form-control form-control-sm w-70" readonly type="" name="exNivel[]" value="@(item.Nivel!=null?(item.Nivel??0).ToString("G29"):string.Empty)"></td>
+                                                                                        <td><input class="form-control form-control-sm w-70" readonly type="" name="exDistancia[]" value="@(item.Distancia!=null?(item.Distancia??0).ToString("G29"):string.Empty)"></td>
                                                                                     </tr>
                                                                                 </table>
                                                                             </div>
@@ -350,49 +350,7 @@
                             <!--  DATATABLE START -->
                         </div>
                     </div>
-
                 }
-            </div>
-            <div class="modal fade" id="gtplansmodaleditor" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="card-header card-reader-radius bg-primary-pickled-bluewood">
-                            <h3 class="text-white mb-0">Alterar dados do exercício</h3>
-                        </div>
-                        <input type="hidden" id="setGTTreinoInputId" value="" />
-                        <div class="modal-body">
-                            <div class="row">
-                                @Html.LabelFor(m => m.GT_DuracaoTreinoCardio_ID, new { @class = "col-md-8 col-form-label" })
-                                <div class="col-md-4">
-                                    @Html.DropDownListFor(x => Model.GT_DuracaoTreinoCardio_ID, Model.GT_DuracaoTreinoCardioList, new { @class = "form-control form-control-sm", required = "" })
-                                </div>
-                            </div>
-                            <div class="row">
-                                @Html.LabelFor(m => m.FC, new { @class = "col-md-8 col-form-label" })
-                                <div class="col-md-4">
-                                    @Html.TextBoxFor(x => Model.FC, new { @class = "form-control form-control-sm", type = "number", min = "1" })
-                                </div>
-                            </div>
-                            <div class="row">
-                                @Html.LabelFor(m => m.Nivel, new { @class = "col-md-8 col-form-label" })
-                                <div class="col-md-4">
-                                    @Html.TextBoxFor(x => Model.Nivel, new { @class = "form-control form-control-sm", step = ".01", type = "number", min = "1" })
-                                </div>
-                            </div>
-                            <div class="row">
-                                @Html.LabelFor(m => m.Distancia, new { @class = "col-md-8 col-form-label" })
-                                <div class="col-md-4">
-                                    @Html.TextBoxFor(x => Model.Distancia, new { @class = "form-control form-control-sm", step = ".01", type = "number", min = "1" })
-                                </div>
-                            </div>
-                            <div>
-                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-primary btn-sm" onclick="setGTTreinoInputs()" data-dismiss="modal">Submeter</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" value="@Configs.GT_EXERCISE_TYPE_CARDIO_EX_MAX_ALLOWED" id="EX_MAX_ALLOWED" />
             </div>
             <h2>&nbsp;</h2>
             <h2>&nbsp;</h2>

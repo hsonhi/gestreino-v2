@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Gestreino.Classes;
@@ -481,6 +482,54 @@ namespace Gestreino.Controllers
             ViewBag.Action = action;
             return View("administration/Parameters/GRLGTTipoTreino", MODEL);
         }
+        public ActionResult GTBodyPart(GT_bodyParts MODEL, string action, int? id, int?[] bulkids)
+        {
+            if (action == "Editar")
+            {
+                var data = databaseManager.GT_bodyParts.Where(x => x.ID == id).ToList();
+                MODEL.ID = id.Value;
+                MODEL.NOME = data.First().NOME;
+            }
+            int?[] ids = new int?[] { id.Value };
+            if (action.Contains("Multiplos")) ids = bulkids;
+            if (action.Contains("Multiplos")) action = "Remover";
+
+            ViewBag.bulkids = ids;
+            ViewBag.Action = action;
+            return View("administration/Parameters/GRLGTBodyPart", MODEL);
+        }
+        public ActionResult GTTargetMuscle(GT_targetMuscles MODEL, string action, int? id, int?[] bulkids)
+        {
+            if (action == "Editar")
+            {
+                var data = databaseManager.GT_targetMuscles.Where(x => x.ID == id).ToList();
+                MODEL.ID = id.Value;
+                MODEL.NOME = data.First().NOME;
+            }
+            int?[] ids = new int?[] { id.Value };
+            if (action.Contains("Multiplos")) ids = bulkids;
+            if (action.Contains("Multiplos")) action = "Remover";
+
+            ViewBag.bulkids = ids;
+            ViewBag.Action = action;
+            return View("administration/Parameters/GRLGTTargetMuscle", MODEL);
+        }
+        public ActionResult GTEquipment(GT_equipments MODEL, string action, int? id, int?[] bulkids)
+        {
+            if (action == "Editar")
+            {
+                var data = databaseManager.GT_equipments.Where(x => x.ID == id).ToList();
+                MODEL.ID = id.Value;
+                MODEL.NOME = data.First().NOME;
+            }
+            int?[] ids = new int?[] { id.Value };
+            if (action.Contains("Multiplos")) ids = bulkids;
+            if (action.Contains("Multiplos")) action = "Remover";
+
+            ViewBag.bulkids = ids;
+            ViewBag.Action = action;
+            return View("administration/Parameters/GRLGTEquipment", MODEL);
+        }
         public ActionResult GTExercicio(GTExercicio MODEL, string action, int? id, int?[] bulkids)
         {
             if (action == "Editar" || action == "View")
@@ -673,7 +722,7 @@ namespace Gestreino.Controllers
             ViewBag.Action = action;
             return View("GTManagement/Athletes/GTSocioEvolution");
         }
-        public ActionResult GTTreinos(string action, int? id, int?[] bulkids)
+        public ActionResult GTTreinos(GT_TreinoBodyMass MODEL, string action, int? id, int?[] bulkids)
         {
             int?[] ids = new int?[] { id.Value };
             if (action.Contains("Multiplos")) ids = bulkids;
@@ -682,7 +731,20 @@ namespace Gestreino.Controllers
             var firstInt = ids.Any() ? ids.Select(x => x.Value).FirstOrDefault() : 0;
             var gttreinoid = databaseManager.GT_Treino.Where(x => x.ID == firstInt).Select(x => x.GT_TipoTreino_ID).FirstOrDefault();
 
-            ViewBag.gttreinoid = firstInt;
+
+            if(action== "EditarCardio")
+               MODEL.GT_DuracaoTreinoCardioList = databaseManager.GT_DuracaoTreinoCardio.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.DURACAO.ToString() + "'" });
+          
+            if (action == "EditarBodyMass")
+            {
+                MODEL.GT_Series_List = databaseManager.GT_Series.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.SERIES.ToString() });
+                MODEL.GT_Repeticoes_List = databaseManager.GT_Repeticoes.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.REPETICOES.ToString() });
+                MODEL.GT_Carga_List = databaseManager.GT_Carga.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.CARGA.ToString() });
+                MODEL.GT_TempoDescanso_List = databaseManager.GT_TempoDescanso.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.TEMPO_DESCANSO });
+                MODEL.RepList = databaseManager.GT_CoeficienteRepeticao.OrderBy(x => x.ID).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.ID.ToString() });
+            }
+
+            //ViewBag.gttreinoid = firstInt;
             ViewBag.bulkids = ids;
             ViewBag.Action = action;
            if (gttreinoid == Configs.GT_EXERCISE_TYPE_BODYMASS)
@@ -691,7 +753,7 @@ namespace Gestreino.Controllers
             if (gttreinoid == Configs.GT_EXERCISE_TYPE_CARDIO)
                 if (!AcessControl.Authorized(AcessControl.GT_PLANS_CARDIO_DELETE) && ViewBag.Action == "Remover") return View("Lockout");
           
-            return View("GTManagement/Plans/Index");
+            return View("GTManagement/Plans/Index",MODEL);
         }
         public ActionResult GTQuest(string action, int? id, int?[] bulkids,string upload)
         {

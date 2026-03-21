@@ -5242,6 +5242,508 @@ namespace Gestreino.Controllers
 
 
 
+
+        //Parameters GT Body Part
+        [HttpPost]
+        public ActionResult GetGRLBodyPart()
+        {
+            //UI DATATABLE PAGINATION BUTTONS
+            var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            var start = Request.Form.GetValues("start").FirstOrDefault();
+            var length = Request.Form.GetValues("length").FirstOrDefault();
+
+            //UI DATATABLE COLUMN ORDERING
+            var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+            var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+
+            //UI DATATABLE SEARCH INPUTS
+            var Nome = Request.Form.GetValues("columns[0][search][value]").FirstOrDefault();
+
+            //DECLARE PAGINATION VARIABLES
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt32(start) : 0;
+            int totalRecords = 0;
+
+            var v = (from a in databaseManager.GT_bodyParts.OrderBy(x=>x.NOME).ToList() select a);
+
+            TempData["QUERYRESULT_ALL"] = v.ToList();
+
+            //SEARCH RESULT SET
+            if (!string.IsNullOrEmpty(Nome)) v = v.Where(a => a.NOME != null && a.NOME.ToUpper() == Nome.ToUpper());
+           
+            //ORDER RESULT SET
+            if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
+            {
+                if (sortColumnDir == "asc")
+                {
+                    switch (sortColumn)
+                    {
+                        case "NOME": v = v.OrderBy(s => s.NOME); break;
+                    }
+                }
+                else
+                {
+                    switch (sortColumn)
+                    {
+                        case "NOME": v = v.OrderByDescending(s => s.NOME); break;
+                    }
+                }
+            }
+
+            totalRecords = v.Count();
+            var data = v.Skip(skip).Take(pageSize).ToList();
+            TempData["QUERYRESULT"] = v.ToList();
+
+            //RETURN RESPONSE JSON PARSE
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = totalRecords,
+                recordsTotal = totalRecords,
+                data = data.Select(x => new
+                {
+                    Id = x.ID,
+                    NOME = x.NOME
+                }),
+                sortColumn = sortColumn,
+                sortColumnDir = sortColumnDir,
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewGRLBodyPart(GT_bodyParts MODEL)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                // Create
+                GT_bodyParts fx = new GT_bodyParts();
+                fx.NOME = MODEL.NOME;
+                databaseManager.GT_bodyParts.Add(fx);
+                databaseManager.SaveChanges();
+
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, table = "GRLGTBodyPart", showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateGRLBodyPart(GT_bodyParts MODEL)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                // Update
+                (from c in databaseManager.GT_bodyParts
+                 where c.ID == MODEL.ID
+                 select c).ToList().ForEach(fx => {
+                     fx.NOME = MODEL.NOME;
+                 });
+                databaseManager.SaveChanges();
+
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, table = "GRLGTBodyPart", showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteGRLBodyPart(int?[] ids)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                // Delete
+                foreach (var i in ids)
+                {
+
+                    if (databaseManager.GT_Exercicio_bodyParts.Where(x => x.GT_bodyParts_ID == i).Any())
+                        return Json(new { result = false, error = "Não pode remover este item por estar em uso em Exercícios!" });
+                }
+
+                foreach (var i in ids)
+                {
+                    var rowsToDelete = databaseManager.GT_bodyParts.AsEnumerable()
+                                                .Where(row => row.ID == i);
+
+                    if (rowsToDelete != null)
+                    {
+                        databaseManager.GT_bodyParts.RemoveRange(rowsToDelete);
+                        databaseManager.SaveChanges();
+                    }
+                }
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, table = "GRLGTBodyPart", showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+
+
+        //Parameters GT Equipment
+        [HttpPost]
+        public ActionResult GetGRLEquipment()
+        {
+            //UI DATATABLE PAGINATION BUTTONS
+            var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            var start = Request.Form.GetValues("start").FirstOrDefault();
+            var length = Request.Form.GetValues("length").FirstOrDefault();
+
+            //UI DATATABLE COLUMN ORDERING
+            var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+            var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+
+            //UI DATATABLE SEARCH INPUTS
+            var Nome = Request.Form.GetValues("columns[0][search][value]").FirstOrDefault();
+
+            //DECLARE PAGINATION VARIABLES
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt32(start) : 0;
+            int totalRecords = 0;
+
+            var v = (from a in databaseManager.GT_equipments.OrderBy(x => x.NOME).ToList() select a);
+
+            TempData["QUERYRESULT_ALL"] = v.ToList();
+
+            //SEARCH RESULT SET
+            if (!string.IsNullOrEmpty(Nome)) v = v.Where(a => a.NOME != null && a.NOME.ToUpper() == Nome.ToUpper());
+
+            //ORDER RESULT SET
+            if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
+            {
+                if (sortColumnDir == "asc")
+                {
+                    switch (sortColumn)
+                    {
+                        case "NOME": v = v.OrderBy(s => s.NOME); break;
+                    }
+                }
+                else
+                {
+                    switch (sortColumn)
+                    {
+                        case "NOME": v = v.OrderByDescending(s => s.NOME); break;
+                    }
+                }
+            }
+
+            totalRecords = v.Count();
+            var data = v.Skip(skip).Take(pageSize).ToList();
+            TempData["QUERYRESULT"] = v.ToList();
+
+            //RETURN RESPONSE JSON PARSE
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = totalRecords,
+                recordsTotal = totalRecords,
+                data = data.Select(x => new
+                {
+                    Id = x.ID,
+                    NOME = x.NOME
+                }),
+                sortColumn = sortColumn,
+                sortColumnDir = sortColumnDir,
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewGRLEquipment(GT_equipments MODEL)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                // Create
+                GT_equipments fx = new GT_equipments();
+                fx.NOME = MODEL.NOME;
+                databaseManager.GT_equipments.Add(fx);
+                databaseManager.SaveChanges();
+
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, table = "GRLGTEquipment", showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateGRLEquipment(GT_equipments MODEL)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                // Update
+                (from c in databaseManager.GT_equipments
+                 where c.ID == MODEL.ID
+                 select c).ToList().ForEach(fx => {
+                     fx.NOME = MODEL.NOME;
+                 });
+                databaseManager.SaveChanges();
+
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, table = "GRLGTEquipment", showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteGRLEquipment(int?[] ids)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                // Delete
+                foreach (var i in ids)
+                {
+
+                    if (databaseManager.GT_Exercicio_equipments.Where(x => x.GT_equipments_ID == i).Any())
+                        return Json(new { result = false, error = "Não pode remover este item por estar em uso em Exercícios!" });
+                }
+
+                foreach (var i in ids)
+                {
+                    var rowsToDelete = databaseManager.GT_equipments.AsEnumerable()
+                                                .Where(row => row.ID == i);
+
+                    if (rowsToDelete != null)
+                    {
+                        databaseManager.GT_equipments.RemoveRange(rowsToDelete);
+                        databaseManager.SaveChanges();
+                    }
+                }
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, table = "GRLGTEquipment", showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+
+
+        //Parameters GT Target Muscle
+        [HttpPost]
+        public ActionResult GetGRLTargetMuscle()
+        {
+            //UI DATATABLE PAGINATION BUTTONS
+            var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            var start = Request.Form.GetValues("start").FirstOrDefault();
+            var length = Request.Form.GetValues("length").FirstOrDefault();
+
+            //UI DATATABLE COLUMN ORDERING
+            var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+            var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+
+            //UI DATATABLE SEARCH INPUTS
+            var Nome = Request.Form.GetValues("columns[0][search][value]").FirstOrDefault();
+
+            //DECLARE PAGINATION VARIABLES
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt32(start) : 0;
+            int totalRecords = 0;
+
+            var v = (from a in databaseManager.GT_targetMuscles.OrderBy(x => x.NOME).ToList() select a);
+
+            TempData["QUERYRESULT_ALL"] = v.ToList();
+
+            //SEARCH RESULT SET
+            if (!string.IsNullOrEmpty(Nome)) v = v.Where(a => a.NOME != null && a.NOME.ToUpper() == Nome.ToUpper());
+
+            //ORDER RESULT SET
+            if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
+            {
+                if (sortColumnDir == "asc")
+                {
+                    switch (sortColumn)
+                    {
+                        case "NOME": v = v.OrderBy(s => s.NOME); break;
+                    }
+                }
+                else
+                {
+                    switch (sortColumn)
+                    {
+                        case "NOME": v = v.OrderByDescending(s => s.NOME); break;
+                    }
+                }
+            }
+
+            totalRecords = v.Count();
+            var data = v.Skip(skip).Take(pageSize).ToList();
+            TempData["QUERYRESULT"] = v.ToList();
+
+            //RETURN RESPONSE JSON PARSE
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = totalRecords,
+                recordsTotal = totalRecords,
+                data = data.Select(x => new
+                {
+                    Id = x.ID,
+                    NOME = x.NOME
+                }),
+                sortColumn = sortColumn,
+                sortColumnDir = sortColumnDir,
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewGRLTargetMuscle (GT_targetMuscles MODEL)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                // Create
+                GT_targetMuscles fx = new GT_targetMuscles();
+                fx.NOME = MODEL.NOME;
+                databaseManager.GT_targetMuscles.Add(fx);
+                databaseManager.SaveChanges();
+
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, table = "GRLGTTargetMuscle", showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateTargetMuscle(GT_equipments MODEL)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                // Update
+                (from c in databaseManager.GT_targetMuscles
+                 where c.ID == MODEL.ID
+                 select c).ToList().ForEach(fx => {
+                     fx.NOME = MODEL.NOME;
+                 });
+                databaseManager.SaveChanges();
+
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, table = "GRLGTTargetMuscle", showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteTargetMuscle(int?[] ids)
+        {
+            try
+            {
+                //  VALIDATE FORM FIRST
+                if (!ModelState.IsValid)
+                {
+                    string errors = string.Empty;
+                    ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(x => errors = x.ErrorMessage + "\n");
+                    return Json(new { result = false, error = errors });
+                }
+
+                // Delete
+                foreach (var i in ids)
+                {
+
+                    if (databaseManager.GT_Exercicio_targetMuscles.Where(x => x.GT_targetMuscles_ID == i).Any())
+                        return Json(new { result = false, error = "Não pode remover este item por estar em uso em Exercícios!" });
+                }
+
+                foreach (var i in ids)
+                {
+                    var rowsToDelete = databaseManager.GT_targetMuscles.AsEnumerable()
+                                                .Where(row => row.ID == i);
+
+                    if (rowsToDelete != null)
+                    {
+                        databaseManager.GT_targetMuscles.RemoveRange(rowsToDelete);
+                        databaseManager.SaveChanges();
+                    }
+                }
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            return Json(new { result = true, error = string.Empty, table = "GRLGTTargetMuscle", showToastr = true, toastrMessage = "Submetido com sucesso!" });
+        }
+
+
         //Phases 
         [HttpGet]
         public ActionResult Phases()

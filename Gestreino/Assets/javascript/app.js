@@ -531,6 +531,12 @@ $(document).on('click', '.open-modal-crud', function (e) {
             break;
         case 'gtsocioevolution': url = '../../Ajax/GTSocioEvolution'
             break;
+        case 'grlgtbodypart': url = '../../Ajax/GTBodyPart'
+            break;
+        case 'grlgtequipment': url = '../../Ajax/GTEquipment'
+            break;
+        case 'grlgttargetmuscle': url = '../../Ajax/GTTargetMuscle'
+            break;
         default: null
     }
     $.ajax({
@@ -553,6 +559,7 @@ $(document).on('click', '.open-modal-crud', function (e) {
             checkDisabled("ScheduledStatus");
             //ajax();
             anxientForm();
+            setgtplansmodaleditor(id);//
 
             if (!$.fn.dataTable.isDataTable('#AtomTable')) 
                 handleDataAtomos();
@@ -3284,6 +3291,207 @@ function handleDataGRLExercicioTable() {
         },
     });
 };
+function handleDataGRLGTBodyPart() {
+    var table = $("#GRLGTBodyPart").DataTable({
+        "processing": true, // Para exibir mensagem de processamento a cada requisição
+        "serverSide": true, // Para processar as requisições no back-end
+        //"filter": false, // : está comentado porque estamos a usar filtros que enviamos no back-end
+        "orderMulti": false, // Opção de ordenação para uma coluna de cada vez.
+        //Linguagem PT
+        "language": {
+            "url": "/Assets/lib/datatable/pt-PT.json"
+        },
+        fixedHeader: {
+            header: true,
+            footer: true
+        },
+        "dom": '<"toolbox">rtp',//remove componentes i - for pagination information, l -length, p -pagination
+        "ajax": {
+            "url": "../../administration/GetGRLBodyPart", // POST TO CONTROLLER
+            "type": "POST",
+            "datatype": "json",
+            data: {}
+        },
+        "columns": [
+            { "data": "Id", "name": null, "autoWidth": true },
+            //Column customizada
+            {
+                sortable: false,
+                "render": function (data, type, full, meta) {
+                    return ' <a title="Editar" href="javascript:void(0)" class="open-modal-crud" data-id="' + full.Id + '" data-action="Editar" data-entity="grlgtbodypart" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil"></i></a>' +
+                        ' <a title="Remover" href="javascript:void(0)" class="open-modal-crud" data-id="' + full.Id + '" data-action="Remover" data-entity="grlgtbodypart" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-trash"></i></a>';
+                }
+            },
+            //Cada dado representa uma coluna da tabela
+            { "data": "NOME", "name": "NOME", "autoWidth": true },
+        ],
+        //Configuração da tabela para os checkboxes
+        'columnDefs': [
+            {
+                'targets': 0,
+                'checkboxes': {
+                    'selectRow': true
+                },
+            }
+        ], 'select': {
+            'style': 'multi'
+        },
+        'order': [[1, 'false']],
+        'rowCallback': function (row, data, dataIndex) {
+            // Get row ID
+            var rowId = data["Id"];
+            //console.log(rowId)
+            //Dra table and add selected option to previously selected checkboxes
+            $.each(values, function (i, r) {
+                if (rowId == r) {
+                    $(row).find('input[type="checkbox"]').prop('checked', true);
+                    $(row).closest("tr").addClass("selected");
+                }
+            })
+        },
+        drawCallback: function () {
+            processInfo(this.api().page.info(), 'paginateInfoGRLGTBodyPart');
+        },
+        //Remove pagination from table and add to custom Div
+        initComplete: (settings, json) => {
+            $('#GRLGTBodyPart_paginate').appendTo('#paginateGRLGTBodyPart');
+        },
+    });
+};
+function handleDataGRLGTEquipment() {
+    var table = $("#GRLGTEquipment").DataTable({
+        "processing": true, // Para exibir mensagem de processamento a cada requisição
+        "serverSide": true, // Para processar as requisições no back-end
+        //"filter": false, // : está comentado porque estamos a usar filtros que enviamos no back-end
+        "orderMulti": false, // Opção de ordenação para uma coluna de cada vez.
+        //Linguagem PT
+        "language": {
+            "url": "/Assets/lib/datatable/pt-PT.json"
+        },
+        fixedHeader: {
+            header: true,
+            footer: true
+        },
+        "dom": '<"toolbox">rtp',//remove componentes i - for pagination information, l -length, p -pagination
+        "ajax": {
+            "url": "../../administration/GetGRLEquipment", // POST TO CONTROLLER
+            "type": "POST",
+            "datatype": "json",
+            data: {}
+        },
+        "columns": [
+            { "data": "Id", "name": null, "autoWidth": true },
+            //Column customizada
+            {
+                sortable: false,
+                "render": function (data, type, full, meta) {
+                    return ' <a title="Editar" href="javascript:void(0)" class="open-modal-crud" data-id="' + full.Id + '" data-action="Editar" data-entity="grlgtequipment" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil"></i></a>' +
+                        ' <a title="Remover" href="javascript:void(0)" class="open-modal-crud" data-id="' + full.Id + '" data-action="Remover" data-entity="grlgtequipment" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-trash"></i></a>';
+                }
+            },
+            //Cada dado representa uma coluna da tabela
+            { "data": "NOME", "name": "NOME", "autoWidth": true },
+        ],
+        //Configuração da tabela para os checkboxes
+        'columnDefs': [
+            {
+                'targets': 0,
+                'checkboxes': {
+                    'selectRow': true
+                },
+            }
+        ], 'select': {
+            'style': 'multi'
+        },
+        'order': [[1, 'false']],
+        'rowCallback': function (row, data, dataIndex) {
+            // Get row ID
+            var rowId = data["Id"];
+            //console.log(rowId)
+            //Dra table and add selected option to previously selected checkboxes
+            $.each(values, function (i, r) {
+                if (rowId == r) {
+                    $(row).find('input[type="checkbox"]').prop('checked', true);
+                    $(row).closest("tr").addClass("selected");
+                }
+            })
+        },
+        drawCallback: function () {
+            processInfo(this.api().page.info(), 'paginateInfoGRLGTEquipment');
+        },
+        //Remove pagination from table and add to custom Div
+        initComplete: (settings, json) => {
+            $('#GRLGTEquipment_paginate').appendTo('#paginateGRLGTEquipment');
+        },
+    });
+};
+function handleDataGRLGTTargetMuscle() {
+    var table = $("#GRLGTTargetMuscle").DataTable({
+        "processing": true, // Para exibir mensagem de processamento a cada requisição
+        "serverSide": true, // Para processar as requisições no back-end
+        //"filter": false, // : está comentado porque estamos a usar filtros que enviamos no back-end
+        "orderMulti": false, // Opção de ordenação para uma coluna de cada vez.
+        //Linguagem PT
+        "language": {
+            "url": "/Assets/lib/datatable/pt-PT.json"
+        },
+        fixedHeader: {
+            header: true,
+            footer: true
+        },
+        "dom": '<"toolbox">rtp',//remove componentes i - for pagination information, l -length, p -pagination
+        "ajax": {
+            "url": "../../administration/GetGRLTargetMuscle", // POST TO CONTROLLER
+            "type": "POST",
+            "datatype": "json",
+            data: {}
+        },
+        "columns": [
+            { "data": "Id", "name": null, "autoWidth": true },
+            //Column customizada
+            {
+                sortable: false,
+                "render": function (data, type, full, meta) {
+                    return ' <a title="Editar" href="javascript:void(0)" class="open-modal-crud" data-id="' + full.Id + '" data-action="Editar" data-entity="grlgttargetmuscle" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil"></i></a>' +
+                        ' <a title="Remover" href="javascript:void(0)" class="open-modal-crud" data-id="' + full.Id + '" data-action="Remover" data-entity="grlgttargetmuscle" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-trash"></i></a>';
+                }
+            },
+            //Cada dado representa uma coluna da tabela
+            { "data": "NOME", "name": "NOME", "autoWidth": true },
+        ],
+        //Configuração da tabela para os checkboxes
+        'columnDefs': [
+            {
+                'targets': 0,
+                'checkboxes': {
+                    'selectRow': true
+                },
+            }
+        ], 'select': {
+            'style': 'multi'
+        },
+        'order': [[1, 'false']],
+        'rowCallback': function (row, data, dataIndex) {
+            // Get row ID
+            var rowId = data["Id"];
+            //console.log(rowId)
+            //Dra table and add selected option to previously selected checkboxes
+            $.each(values, function (i, r) {
+                if (rowId == r) {
+                    $(row).find('input[type="checkbox"]').prop('checked', true);
+                    $(row).closest("tr").addClass("selected");
+                }
+            })
+        },
+        drawCallback: function () {
+            processInfo(this.api().page.info(), 'paginateInfoGRLGTTargetMuscle');
+        },
+        //Remove pagination from table and add to custom Div
+        initComplete: (settings, json) => {
+            $('#GRLGTTargetMuscle_paginate').appendTo('#paginateGRLGTTargetMuscle');
+        },
+    });
+};
 function handleDataGTTreinoTable() {
     var table = $("#GTTreinoTable").DataTable({
         "processing": true, // Para exibir mensagem de processamento a cada requisição
@@ -4663,9 +4871,10 @@ function setRM2() {
         }
     });
 }
-$(document).on('click', '.gtplansmodaleditor', function () {
+function setgtplansmodaleditor(dataid) {
+//$(document).on('click', '.gtplansmodaleditor', function () {
     var gttipotreino = $('#GT_EXERCISE_TYPE_BODYMASS').val();
-    var dataid = $(this).data('id');
+   // var dataid = $(this).data('id');
     $('#setGTTreinoInputId').val(dataid);
 
     if (gttipotreino == $('#GTTipoTreinoId').val()) {
@@ -4695,7 +4904,7 @@ $(document).on('click', '.gtplansmodaleditor', function () {
         $('.modal-body input[name="Nivel"]').val(exNivel);
         $('.modal-body input[name="Distancia"]').val(exDistancia);
     }
-});
+};
 function setGTTreinoInputs() {
     var gttipotreino = $('#GT_EXERCISE_TYPE_BODYMASS').val();
     var dataid = $('#setGTTreinoInputId').val();

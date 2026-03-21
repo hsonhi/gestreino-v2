@@ -249,9 +249,9 @@
                                                                         <input type="hidden" value="@item.GT_targetMuscles_ID" class="GT_targetMuscles" />
                                                                         <img class="" src="@path" width="180" />
                                                                         <button @dis type="button" data-id="@item.ID" class="addlistplan1 btn btn-sm btn-success  btn-sm"><i class="fa fa-plus-circle"></i></button>
-                                                                        <a href="javascript:" style="display:none" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
-                                                                        <button type="button" style="display: none; cursor: n-resize;" class="sortable btn btn-sm btn-light"><i class="fa fa-sort"></i></button>
+                                                                        <a title="" style="display:none" href="javascript:void(0)" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ID" data-action="EditarBodyMass" data-entity="gttreinos" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil"></i></a>
                                                                         <button type="button" class="open-modal-crud btn btn-sm btn-light" data-id="@item.ID" data-action="View" data-entity="gtexercicio" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-info"></i></button>
+                                                                        <button type="button" style="display: none; cursor: n-resize;" class="sortable btn btn-sm btn-light"><i class="fa fa-sort"></i></button>
                                                                         <br />
                                                                         @item.NOME
                                                                     </li>
@@ -297,7 +297,7 @@
                                                                         <li class="sidebar-menu-item hide-long-text" style="" id="ex_@item.ExerciseId">
                                                                             <img class="" src="@path" width="180" />
                                                                             <button type="button" data-id="@item.ExerciseId" class="removegaclass1 btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
-                                                                            <a href="javascript:" title="" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ExerciseId" data-toggle="modal" data-target="#gtplansmodaleditor"><i class="fa fa-pencil"></i></a>
+                                                                            <a title="" href="javascript:void(0)" class="gtplansmodaleditor open-modal-crud btn btn-light btn-sm" data-id="@item.ExerciseId" data-action="EditarBodyMass" data-entity="gttreinos" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-pencil"></i></a>
                                                                             <button type="button" style="cursor: n-resize;" class="sortable btn btn-sm btn-light"><i class="fa fa-sort"></i></button>
                                                                             <button type="button" class="open-modal-crud btn btn-sm btn-light" data-id="@item.ExerciseId" data-action="View" data-entity="gtexercicio" data-toggle="modal" data-target="#crudControlModal"><i class="fa fa-info"></i></button>
                                                                             <br />
@@ -399,63 +399,6 @@
                     </div>
                 }
             </div>
-        </div>
-        <div class="modal fade" id="gtplansmodaleditor" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="card-header card-reader-radius bg-primary-pickled-bluewood">
-                        <h3 class="text-white mb-0">Alterar dados do exercício</h3>
-                    </div>
-                    <input type="hidden" id="setGTTreinoInputId" value="" />
-                    <div class="modal-body">
-                        <div class="row">
-                            @Html.LabelFor(m => m.GT_Series_ID, new { @class = "col-md-4 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(x => Model.GT_Series_ID, Model.GT_Series_List, new { @class = "form-control form-control-sm", required = "" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            @Html.LabelFor(m => m.GT_Repeticoes_ID, new { @class = "col-md-4 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(x => Model.GT_Repeticoes_ID, Model.GT_Repeticoes_List, new { @class = "form-control form-control-sm", required = "" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            @Html.LabelFor(m => m.GT_Carga_ID, new { @class = "col-md-4 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(x => Model.GT_Carga_ID, Model.GT_Carga_List, new { @class = "form-control form-control-sm", required = "" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            @Html.LabelFor(m => m.GT_TempoDescanso_ID, new { @class = "col-md-4 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(x => Model.GT_TempoDescanso_ID, Model.GT_TempoDescanso_List, new { @class = "form-control form-control-sm", required = "" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            @Html.LabelFor(m => m.Reps, new { @class = "col-md-4 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(x => Model.Reps, Model.RepList, new { onchange = "setRM2()", @class = "form-control form-control-sm", required = "" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-md-4 col-form-label">Carga:</label>
-                            <div class="col-md-4">
-                                @Html.TextBoxFor(x => Model.CargaUsada, new { onchange = "setRM2()", @class = "form-control form-control-sm", step = ".01", type = "number", min = "1" })
-                            </div>
-                            <label class="col-md-1 col-form-label">RM:</label>
-                            <div class="col-md-3">
-                                @Html.TextBoxFor(x => Model.RM, new { @readonly = "", @class = "rm form-control form-control-sm", step = ".01", min = "1" })
-                            </div>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary btn-sm" onclick="setGTTreinoInputs()" data-dismiss="modal">Submeter</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <input type="hidden" value="@Configs.GT_EXERCISE_TYPE_BODYMASS_EX_MAX_ALLOWED" id="EX_MAX_ALLOWED" />
         </div>
         <h2>&nbsp;</h2>
         <h2>&nbsp;</h2>

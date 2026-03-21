@@ -1021,6 +1021,9 @@
     <Content Include="Views\Administration\Settings\Phases.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Administration\Users\ProfilePhoto.cshtml" />
+    <Content Include="Views\Ajax\Administration\Parameters\GRLGTBodyPart.cshtml" />
+    <Content Include="Views\Ajax\Administration\Parameters\GRLGTEquipment.cshtml" />
+    <Content Include="Views\Ajax\Administration\Parameters\GRLGTTargetMuscle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
